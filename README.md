@@ -16,5 +16,5 @@ Traffic congestion is a major issue in urban areas, causing delays, increased fu
 - Machine Learning: Python, Scikit-Learn
 - Tools: GitHub, Postman, VS Code
 
-## Team Members
+## Team Member
 - Thilagam S
