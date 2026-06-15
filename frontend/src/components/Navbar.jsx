@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function Navbar() {
   return (
@@ -11,18 +12,40 @@ function Navbar() {
         justifyContent: "space-between",
       }}
     >
-      <h2>Traffic Congestion System</h2>
+      <h2>Traffic System</h2>
 
       <div>
-        <span style={{ marginRight: "20px" }}>
+        <Link
+          to="/dashboard"
+          style={{
+            color: "white",
+            marginRight: "20px",
+            textDecoration: "none",
+          }}
+        >
           Dashboard
-        </span>
+        </Link>
 
-        <span style={{ marginRight: "20px" }}>
+        <Link
+          to="/route"
+          style={{
+            color: "white",
+            marginRight: "20px",
+            textDecoration: "none",
+          }}
+        >
           Routes
-        </span>
+        </Link>
 
-        <span>Logout</span>
+        <Link
+          to="/"
+          style={{
+            color: "white",
+            textDecoration: "none",
+          }}
+        >
+          Logout
+        </Link>
       </div>
     </nav>
   );
