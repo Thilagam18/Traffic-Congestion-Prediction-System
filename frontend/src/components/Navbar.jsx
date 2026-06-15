@@ -10,9 +10,10 @@ function Navbar() {
         padding: "15px 30px",
         display: "flex",
         justifyContent: "space-between",
+        alignItems: "center",
       }}
     >
-      <h2>Traffic System</h2>
+      <h2>Traffic Congestion System</h2>
 
       <div>
         <Link
@@ -27,6 +28,17 @@ function Navbar() {
         </Link>
 
         <Link
+          to="/traffic"
+          style={{
+            color: "white",
+            marginRight: "20px",
+            textDecoration: "none",
+          }}
+        >
+          Traffic Data
+        </Link>
+
+        <Link
           to="/route"
           style={{
             color: "white",
@@ -35,6 +47,17 @@ function Navbar() {
           }}
         >
           Routes
+        </Link>
+
+        <Link
+          to="/register"
+          style={{
+            color: "white",
+            marginRight: "20px",
+            textDecoration: "none",
+          }}
+        >
+          Register
         </Link>
 
         <Link
