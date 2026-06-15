@@ -1,3 +1,15 @@
+import LoginService from "../services/LoginService";
+
+const handleLogin = (e) => {
+  e.preventDefault();
+
+  const result = LoginService.login(
+    email,
+    password
+  );
+
+  alert(result.message);
+};
 const LoginService = {
   login: (email, password) => {
     if (email === "admin@gmail.com" && password === "admin123") {
