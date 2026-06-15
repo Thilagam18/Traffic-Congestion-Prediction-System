@@ -4,6 +4,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import RouteOptimization from "./pages/RouteOptimization";
+import TrafficManagement from "./pages/TrafficManagement";
 
 function App() {
   return (
@@ -24,6 +25,11 @@ function App() {
         <Route
           path="/route"
           element={<RouteOptimization />}
+        />
+
+        <Route
+          path="/traffic"
+          element={<TrafficManagement />}
         />
       </Routes>
     </BrowserRouter>
