@@ -5,55 +5,55 @@ import Navbar from "../components/Navbar";
 
 // ── World roads across major cities ───────────────────────────────────────────
 const WORLD_ROADS = [
-  { id:  1, name: "5th Avenue / Midtown",       city: "New York",    country: "USA",          type: "City Road",  baseLoad: 0.82, lat: 40.7549,  lon: -73.9840 },
-  { id:  2, name: "Brooklyn Bridge Approach",    city: "New York",    country: "USA",          type: "Bridge",     baseLoad: 0.70, lat: 40.7061,  lon: -73.9969 },
-  { id:  3, name: "Champs-Élysées",              city: "Paris",       country: "France",       type: "Boulevard",  baseLoad: 0.75, lat: 48.8698,  lon:   2.3078 },
-  { id:  4, name: "Périphérique Inner Ring",     city: "Paris",       country: "France",       type: "Ring Road",  baseLoad: 0.85, lat: 48.8584,  lon:   2.3395 },
-  { id:  5, name: "Shibuya Crossing",            city: "Tokyo",       country: "Japan",        type: "City Road",  baseLoad: 0.90, lat: 35.6598,  lon: 139.7006 },
-  { id:  6, name: "Tokyo Expressway C2",         city: "Tokyo",       country: "Japan",        type: "Expressway", baseLoad: 0.72, lat: 35.6762,  lon: 139.6503 },
-  { id:  7, name: "Sheikh Zayed Road",           city: "Dubai",       country: "UAE",          type: "Highway",    baseLoad: 0.65, lat: 25.2048,  lon:  55.2708 },
-  { id:  8, name: "Western Express Highway",     city: "Mumbai",      country: "India",        type: "Highway",    baseLoad: 0.88, lat: 19.0760,  lon:  72.8777 },
-  { id:  9, name: "Harbour Bridge Approach",     city: "Sydney",      country: "Australia",    type: "Bridge",     baseLoad: 0.68, lat: -33.8523, lon: 151.2108 },
-  { id: 10, name: "M25 Orbital Motorway",        city: "London",      country: "UK",           type: "Motorway",   baseLoad: 0.78, lat: 51.4747,  lon:  -0.4680 },
-  { id: 11, name: "Autobahn A100",               city: "Berlin",      country: "Germany",      type: "Motorway",   baseLoad: 0.62, lat: 52.5200,  lon:  13.4050 },
-  { id: 12, name: "I-405 San Diego Freeway",     city: "Los Angeles", country: "USA",          type: "Highway",    baseLoad: 0.86, lat: 34.0522,  lon: -118.2437 },
-  { id: 13, name: "Marginal Pinheiros",          city: "São Paulo",   country: "Brazil",       type: "Expressway", baseLoad: 0.80, lat: -23.5505, lon:  -46.6333 },
-  { id: 14, name: "Gangnam-daero Boulevard",     city: "Seoul",       country: "South Korea",  type: "Boulevard",  baseLoad: 0.76, lat: 37.4979,  lon: 127.0276 },
-  { id: 15, name: "Garden Ring Road",            city: "Moscow",      country: "Russia",       type: "Ring Road",  baseLoad: 0.74, lat: 55.7558,  lon:  37.6173 },
-  { id: 16, name: "Sukhumvit Road",              city: "Bangkok",     country: "Thailand",     type: "City Road",  baseLoad: 0.83, lat: 13.7563,  lon: 100.5018 },
-  { id: 17, name: "Cairo Ring Road (Segment)",   city: "Cairo",       country: "Egypt",        type: "Ring Road",  baseLoad: 0.71, lat: 30.0444,  lon:  31.2357 },
-  { id: 18, name: "East Coast Parkway",          city: "Singapore",   country: "Singapore",    type: "Expressway", baseLoad: 0.58, lat:  1.3521,  lon: 103.8198 },
-  { id: 19, name: "O-1 Motorway (TEM)",          city: "Istanbul",    country: "Turkey",       type: "Motorway",   baseLoad: 0.79, lat: 41.0082,  lon:  28.9784 },
-  { id: 20, name: "Gardiner Expressway",         city: "Toronto",     country: "Canada",       type: "Expressway", baseLoad: 0.67, lat: 43.6532,  lon:  -79.3832 },
-  { id: 21, name: "Periférico Ring Road",        city: "Mexico City", country: "Mexico",       type: "Ring Road",  baseLoad: 0.84, lat: 19.4326,  lon:  -99.1332 },
-  { id: 22, name: "Second Ring Road",            city: "Beijing",     country: "China",        type: "Ring Road",  baseLoad: 0.87, lat: 39.9042,  lon: 116.4074 },
+  { id:  1, name: "5th Avenue / Midtown",       city: "New York",    country: "USA",         type: "City Road",  baseLoad: 0.82, lat: 40.7549,  lon: -73.9840  },
+  { id:  2, name: "Brooklyn Bridge Approach",    city: "New York",    country: "USA",         type: "Bridge",     baseLoad: 0.70, lat: 40.7061,  lon: -73.9969  },
+  { id:  3, name: "Champs-Élysées",              city: "Paris",       country: "France",      type: "Boulevard",  baseLoad: 0.75, lat: 48.8698,  lon:   2.3078  },
+  { id:  4, name: "Périphérique Inner Ring",     city: "Paris",       country: "France",      type: "Ring Road",  baseLoad: 0.85, lat: 48.8584,  lon:   2.3395  },
+  { id:  5, name: "Shibuya Crossing",            city: "Tokyo",       country: "Japan",       type: "City Road",  baseLoad: 0.90, lat: 35.6598,  lon: 139.7006  },
+  { id:  6, name: "Tokyo Expressway C2",         city: "Tokyo",       country: "Japan",       type: "Expressway", baseLoad: 0.72, lat: 35.6762,  lon: 139.6503  },
+  { id:  7, name: "Sheikh Zayed Road",           city: "Dubai",       country: "UAE",         type: "Highway",    baseLoad: 0.65, lat: 25.2048,  lon:  55.2708  },
+  { id:  8, name: "Western Express Highway",     city: "Mumbai",      country: "India",       type: "Highway",    baseLoad: 0.88, lat: 19.0760,  lon:  72.8777  },
+  { id:  9, name: "Harbour Bridge Approach",     city: "Sydney",      country: "Australia",   type: "Bridge",     baseLoad: 0.68, lat: -33.8523, lon: 151.2108  },
+  { id: 10, name: "M25 Orbital Motorway",        city: "London",      country: "UK",          type: "Motorway",   baseLoad: 0.78, lat: 51.4747,  lon:  -0.4680  },
+  { id: 11, name: "Autobahn A100",               city: "Berlin",      country: "Germany",     type: "Motorway",   baseLoad: 0.62, lat: 52.5200,  lon:  13.4050  },
+  { id: 12, name: "I-405 San Diego Freeway",     city: "Los Angeles", country: "USA",         type: "Highway",    baseLoad: 0.86, lat: 34.0522,  lon: -118.2437 },
+  { id: 13, name: "Marginal Pinheiros",          city: "São Paulo",   country: "Brazil",      type: "Expressway", baseLoad: 0.80, lat: -23.5505, lon:  -46.6333 },
+  { id: 14, name: "Gangnam-daero Boulevard",     city: "Seoul",       country: "South Korea", type: "Boulevard",  baseLoad: 0.76, lat: 37.4979,  lon: 127.0276  },
+  { id: 15, name: "Garden Ring Road",            city: "Moscow",      country: "Russia",      type: "Ring Road",  baseLoad: 0.74, lat: 55.7558,  lon:  37.6173  },
+  { id: 16, name: "Sukhumvit Road",              city: "Bangkok",     country: "Thailand",    type: "City Road",  baseLoad: 0.83, lat: 13.7563,  lon: 100.5018  },
+  { id: 17, name: "Cairo Ring Road",             city: "Cairo",       country: "Egypt",       type: "Ring Road",  baseLoad: 0.71, lat: 30.0444,  lon:  31.2357  },
+  { id: 18, name: "East Coast Parkway",          city: "Singapore",   country: "Singapore",   type: "Expressway", baseLoad: 0.58, lat:  1.3521,  lon: 103.8198  },
+  { id: 19, name: "O-1 Motorway (TEM)",          city: "Istanbul",    country: "Turkey",      type: "Motorway",   baseLoad: 0.79, lat: 41.0082,  lon:  28.9784  },
+  { id: 20, name: "Gardiner Expressway",         city: "Toronto",     country: "Canada",      type: "Expressway", baseLoad: 0.67, lat: 43.6532,  lon:  -79.3832 },
+  { id: 21, name: "Periférico Ring Road",        city: "Mexico City", country: "Mexico",      type: "Ring Road",  baseLoad: 0.84, lat: 19.4326,  lon:  -99.1332 },
+  { id: 22, name: "Second Ring Road",            city: "Beijing",     country: "China",       type: "Ring Road",  baseLoad: 0.87, lat: 39.9042,  lon: 116.4074  },
 ];
 
 const REFRESH_INTERVAL = 30;
 
 // ── WMO weather codes ─────────────────────────────────────────────────────────
 const WMO = {
-  0: { desc: "Clear sky",       emoji: "☀️",  impact: 0 },
-  1: { desc: "Mainly clear",    emoji: "🌤️", impact: 0 },
-  2: { desc: "Partly cloudy",   emoji: "⛅",  impact: 0 },
-  3: { desc: "Overcast",        emoji: "☁️",  impact: 0 },
-  45: { desc: "Foggy",          emoji: "🌫️", impact: 2 },
-  48: { desc: "Icy fog",        emoji: "🌫️", impact: 2 },
-  51: { desc: "Light drizzle",  emoji: "🌦️", impact: 1 },
-  53: { desc: "Drizzle",        emoji: "🌦️", impact: 1 },
-  55: { desc: "Dense drizzle",  emoji: "🌦️", impact: 1 },
-  61: { desc: "Light rain",     emoji: "🌧️", impact: 1 },
-  63: { desc: "Moderate rain",  emoji: "🌧️", impact: 1 },
-  65: { desc: "Heavy rain",     emoji: "🌧️", impact: 2 },
-  71: { desc: "Light snow",     emoji: "🌨️", impact: 1 },
-  73: { desc: "Moderate snow",  emoji: "🌨️", impact: 2 },
-  75: { desc: "Heavy snow",     emoji: "❄️",  impact: 2 },
-  80: { desc: "Rain showers",   emoji: "🌧️", impact: 1 },
-  81: { desc: "Showers",        emoji: "🌧️", impact: 1 },
-  82: { desc: "Heavy showers",  emoji: "⛈️",  impact: 2 },
-  95: { desc: "Thunderstorm",   emoji: "⛈️",  impact: 2 },
-  96: { desc: "Storm + hail",   emoji: "⛈️",  impact: 2 },
-  99: { desc: "Heavy storm",    emoji: "⛈️",  impact: 2 },
+  0:  { desc: "Clear sky",       emoji: "☀️",  impact: 0 },
+  1:  { desc: "Mainly clear",    emoji: "🌤️", impact: 0 },
+  2:  { desc: "Partly cloudy",   emoji: "⛅",  impact: 0 },
+  3:  { desc: "Overcast",        emoji: "☁️",  impact: 0 },
+  45: { desc: "Foggy",           emoji: "🌫️", impact: 2 },
+  48: { desc: "Icy fog",         emoji: "🌫️", impact: 2 },
+  51: { desc: "Light drizzle",   emoji: "🌦️", impact: 1 },
+  53: { desc: "Drizzle",         emoji: "🌦️", impact: 1 },
+  55: { desc: "Dense drizzle",   emoji: "🌦️", impact: 1 },
+  61: { desc: "Light rain",      emoji: "🌧️", impact: 1 },
+  63: { desc: "Moderate rain",   emoji: "🌧️", impact: 1 },
+  65: { desc: "Heavy rain",      emoji: "🌧️", impact: 2 },
+  71: { desc: "Light snow",      emoji: "🌨️", impact: 1 },
+  73: { desc: "Moderate snow",   emoji: "🌨️", impact: 2 },
+  75: { desc: "Heavy snow",      emoji: "❄️",  impact: 2 },
+  80: { desc: "Rain showers",    emoji: "🌧️", impact: 1 },
+  81: { desc: "Showers",         emoji: "🌧️", impact: 1 },
+  82: { desc: "Heavy showers",   emoji: "⛈️",  impact: 2 },
+  95: { desc: "Thunderstorm",    emoji: "⛈️",  impact: 2 },
+  96: { desc: "Storm + hail",    emoji: "⛈️",  impact: 2 },
+  99: { desc: "Heavy storm",     emoji: "⛈️",  impact: 2 },
 };
 function wmo(code) { return WMO[code] || { desc: "Unknown", emoji: "🌡️", impact: 0 }; }
 
@@ -67,12 +67,11 @@ function getTimeFactor() {
   if (h >= 20 || h <= 6)  return 0.30;
   return 0.60;
 }
-
 function jitter(val, amt = 0.10) { return Math.max(0, Math.min(1, val + (Math.random() - 0.5) * amt * 2)); }
 
 function calcStats(rawLoad, weatherImpact = 0) {
-  const weatherBoost = weatherImpact === 2 ? 0.15 : weatherImpact === 1 ? 0.08 : 0;
-  const load = Math.min(0.99, rawLoad + weatherBoost);
+  const boost = weatherImpact === 2 ? 0.15 : weatherImpact === 1 ? 0.08 : 0;
+  const load = Math.min(0.99, rawLoad + boost);
   const congestion  = Math.round(load * 100);
   const vehicles    = Math.round(load * 1800 + Math.random() * 200);
   const speed       = Math.round((1 - load * 0.85) * 110 + 10);
@@ -119,9 +118,27 @@ async function fetchAllWeather(roads) {
         desc: info.desc,
         impact: info.impact,
       };
-    } catch { /* ignore failed weather */ }
+    } catch { /* skip on error */ }
   }));
   return map;
+}
+
+// ── Fetch weather for a specific lat/lon ──────────────────────────────────────
+async function fetchWeatherAt(lat, lon) {
+  const res = await fetch(
+    `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code,wind_speed_10m,relative_humidity_2m,apparent_temperature,precipitation,surface_pressure&daily=temperature_2m_max,temperature_2m_min,weather_code&timezone=auto&forecast_days=3`
+  );
+  return res.json();
+}
+
+async function reverseGeocode(lat, lon) {
+  const res = await fetch(
+    `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`,
+    { headers: { "Accept-Language": "en" } }
+  );
+  const data = await res.json();
+  const a = data.address || {};
+  return a.city || a.town || a.village || a.county || a.state || data.display_name?.split(",")[0] || "Your Location";
 }
 
 // ── Status colours ────────────────────────────────────────────────────────────
@@ -131,16 +148,14 @@ function makeCircleIcon(color, size = 14) {
   return L.divIcon({
     className: "",
     html: `<div style="width:${size}px;height:${size}px;border-radius:50%;background:${color};border:2.5px solid white;box-shadow:0 2px 6px rgba(0,0,0,0.35)"></div>`,
-    iconSize: [size, size],
-    iconAnchor: [size / 2, size / 2],
-    popupAnchor: [0, -(size / 2) - 4],
+    iconSize: [size, size], iconAnchor: [size / 2, size / 2], popupAnchor: [0, -(size / 2) - 4],
   });
 }
 
-// ── Leaflet world map ─────────────────────────────────────────────────────────
+// ── World map ─────────────────────────────────────────────────────────────────
 function WorldMap({ roads, highlightId }) {
-  const mapRef   = useRef(null);
-  const mapInst  = useRef(null);
+  const mapRef  = useRef(null);
+  const mapInst = useRef(null);
   const markersR = useRef({});
 
   useEffect(() => {
@@ -167,9 +182,9 @@ function WorldMap({ roads, highlightId }) {
       const w = road.weather;
       const weatherHtml = w
         ? `<div style="margin-top:8px;padding:6px 8px;background:#f8fafc;border-radius:6px;font-size:11px;color:#374151">
-            <span style="font-size:16px">${w.emoji}</span>
+            <span style="font-size:15px">${w.emoji}</span>
             <strong>${w.temp}°C</strong> · ${w.desc}<br/>
-            <span style="color:#9ca3af">💨 ${w.wind} km/h · 💧 ${w.humidity}%</span>
+            <span style="color:#9ca3af">💨 ${w.wind} km/h &nbsp;💧 ${w.humidity}%</span>
           </div>`
         : "";
       const popup = `
@@ -208,7 +223,7 @@ function WorldMap({ roads, highlightId }) {
       <div style={{ position: "absolute", bottom: 28, left: 12, zIndex: 1000, background: "white", borderRadius: 8, padding: "7px 12px", boxShadow: "0 2px 8px rgba(0,0,0,0.15)", display: "flex", gap: 10, fontSize: 11, fontWeight: 700 }}>
         {Object.entries(STATUS_COLOR).map(([s, c]) => (
           <span key={s} style={{ display: "flex", alignItems: "center", gap: 4 }}>
-            <span style={{ width: 10, height: 10, borderRadius: "50%", background: c, display: "inline-block", border: "1.5px solid white" }} />
+            <span style={{ width: 10, height: 10, borderRadius: "50%", background: c, display: "inline-block" }} />
             {s}
           </span>
         ))}
@@ -217,6 +232,138 @@ function WorldMap({ roads, highlightId }) {
   );
 }
 
+// ── Alert toast component ─────────────────────────────────────────────────────
+function AlertToast({ alert, onDismiss }) {
+  const [prog, setProg] = useState(100);
+  const SHOW_MS = 7000;
+  useEffect(() => {
+    const start = Date.now();
+    const t = setInterval(() => {
+      const p = Math.max(0, 100 - ((Date.now() - start) / SHOW_MS) * 100);
+      setProg(p);
+      if (p <= 0) { clearInterval(t); onDismiss(alert.id); }
+    }, 60);
+    return () => clearInterval(t);
+  }, []);
+  const isWeather = alert.type === "weather";
+  const bg    = isWeather ? "#fffbeb" : "#fef2f2";
+  const border= isWeather ? "#fde68a" : "#fecaca";
+  const bar   = isWeather ? "#f59e0b" : "#ef4444";
+  const titleC= isWeather ? "#92400e" : "#991b1b";
+  return (
+    <div style={{ background: bg, border: `1px solid ${border}`, borderRadius: 12, overflow: "hidden", boxShadow: "0 8px 28px rgba(0,0,0,0.15)", width: 310, position: "relative" }}>
+      <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: 4, background: bar }} />
+      <div style={{ padding: "12px 14px 10px 18px" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+          <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+            <span style={{ fontSize: 20 }}>{alert.emoji}</span>
+            <div>
+              <div style={{ fontSize: 13, fontWeight: 800, color: titleC }}>{alert.title}</div>
+              <div style={{ fontSize: 11, color: "#6b7280", marginTop: 1 }}>{alert.location}</div>
+            </div>
+          </div>
+          <button onClick={() => onDismiss(alert.id)} style={{ background: "none", border: "none", cursor: "pointer", color: "#9ca3af", fontSize: 16, padding: 0 }}>✕</button>
+        </div>
+        <div style={{ marginTop: 7, fontSize: 12, color: "#374151" }}>{alert.message}</div>
+        <div style={{ marginTop: 5, fontSize: 11, color: "#9ca3af" }}>{alert.time}</div>
+      </div>
+      <div style={{ height: 3, background: "#e5e7eb" }}>
+        <div style={{ width: `${prog}%`, height: "100%", background: bar, transition: "width 0.06s linear" }} />
+      </div>
+    </div>
+  );
+}
+
+// ── Local Weather Card ────────────────────────────────────────────────────────
+function LocalWeatherPanel({ localWeather, locationName, locationLoading, onRequest }) {
+  if (locationLoading) {
+    return (
+      <div style={{ background: "white", border: "1px solid #e5e7eb", borderRadius: 12, padding: "20px 24px", marginBottom: 16, display: "flex", alignItems: "center", gap: 12 }}>
+        <div style={{ width: 36, height: 36, borderRadius: "50%", background: "#dbeafe", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18 }}>⟳</div>
+        <div><div style={{ fontWeight: 700, color: "#0f172a" }}>Detecting your location…</div><div style={{ fontSize: 12, color: "#9ca3af" }}>Fetching live weather for your position</div></div>
+      </div>
+    );
+  }
+  if (!localWeather) {
+    return (
+      <div style={{ background: "white", border: "1px dashed #d1d5db", borderRadius: 12, padding: "16px 24px", marginBottom: 16, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
+        <div>
+          <div style={{ fontWeight: 700, color: "#374151", fontSize: 14 }}>📍 Show weather for your location</div>
+          <div style={{ fontSize: 12, color: "#9ca3af", marginTop: 2 }}>Get live weather based on where you are right now</div>
+        </div>
+        <button onClick={onRequest} style={{ padding: "9px 20px", background: "#1d4ed8", color: "white", border: "none", borderRadius: 8, fontSize: 13, fontWeight: 700, cursor: "pointer" }}>
+          📍 Use My Location
+        </button>
+      </div>
+    );
+  }
+  const c = localWeather.current;
+  const info = wmo(c.weather_code);
+  const daily = localWeather.daily;
+
+  const h = new Date().getHours();
+  const timeOfDay = h >= 6 && h < 12 ? "Good morning" : h >= 12 && h < 17 ? "Good afternoon" : h >= 17 && h < 21 ? "Good evening" : "Good night";
+
+  return (
+    <div style={{ background: "linear-gradient(135deg, #1e3a5f 0%, #1d4ed8 100%)", borderRadius: 12, padding: "20px 24px", marginBottom: 16, color: "white" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 12 }}>
+        {/* Main weather info */}
+        <div style={{ display: "flex", gap: 20, alignItems: "center" }}>
+          <div style={{ fontSize: 56, lineHeight: 1 }}>{info.emoji}</div>
+          <div>
+            <div style={{ fontSize: 11, opacity: 0.7, marginBottom: 2, textTransform: "uppercase", letterSpacing: "0.06em" }}>
+              {timeOfDay} · Your Location
+            </div>
+            <div style={{ fontSize: 20, fontWeight: 800, marginBottom: 2 }}>📍 {locationName}</div>
+            <div style={{ fontSize: 42, fontWeight: 900, lineHeight: 1, marginBottom: 4 }}>{Math.round(c.temperature_2m)}°C</div>
+            <div style={{ fontSize: 14, opacity: 0.85 }}>{info.desc}</div>
+            <div style={{ fontSize: 12, opacity: 0.65, marginTop: 2 }}>Feels like {Math.round(c.apparent_temperature)}°C</div>
+          </div>
+        </div>
+        {/* Side stats */}
+        <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
+          {[
+            { icon: "💨", label: "Wind",     value: `${Math.round(c.wind_speed_10m)} km/h` },
+            { icon: "💧", label: "Humidity", value: `${c.relative_humidity_2m}%` },
+            { icon: "🌧️", label: "Precip.",  value: `${c.precipitation ?? 0} mm` },
+            { icon: "🔵", label: "Pressure", value: `${Math.round(c.surface_pressure)} hPa` },
+          ].map(({ icon, label, value }) => (
+            <div key={label} style={{ textAlign: "center", minWidth: 60 }}>
+              <div style={{ fontSize: 18 }}>{icon}</div>
+              <div style={{ fontSize: 16, fontWeight: 800 }}>{value}</div>
+              <div style={{ fontSize: 10, opacity: 0.7 }}>{label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+      {/* 3-day forecast */}
+      {daily && (
+        <div style={{ marginTop: 16, paddingTop: 14, borderTop: "1px solid rgba(255,255,255,0.15)", display: "flex", gap: 10 }}>
+          {[0, 1, 2].map(i => {
+            const date = new Date(daily.time[i]);
+            const dayName = i === 0 ? "Today" : i === 1 ? "Tomorrow" : date.toLocaleDateString([], { weekday: "short" });
+            const info = wmo(daily.weather_code[i]);
+            return (
+              <div key={i} style={{ flex: 1, textAlign: "center", background: "rgba(255,255,255,0.1)", borderRadius: 8, padding: "8px 6px" }}>
+                <div style={{ fontSize: 11, opacity: 0.7, marginBottom: 2 }}>{dayName}</div>
+                <div style={{ fontSize: 20 }}>{info.emoji}</div>
+                <div style={{ fontSize: 11, fontWeight: 700 }}>{Math.round(daily.temperature_2m_max[i])}° / {Math.round(daily.temperature_2m_min[i])}°</div>
+                <div style={{ fontSize: 9, opacity: 0.65, marginTop: 1 }}>{info.desc}</div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+      {info.impact > 0 && (
+        <div style={{ marginTop: 12, background: "rgba(251,191,36,0.25)", border: "1px solid rgba(251,191,36,0.4)", borderRadius: 8, padding: "8px 12px", fontSize: 12 }}>
+          ⚠️ <strong>{info.impact === 2 ? "Severe" : "Moderate"} weather</strong> in your area may affect road conditions. Allow extra travel time.
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
 function TrendIcon({ trend }) {
   if (trend === "up")   return <span style={{ color: "#ef4444", fontWeight: 700 }}>↑</span>;
   if (trend === "down") return <span style={{ color: "#22c55e", fontWeight: 700 }}>↓</span>;
@@ -234,23 +381,56 @@ function exportCSV(roads) {
   a.click();
 }
 
+let _alertId = 1;
+function makeAlert(type, road, prev) {
+  const time = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  if (type === "congestion") {
+    return {
+      id: _alertId++, type: "congestion", time,
+      emoji: road.congestion >= 85 ? "🚨" : "🔴",
+      title: "Congestion Spike",
+      location: `${road.name} · ${road.city}, ${road.country}`,
+      message: `Traffic surged to ${road.congestion}% capacity · Avg speed dropped to ${road.speed} km/h`,
+    };
+  }
+  if (type === "weather") {
+    const w = road.weather;
+    return {
+      id: _alertId++, type: "weather", time,
+      emoji: w.emoji,
+      title: "Severe Weather Alert",
+      location: `${road.city}, ${road.country}`,
+      message: `${w.desc} detected — expect ${road.congestion}% congestion · Road conditions degraded`,
+    };
+  }
+  return null;
+}
+
 // ── Main page ─────────────────────────────────────────────────────────────────
 export default function RealTimeMonitoring() {
-  const [roads, setRoads]             = useState([]);
-  const [weatherMap, setWeatherMap]   = useState({});
-  const [weatherLoading, setWL]       = useState(true);
-  const [countdown, setCountdown]     = useState(REFRESH_INTERVAL);
-  const [lastUpdated, setLastUpdated] = useState(new Date());
+  const [roads, setRoads]               = useState([]);
+  const [weatherMap, setWeatherMap]     = useState({});
+  const [weatherLoading, setWL]         = useState(true);
+  const [countdown, setCountdown]       = useState(REFRESH_INTERVAL);
+  const [lastUpdated, setLastUpdated]   = useState(new Date());
   const [statusFilter, setStatusFilter] = useState("All");
   const [countryFilter, setCountryFilter] = useState("All");
-  const [tableSearch, setTableSearch] = useState("");
-  const [sortBy, setSortBy]           = useState("congestion");
-  const [sortDir, setSortDir]         = useState("desc");
-  const [highlightId, setHighlightId] = useState(null);
-  const [showMap, setShowMap]         = useState(true);
-  const roadsRef = useRef([]);
+  const [tableSearch, setTableSearch]   = useState("");
+  const [sortBy, setSortBy]             = useState("congestion");
+  const [sortDir, setSortDir]           = useState("desc");
+  const [highlightId, setHighlightId]   = useState(null);
+  const [showMap, setShowMap]           = useState(true);
+  const [toasts, setToasts]             = useState([]);
 
-  // Fetch weather once on mount (and every 10 min)
+  // Local weather state
+  const [localWeather, setLocalWeather]     = useState(null);
+  const [locationName, setLocationName]     = useState("Your Location");
+  const [locationLoading, setLocationLoading] = useState(false);
+
+  const roadsRef = useRef([]);
+  const prevStatusRef = useRef({});
+
+  // ── Fetch weather for all 22 world roads ────────────────────────────────────
   const loadWeather = useCallback(async () => {
     setWL(true);
     const map = await fetchAllWeather(WORLD_ROADS);
@@ -263,6 +443,7 @@ export default function RealTimeMonitoring() {
     loadWeather().then(map => {
       const initial = generateRoadData(null, map);
       roadsRef.current = initial;
+      initial.forEach(r => { prevStatusRef.current[r.id] = r.status; });
       setRoads(initial);
       setLastUpdated(new Date());
     });
@@ -270,38 +451,77 @@ export default function RealTimeMonitoring() {
     return () => clearInterval(weatherTimer);
   }, [loadWeather]);
 
-  // Traffic refresh every 30s
+  // ── Traffic refresh + alert generation ──────────────────────────────────────
+  const doRefresh = useCallback((wMap) => {
+    const newRoads = generateRoadData(roadsRef.current, wMap ?? weatherMap);
+    roadsRef.current = newRoads;
+    const newAlerts = [];
+    newRoads.forEach(road => {
+      const prev = prevStatusRef.current[road.id];
+      // Spike to Severe from lower
+      if (road.status === "Severe" && prev !== "Severe") {
+        newAlerts.push(makeAlert("congestion", road, prev));
+      }
+      // Severe weather impact
+      if (road.weather?.impact === 2 && prev !== "Severe" && road.status !== "Clear") {
+        newAlerts.push(makeAlert("weather", road, prev));
+      }
+      prevStatusRef.current[road.id] = road.status;
+    });
+    if (newAlerts.length > 0) {
+      setToasts(prev => [...newAlerts.filter(Boolean), ...prev].slice(0, 5));
+    }
+    setRoads(newRoads);
+    setLastUpdated(new Date());
+    setCountdown(REFRESH_INTERVAL);
+  }, [weatherMap]);
+
   useEffect(() => {
     const timer = setInterval(() => {
       setCountdown(c => {
-        if (c <= 1) {
-          const newRoads = generateRoadData(roadsRef.current, weatherMap);
-          roadsRef.current = newRoads;
-          setRoads(newRoads);
-          setLastUpdated(new Date());
-          return REFRESH_INTERVAL;
-        }
+        if (c <= 1) { doRefresh(); return REFRESH_INTERVAL; }
         return c - 1;
       });
     }, 1000);
     return () => clearInterval(timer);
-  }, [weatherMap]);
+  }, [doRefresh]);
 
-  const manualRefresh = () => {
-    const newRoads = generateRoadData(roadsRef.current, weatherMap);
-    roadsRef.current = newRoads;
-    setRoads(newRoads);
-    setLastUpdated(new Date());
-    setCountdown(REFRESH_INTERVAL);
-  };
+  const dismissToast = useCallback(id => setToasts(prev => prev.filter(t => t.id !== id)), []);
 
+  // ── Detect user's location and fetch local weather ───────────────────────────
+  const requestLocation = useCallback(() => {
+    if (!navigator.geolocation) return;
+    setLocationLoading(true);
+    navigator.geolocation.getCurrentPosition(
+      async ({ coords }) => {
+        const { latitude: lat, longitude: lon } = coords;
+        try {
+          const [weather, name] = await Promise.all([
+            fetchWeatherAt(lat, lon),
+            reverseGeocode(lat, lon),
+          ]);
+          setLocalWeather(weather);
+          setLocationName(name);
+        } catch {
+          setLocalWeather(null);
+        }
+        setLocationLoading(false);
+      },
+      () => setLocationLoading(false),
+      { timeout: 10000 }
+    );
+  }, []);
+
+  // Auto-request location silently on mount
+  useEffect(() => { requestLocation(); }, [requestLocation]);
+
+  const manualRefresh = () => { doRefresh(); };
   const toggleSort = col => {
     if (sortBy === col) setSortDir(d => d === "asc" ? "desc" : "asc");
     else { setSortBy(col); setSortDir("desc"); }
   };
 
   const countries = ["All", ...Array.from(new Set(WORLD_ROADS.map(r => r.country))).sort()];
-
   const filtered = roads
     .filter(r => statusFilter === "All" || r.status === statusFilter)
     .filter(r => countryFilter === "All" || r.country === countryFilter)
@@ -335,9 +555,20 @@ export default function RealTimeMonitoring() {
     <>
       <Navbar />
       <style>{`
-        .th-btn { background: none; border: none; cursor: pointer; color: inherit; font-weight: 700; font-size: 11px; padding: 0; display: flex; align-items: center; gap: 3px; white-space: nowrap; }
-        .road-row:hover { background: #f8fafc !important; }
+        .th-btn { background:none;border:none;cursor:pointer;color:inherit;font-weight:700;font-size:11px;padding:0;display:flex;align-items:center;gap:3px;white-space:nowrap; }
+        .road-row:hover { background:#f8fafc !important; cursor: pointer; }
+        @keyframes toastSlide { from { opacity:0; transform:translateX(40px); } to { opacity:1; transform:translateX(0); } }
       `}</style>
+
+      {/* ── Toast stack ── */}
+      <div style={{ position: "fixed", top: 68, right: 20, zIndex: 9000, display: "flex", flexDirection: "column", gap: 10, pointerEvents: "none" }}>
+        {toasts.map(a => (
+          <div key={a.id} style={{ pointerEvents: "auto", animation: "toastSlide 0.3s ease" }}>
+            <AlertToast alert={a} onDismiss={dismissToast} />
+          </div>
+        ))}
+      </div>
+
       <div style={{ padding: "24px 32px", backgroundColor: "#f8fafc", minHeight: "100vh" }}>
 
         {/* Header */}
@@ -358,10 +589,18 @@ export default function RealTimeMonitoring() {
               ⬇ Export CSV
             </button>
             <button onClick={manualRefresh} style={{ padding: "8px 18px", background: "#2563eb", color: "white", border: "none", borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: "pointer" }}>
-              ↻ Refresh Now
+              ↻ Refresh
             </button>
           </div>
         </div>
+
+        {/* ── Your local weather ── */}
+        <LocalWeatherPanel
+          localWeather={localWeather}
+          locationName={locationName}
+          locationLoading={locationLoading}
+          onRequest={requestLocation}
+        />
 
         {/* Countdown bar */}
         <div style={{ background: "white", border: "1px solid #e5e7eb", borderRadius: 10, padding: "8px 18px", marginBottom: 16, display: "flex", alignItems: "center", gap: 14 }}>
@@ -371,17 +610,23 @@ export default function RealTimeMonitoring() {
           <div style={{ flex: 1, background: "#e5e7eb", borderRadius: 99, height: 6, overflow: "hidden" }}>
             <div style={{ width: `${(countdown / REFRESH_INTERVAL) * 100}%`, height: "100%", background: progressColor, borderRadius: 99, transition: "width 1s linear" }} />
           </div>
+          {toasts.length > 0 && (
+            <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12, color: "#dc2626", fontWeight: 700, whiteSpace: "nowrap" }}>
+              <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#dc2626", animation: "pulse 1.4s infinite" }} />
+              {toasts.length} alert{toasts.length !== 1 ? "s" : ""}
+            </div>
+          )}
         </div>
 
         {/* KPI Cards */}
         <div style={{ display: "flex", gap: 12, marginBottom: 16, flexWrap: "wrap" }}>
           {[
-            { icon: "🌍", label: "Roads Worldwide",  value: roads.length,              color: "#1e3a5f",                                                 sub: `${new Set(WORLD_ROADS.map(r=>r.country)).size} countries` },
+            { icon: "🌍", label: "Roads Worldwide",  value: roads.length,              color: "#1e3a5f",                                                         sub: `${new Set(WORLD_ROADS.map(r=>r.country)).size} countries` },
             { icon: "📊", label: "Avg Congestion",    value: `${avgCong}%`,             color: avgCong >= 60 ? "#dc2626" : avgCong >= 35 ? "#d97706" : "#16a34a", sub: "all roads" },
-            { icon: "🚗", label: "Total Vehicles/hr", value: totalVeh.toLocaleString(), color: "#0891b2",                                                 sub: "combined" },
-            { icon: "⚡", label: "Avg Speed",         value: `${avgSpeed} km/h`,        color: "#7c3aed",                                                 sub: "worldwide avg" },
-            { icon: "🔴", label: "Severe / High",     value: `${severe} / ${high}`,     color: severe > 0 ? "#dc2626" : "#d97706",                       sub: "critical roads" },
-            { icon: "🟢", label: "Clear Roads",       value: clear,                     color: "#16a34a",                                                 sub: `${roads.length - clear} with delays` },
+            { icon: "🚗", label: "Total Vehicles/hr", value: totalVeh.toLocaleString(), color: "#0891b2",                                                         sub: "combined" },
+            { icon: "⚡", label: "Avg Speed",         value: `${avgSpeed} km/h`,        color: "#7c3aed",                                                         sub: "worldwide avg" },
+            { icon: "🔴", label: "Severe / High",     value: `${severe} / ${high}`,     color: severe > 0 ? "#dc2626" : "#d97706",                               sub: "critical roads" },
+            { icon: "🟢", label: "Clear Roads",       value: clear,                     color: "#16a34a",                                                         sub: `${roads.length - clear} with delays` },
           ].map(({ icon, label, value, color, sub }) => (
             <div key={label} style={{ flex: 1, minWidth: 120, background: "white", border: "1px solid #e5e7eb", borderRadius: 12, padding: "14px 16px" }}>
               <div style={{ fontSize: 18, marginBottom: 3 }}>{icon}</div>
@@ -392,30 +637,30 @@ export default function RealTimeMonitoring() {
           ))}
         </div>
 
-        {/* Weather summary strip */}
+        {/* Weather strip — all monitored cities */}
         {!weatherLoading && roads.length > 0 && (
           <div style={{ background: "white", border: "1px solid #e5e7eb", borderRadius: 12, padding: "14px 20px", marginBottom: 16 }}>
-            <div style={{ fontSize: 13, fontWeight: 700, color: "#0f172a", marginBottom: 10 }}>🌤️ Live Weather at Monitored Locations</div>
+            <div style={{ fontSize: 13, fontWeight: 700, color: "#0f172a", marginBottom: 10 }}>
+              🌤️ Live Weather at Monitored Locations
+              <span style={{ fontSize: 11, fontWeight: 400, color: "#9ca3af", marginLeft: 8 }}>Click a city to highlight on map</span>
+            </div>
             <div style={{ display: "flex", gap: 10, overflowX: "auto", paddingBottom: 4 }}>
               {roads.filter(r => r.weather).map(road => (
                 <div
                   key={road.id}
                   onClick={() => { setHighlightId(road.id); setShowMap(true); }}
-                  style={{ flexShrink: 0, background: "#f8fafc", border: "1px solid #e5e7eb", borderRadius: 10, padding: "10px 14px", cursor: "pointer", minWidth: 120, textAlign: "center", transition: "box-shadow 0.15s" }}
+                  style={{ flexShrink: 0, background: "#f8fafc", border: `1px solid ${road.weather.impact === 2 ? "#fde68a" : "#e5e7eb"}`, borderRadius: 10, padding: "10px 14px", cursor: "pointer", minWidth: 112, textAlign: "center", transition: "box-shadow 0.15s" }}
                   onMouseEnter={e => e.currentTarget.style.boxShadow = "0 2px 8px rgba(0,0,0,0.1)"}
                   onMouseLeave={e => e.currentTarget.style.boxShadow = "none"}
                 >
                   <div style={{ fontSize: 22 }}>{road.weather.emoji}</div>
-                  <div style={{ fontSize: 12, fontWeight: 700, color: "#0f172a" }}>{road.city}</div>
+                  <div style={{ fontSize: 11, fontWeight: 700, color: "#0f172a" }}>{road.city}</div>
                   <div style={{ fontSize: 16, fontWeight: 800, color: "#2563eb" }}>{road.weather.temp}°C</div>
-                  <div style={{ fontSize: 10, color: "#6b7280" }}>{road.weather.desc}</div>
-                  <div style={{ fontSize: 10, color: "#9ca3af", marginTop: 2 }}>💨 {road.weather.wind} km/h</div>
-                  <div style={{
-                    marginTop: 6, fontSize: 10, fontWeight: 700,
-                    color: STATUS_COLOR[road.status],
-                    background: road.statusBg,
-                    borderRadius: 99, padding: "1px 6px",
-                  }}>{road.congestion}% {road.status}</div>
+                  <div style={{ fontSize: 9, color: "#6b7280" }}>{road.weather.desc}</div>
+                  <div style={{ fontSize: 9, color: "#9ca3af", marginTop: 1 }}>💨 {road.weather.wind} km/h</div>
+                  <div style={{ marginTop: 5, fontSize: 10, fontWeight: 700, color: STATUS_COLOR[road.status], background: road.statusBg, borderRadius: 99, padding: "1px 6px" }}>
+                    {road.congestion}% {road.status}
+                  </div>
                 </div>
               ))}
             </div>
@@ -437,16 +682,14 @@ export default function RealTimeMonitoring() {
         </div>
 
         {/* Filters */}
-        <div style={{ background: "white", border: "1px solid #e5e7eb", borderRadius: 12, padding: "16px 20px", marginBottom: 16, display: "flex", gap: 12, flexWrap: "wrap", alignItems: "center" }}>
+        <div style={{ background: "white", border: "1px solid #e5e7eb", borderRadius: 12, padding: "14px 20px", marginBottom: 16, display: "flex", gap: 12, flexWrap: "wrap", alignItems: "center" }}>
           <input
-            type="text"
-            placeholder="🔍 Search road or city…"
-            value={tableSearch}
-            onChange={e => setTableSearch(e.target.value)}
+            type="text" placeholder="🔍 Search road or city…"
+            value={tableSearch} onChange={e => setTableSearch(e.target.value)}
             style={{ flex: 2, minWidth: 180, padding: "8px 12px", border: "1px solid #d1d5db", borderRadius: 8, fontSize: 13 }}
           />
           <select value={statusFilter} onChange={e => setStatusFilter(e.target.value)} style={{ padding: "8px 12px", border: "1px solid #d1d5db", borderRadius: 8, fontSize: 13, cursor: "pointer" }}>
-            {["All", "Clear", "Moderate", "High", "Severe"].map(s => <option key={s}>{s}</option>)}
+            {["All","Clear","Moderate","High","Severe"].map(s => <option key={s}>{s}</option>)}
           </select>
           <select value={countryFilter} onChange={e => setCountryFilter(e.target.value)} style={{ padding: "8px 12px", border: "1px solid #d1d5db", borderRadius: 8, fontSize: 13, cursor: "pointer" }}>
             {countries.map(c => <option key={c}>{c}</option>)}
@@ -475,14 +718,16 @@ export default function RealTimeMonitoring() {
               </thead>
               <tbody>
                 {filtered.map((road, i) => (
-                  <tr key={road.id} className="road-row" style={{ borderBottom: "1px solid #f3f4f6", background: i % 2 === 0 ? "white" : "#fafafa" }}>
+                  <tr
+                    key={road.id} className="road-row"
+                    style={{ borderBottom: "1px solid #f3f4f6", background: i % 2 === 0 ? "white" : "#fafafa" }}
+                    onClick={() => { setHighlightId(road.id); setShowMap(true); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+                  >
                     <td style={{ padding: "11px 14px", fontWeight: 600, color: "#0f172a" }}>
                       <div>{road.name}</div>
-                      <div style={{ fontSize: 11, color: "#9ca3af", marginTop: 1 }}>{road.country}</div>
+                      <div style={{ fontSize: 10, color: "#9ca3af", marginTop: 1 }}>{road.country}</div>
                     </td>
-                    <td style={{ padding: "11px 14px", color: "#374151" }}>
-                      <div style={{ fontWeight: 600 }}>{road.city}</div>
-                    </td>
+                    <td style={{ padding: "11px 14px", color: "#374151", fontWeight: 600 }}>{road.city}</td>
                     <td style={{ padding: "11px 14px" }}>
                       <span style={{ fontSize: 10, fontWeight: 700, padding: "2px 7px", borderRadius: 99, background: "#f3f4f6", color: "#6b7280", whiteSpace: "nowrap" }}>{road.type}</span>
                     </td>
@@ -503,7 +748,7 @@ export default function RealTimeMonitoring() {
                     <td style={{ padding: "11px 14px" }}>
                       {road.weather ? (
                         <div style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 12, color: "#374151" }}>
-                          <span style={{ fontSize: 16 }}>{road.weather.emoji}</span>
+                          <span style={{ fontSize: 18 }}>{road.weather.emoji}</span>
                           <div>
                             <div style={{ fontWeight: 700 }}>{road.weather.temp}°C</div>
                             <div style={{ fontSize: 10, color: "#9ca3af" }}>{road.weather.desc}</div>
@@ -514,25 +759,19 @@ export default function RealTimeMonitoring() {
                       )}
                     </td>
                     <td style={{ padding: "11px 14px" }}>
-                      <button
-                        onClick={() => { setHighlightId(road.id); setShowMap(true); window.scrollTo({ top: 0, behavior: "smooth" }); }}
-                        style={{ background: "#eff6ff", border: "1px solid #bfdbfe", color: "#1d4ed8", borderRadius: 6, padding: "4px 10px", fontSize: 11, cursor: "pointer", fontWeight: 600, whiteSpace: "nowrap" }}
-                      >
+                      <span style={{ background: "#eff6ff", border: "1px solid #bfdbfe", color: "#1d4ed8", borderRadius: 6, padding: "4px 10px", fontSize: 11, fontWeight: 600, whiteSpace: "nowrap" }}>
                         📍 View on Map
-                      </button>
+                      </span>
                     </td>
                   </tr>
                 ))}
                 {filtered.length === 0 && (
-                  <tr>
-                    <td colSpan={10} style={{ padding: "32px", textAlign: "center", color: "#9ca3af" }}>No roads match the current filters.</td>
-                  </tr>
+                  <tr><td colSpan={10} style={{ padding: "32px", textAlign: "center", color: "#9ca3af" }}>No roads match the current filters.</td></tr>
                 )}
               </tbody>
             </table>
           </div>
         </div>
-
       </div>
     </>
   );
