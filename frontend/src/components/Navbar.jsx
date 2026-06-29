@@ -2,12 +2,11 @@ import React, { useState, useRef, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 const NAV_LINKS = [
-  { to: "/dashboard",    label: "Dashboard" },
-  { to: "/traffic",      label: "Traffic Data" },
+  { to: "/dashboard",   label: "Dashboard" },
+  { to: "/traffic",     label: "Traffic Data" },
   { to: "/analytics",   label: "Analytics" },
   { to: "/charts",      label: "Charts" },
   { to: "/prediction",  label: "Prediction" },
-  { to: "/ml-dashboard",label: "ML" },
   { to: "/monitoring",  label: "Monitoring" },
   { to: "/route",       label: "Routes" },
   { to: "/reports",     label: "Reports" },
@@ -51,12 +50,10 @@ export default function Navbar() {
       zIndex: 1000,
       boxShadow: "0 1px 6px rgba(0,0,0,0.4)",
     }}>
-      {/* Brand */}
       <div style={{ fontSize: 16, fontWeight: 800, color: "white", whiteSpace: "nowrap", letterSpacing: "-0.3px" }}>
         🚦 TrafficOps
       </div>
 
-      {/* Nav links */}
       <div style={{ display: "flex", alignItems: "center", gap: 2, overflowX: "auto", flex: 1, padding: "0 24px" }}>
         {NAV_LINKS.map(({ to, label }) => {
           const active = location.pathname === to;
@@ -81,7 +78,6 @@ export default function Navbar() {
         })}
       </div>
 
-      {/* Profile avatar + dropdown */}
       <div ref={dropRef} style={{ position: "relative", flexShrink: 0 }}>
         <button
           onClick={() => setOpen(o => !o)}
@@ -93,7 +89,6 @@ export default function Navbar() {
             cursor: "pointer", color: "white",
           }}
         >
-          {/* Avatar circle */}
           <div style={{
             width: 32, height: 32, borderRadius: "50%",
             background: "linear-gradient(135deg, #2563eb, #7c3aed)",
@@ -112,7 +107,6 @@ export default function Navbar() {
           </svg>
         </button>
 
-        {/* Dropdown */}
         {open && (
           <div style={{
             position: "absolute", right: 0, top: "calc(100% + 8px)",
@@ -120,7 +114,6 @@ export default function Navbar() {
             borderRadius: 12, minWidth: 220, boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
             overflow: "hidden", zIndex: 2000,
           }}>
-            {/* User info header */}
             <div style={{ padding: "14px 16px", background: "#f8fafc", borderBottom: "1px solid #f3f4f6" }}>
               <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                 <div style={{
@@ -141,7 +134,6 @@ export default function Navbar() {
               </div>
             </div>
 
-            {/* Menu items */}
             {[
               { icon: "👤", label: "My Profile",    to: "/profile" },
               { icon: "📊", label: "Reports",       to: "/reports" },
@@ -161,7 +153,6 @@ export default function Navbar() {
               </Link>
             ))}
 
-            {/* Logout */}
             <Link to="/" onClick={() => setOpen(false)} style={{
               display: "flex", alignItems: "center", gap: 10,
               padding: "11px 16px", textDecoration: "none",
