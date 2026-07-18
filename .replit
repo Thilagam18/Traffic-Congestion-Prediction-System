@@ -28,7 +28,7 @@ outputType = "webview"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd frontend && npm run build 2>&1 | tail -3 && cd .. && node server/index.js"
+args = "node server/index.js"
 waitForPort = 5000
 
 [[ports]]
@@ -42,6 +42,10 @@ externalPort = 3001
 [[ports]]
 localPort = 5000
 externalPort = 80
+
+[[ports]]
+localPort = 9999
+externalPort = 3003
 
 [deployment]
 deploymentTarget = "static"
