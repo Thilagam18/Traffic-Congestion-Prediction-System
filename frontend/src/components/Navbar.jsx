@@ -66,7 +66,8 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const dropRef = useRef(null);
   const stored = getUser();
-  const USER = { name: stored.name || FALLBACK.name, email: stored.email || FALLBACK.email, role: "Traffic Administrator" };
+  const roleLabel = stored.role === "admin" ? "Administrator" : stored.role === "analyst" ? "Traffic Analyst" : stored.role ? stored.role : "Traffic Administrator";
+  const USER = { name: stored.name || FALLBACK.name, email: stored.email || FALLBACK.email, role: roleLabel };
 
   useEffect(() => {
     function handleClick(e) {
@@ -140,7 +141,7 @@ export default function Navbar() {
             </div>
             <div style={{ textAlign:"left", lineHeight:1.3 }}>
               <div style={{ fontSize:11, fontWeight:700, color:"white" }}>{USER.name.split(" ")[0]}</div>
-              <div style={{ fontSize:9, color:"rgba(139,92,246,0.8)" }}>Admin</div>
+              <div style={{ fontSize:9, color:"rgba(139,92,246,0.8)", textTransform:"capitalize" }}>{stored.role || "admin"}</div>
             </div>
             <svg width={12} height={12} viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth={2.5} strokeLinecap="round"
               style={{ transform:userOpen?"rotate(180deg)":"rotate(0deg)", transition:"transform 0.2s", marginLeft:2 }}>
@@ -185,7 +186,7 @@ export default function Navbar() {
                 </Link>
               ))}
 
-              <Link to="/" onClick={() => setUserOpen(false)} className="nav-dropdown-item" style={{
+              <Link to="/" onClick={() => { localStorage.removeItem("user"); setUserOpen(false); }} className="nav-dropdown-item" style={{
                 display:"flex", alignItems:"center", gap:10,
                 padding:"11px 16px", textDecoration:"none",
                 color:"#f87171", fontSize:13, fontWeight:600,

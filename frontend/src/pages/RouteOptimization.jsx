@@ -226,12 +226,12 @@ function WeatherCard({ label, weather }) {
   const c = weather.current;
   const info = wmoInfo(c.weather_code);
   return (
-    <div style={{ flex: 1, background: "white", border: "1px solid #e5e7eb", borderRadius: 10, padding: "16px 20px", minWidth: 0 }}>
-      <div style={{ fontSize: 11, color: "#6b7280", marginBottom: 4, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em" }}>{label}</div>
+    <div style={{ flex: 1, background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 10, padding: "16px 20px", minWidth: 0 }}>
+      <div style={{ fontSize: 11, color: "rgba(255,255,255,0.45)", marginBottom: 4, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em" }}>{label}</div>
       <div style={{ fontSize: 28, marginBottom: 4 }}>{info.emoji}</div>
-      <div style={{ fontSize: 22, fontWeight: 700, color: "#111" }}>{Math.round(c.temperature_2m)}°C</div>
-      <div style={{ fontSize: 13, color: "#374151", margin: "4px 0" }}>{info.desc}</div>
-      <div style={{ fontSize: 12, color: "#9ca3af" }}>💨 {Math.round(c.wind_speed_10m)} km/h &nbsp;|&nbsp; 💧 {c.relative_humidity_2m}%</div>
+      <div style={{ fontSize: 22, fontWeight: 700, color: "white" }}>{Math.round(c.temperature_2m)}°C</div>
+      <div style={{ fontSize: 13, color: "rgba(255,255,255,0.75)", margin: "4px 0" }}>{info.desc}</div>
+      <div style={{ fontSize: 12, color: "rgba(255,255,255,0.4)" }}>💨 {Math.round(c.wind_speed_10m)} km/h &nbsp;|&nbsp; 💧 {c.relative_humidity_2m}%</div>
     </div>
   );
 }
@@ -355,38 +355,38 @@ export default function RouteOptimization() {
           100% { transform: scale(2.5); opacity: 0; }
         }
       `}</style>
-      <div style={{ padding: "24px 32px", backgroundColor: "#f8fafc", minHeight: "100vh" }}>
-        <h1 style={{ margin: "0 0 4px", color: "#0f172a" }}>Route Optimization</h1>
-        <p style={{ margin: "0 0 24px", color: "#64748b", fontSize: 14 }}>
+      <div style={{ padding: "24px 32px", backgroundColor: "#080d1a", minHeight: "100vh" }}>
+        <h1 style={{ margin: "0 0 4px", color: "white" }}>Route Optimization</h1>
+        <p style={{ margin: "0 0 24px", color: "rgba(255,255,255,0.5)", fontSize: 14 }}>
           Real-time routing · Live weather & traffic prediction · GPS turn-by-turn navigation
         </p>
 
         {/* Search bar */}
-        <div style={{ background: "white", border: "1px solid #e5e7eb", borderRadius: 12, padding: "20px 24px", marginBottom: 20, display: "flex", gap: 12, alignItems: "flex-end", flexWrap: "wrap" }}>
+        <div style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 12, padding: "20px 24px", marginBottom: 20, display: "flex", gap: 12, alignItems: "flex-end", flexWrap: "wrap" }}>
           <div style={{ flex: 1, minWidth: 200 }}>
-            <label style={{ display: "block", fontSize: 12, fontWeight: 700, color: "#374151", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.04em" }}>📍 Origin</label>
+            <label style={{ display: "block", fontSize: 12, fontWeight: 700, color: "rgba(255,255,255,0.75)", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.04em" }}>📍 Origin</label>
             <div style={{ display: "flex", gap: 6 }}>
               <input
                 type="text" placeholder="e.g. New York, USA or use 📍 button"
                 value={source} onChange={e => setSource(e.target.value)}
                 onKeyDown={e => e.key === "Enter" && handleFind()}
-                style={{ flex: 1, padding: "10px 14px", border: "1px solid #d1d5db", borderRadius: 8, fontSize: 14, boxSizing: "border-box" }}
+                style={{ flex: 1, padding: "10px 14px", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, fontSize: 14, boxSizing: "border-box", background: "rgba(255,255,255,0.06)", color: "white" }}
               />
               <button
                 onClick={useMyLocation} disabled={locating} title="Use my current location"
-                style={{ padding: "10px 14px", background: locating ? "#f3f4f6" : "#eff6ff", border: "1px solid #bfdbfe", borderRadius: 8, cursor: locating ? "wait" : "pointer", fontSize: 16, flexShrink: 0 }}
+                style={{ padding: "10px 14px", background: locating ? "rgba(255,255,255,0.04)" : "rgba(37,99,235,0.15)", border: "1px solid rgba(37,99,235,0.3)", borderRadius: 8, cursor: locating ? "wait" : "pointer", fontSize: 16, flexShrink: 0 }}
               >
                 {locating ? "⟳" : "📍"}
               </button>
             </div>
           </div>
           <div style={{ flex: 1, minWidth: 200 }}>
-            <label style={{ display: "block", fontSize: 12, fontWeight: 700, color: "#374151", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.04em" }}>🏁 Destination</label>
+            <label style={{ display: "block", fontSize: 12, fontWeight: 700, color: "rgba(255,255,255,0.75)", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.04em" }}>🏁 Destination</label>
             <input
               type="text" placeholder="e.g. Boston, USA"
               value={destination} onChange={e => setDestination(e.target.value)}
               onKeyDown={e => e.key === "Enter" && handleFind()}
-              style={{ width: "100%", padding: "10px 14px", border: "1px solid #d1d5db", borderRadius: 8, fontSize: 14, boxSizing: "border-box" }}
+              style={{ width: "100%", padding: "10px 14px", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, fontSize: 14, boxSizing: "border-box", background: "rgba(255,255,255,0.06)", color: "white" }}
             />
           </div>
           <button
@@ -397,7 +397,7 @@ export default function RouteOptimization() {
         </div>
 
         {(error || geoError) && (
-          <div style={{ background: "#fef2f2", border: "1px solid #fecaca", borderRadius: 8, padding: "12px 16px", color: "#991b1b", marginBottom: 20, fontSize: 14 }}>
+          <div style={{ background: "rgba(220,38,38,0.12)", border: "1px solid #fecaca", borderRadius: 8, padding: "12px 16px", color: "#fca5a5", marginBottom: 20, fontSize: 14 }}>
             ⚠️ {error || geoError}
           </div>
         )}
@@ -425,14 +425,14 @@ export default function RouteOptimization() {
                   <div><div style={{ fontSize: 26, fontWeight: 800 }}>{fmtDuration(result.routeData.duration)}</div><div style={{ fontSize: 11, opacity: 0.7 }}>Base drive time</div></div>
                 </div>
               </div>
-              <div style={{ flex: 1, minWidth: 220, background: result.traffic.bg, border: `1px solid ${result.traffic.barColor}50`, borderRadius: 12, padding: "20px 24px" }}>
-                <div style={{ fontSize: 11, fontWeight: 700, color: "#374151", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 8 }}>🚦 Traffic Prediction</div>
+              <div style={{ flex: 1, minWidth: 220, background: "transparent", border: `1px solid ${result.traffic.barColor}50`, borderRadius: 12, padding: "20px 24px" }}>
+                <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.75)", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 8 }}>🚦 Traffic Prediction</div>
                 <div style={{ fontSize: 26, fontWeight: 800, color: result.traffic.color, marginBottom: 4 }}>{result.traffic.level} Congestion</div>
-                <div style={{ fontSize: 13, color: "#6b7280", marginBottom: 12 }}>{result.traffic.period}</div>
-                <div style={{ background: "#e5e7eb", borderRadius: 99, height: 8, overflow: "hidden", marginBottom: 8 }}>
+                <div style={{ fontSize: 13, color: "rgba(255,255,255,0.45)", marginBottom: 12 }}>{result.traffic.period}</div>
+                <div style={{ background: "rgba(255,255,255,0.1)", borderRadius: 99, height: 8, overflow: "hidden", marginBottom: 8 }}>
                   <div style={{ width: `${result.traffic.score}%`, height: "100%", background: result.traffic.barColor, borderRadius: 99 }} />
                 </div>
-                <div style={{ fontSize: 12, color: "#9ca3af" }}>Score: {result.traffic.score}/100 · +{Math.round((result.traffic.factor - 1) * 100)}% added</div>
+                <div style={{ fontSize: 12, color: "rgba(255,255,255,0.4)" }}>Score: {result.traffic.score}/100 · +{Math.round((result.traffic.factor - 1) * 100)}% added</div>
               </div>
             </div>
 
@@ -440,9 +440,9 @@ export default function RouteOptimization() {
             <div style={{ display: "flex", gap: 16, marginBottom: 16, flexWrap: "wrap" }}>
               <WeatherCard label="Weather at Origin" weather={result.srcWeather} />
               <WeatherCard label="Weather at Destination" weather={result.dstWeather} />
-              <div style={{ flex: 1, minWidth: 200, background: "white", border: "1px solid #e5e7eb", borderRadius: 10, padding: "16px 20px" }}>
-                <div style={{ fontSize: 11, color: "#6b7280", marginBottom: 8, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em" }}>🛣️ Road Summary</div>
-                <div style={{ fontSize: 13, color: "#374151", lineHeight: 2.1 }}>
+              <div style={{ flex: 1, minWidth: 200, background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 10, padding: "16px 20px" }}>
+                <div style={{ fontSize: 11, color: "rgba(255,255,255,0.45)", marginBottom: 8, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em" }}>🛣️ Road Summary</div>
+                <div style={{ fontSize: 13, color: "rgba(255,255,255,0.75)", lineHeight: 2.1 }}>
                   <div>📏 Distance: <strong>{fmtDist(result.routeData.distance)}</strong></div>
                   <div>⏱️ Base time: <strong>{fmtDuration(result.routeData.duration)}</strong></div>
                   <div>🚦 With traffic: <strong>{fmtDuration(result.adjustedSeconds)}</strong></div>
@@ -452,13 +452,13 @@ export default function RouteOptimization() {
             </div>
 
             {/* Navigation controls */}
-            <div style={{ background: navigating ? "#eff6ff" : "white", border: `1px solid ${navigating ? "#bfdbfe" : "#e5e7eb"}`, borderRadius: 12, padding: "16px 20px", marginBottom: 16 }}>
+            <div style={{ background: navigating ? "rgba(37,99,235,0.12)" : "rgba(255,255,255,0.04)", border: `1px solid ${navigating ? "rgba(37,99,235,0.4)" : "rgba(255,255,255,0.08)"}`, borderRadius: 12, padding: "16px 20px", marginBottom: 16 }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 12 }}>
                 <div>
-                  <div style={{ fontSize: 15, fontWeight: 800, color: "#0f172a" }}>
+                  <div style={{ fontSize: 15, fontWeight: 800, color: "white" }}>
                     {navigating ? "🔵 Navigation Active" : "🧭 Start Turn-by-Turn Navigation"}
                   </div>
-                  <div style={{ fontSize: 12, color: "#6b7280", marginTop: 2 }}>
+                  <div style={{ fontSize: 12, color: "rgba(255,255,255,0.45)", marginTop: 2 }}>
                     {navigating
                       ? "Your live position is shown on the map. Drive safely!"
                       : "Uses your device's GPS to show your live position and guide you step-by-step"}
@@ -502,18 +502,18 @@ export default function RouteOptimization() {
             </div>
 
             {/* MAP */}
-            <div style={{ background: "white", border: "1px solid #e5e7eb", borderRadius: 12, overflow: "hidden", marginBottom: 20 }}>
-              <div style={{ padding: "12px 20px", borderBottom: "1px solid #e5e7eb", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <span style={{ fontWeight: 700, color: "#1e3a5f", fontSize: 14 }}>
+            <div style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 12, overflow: "hidden", marginBottom: 20 }}>
+              <div style={{ padding: "12px 20px", borderBottom: "1px solid rgba(255,255,255,0.06)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <span style={{ fontWeight: 700, color: "white", fontSize: 14 }}>
                   🗺️ Route Map
                   {navigating && navPos && <span style={{ marginLeft: 8, fontSize: 12, color: "#1a73e8", fontWeight: 600 }}>● Live tracking</span>}
                 </span>
-                <div style={{ display: "flex", background: "#f1f3f4", borderRadius: 8, padding: 3, gap: 2 }}>
+                <div style={{ display: "flex", background: "rgba(255,255,255,0.06)", borderRadius: 8, padding: 3, gap: 2 }}>
                   {[{ key: "road", icon: "🗺️", label: "Road" }, { key: "satellite", icon: "🛰️", label: "Satellite" }].map(({ key, icon, label }) => (
                     <button key={key} onClick={() => setMapStyle(key)} style={{
                       padding: "5px 14px", borderRadius: 6, border: "none", cursor: "pointer", fontSize: 12, fontWeight: 600,
-                      background: mapStyle === key ? "white" : "transparent",
-                      color: mapStyle === key ? "#1a73e8" : "#5f6368",
+                      background: mapStyle === key ? "rgba(255,255,255,0.12)" : "transparent",
+                      color: mapStyle === key ? "white" : "rgba(255,255,255,0.5)",
                       boxShadow: mapStyle === key ? "0 1px 3px rgba(0,0,0,0.15)" : "none",
                     }}>
                       {icon} {label}
@@ -525,8 +525,8 @@ export default function RouteOptimization() {
             </div>
 
             {/* Turn-by-turn */}
-            <div style={{ background: "white", border: "1px solid #e5e7eb", borderRadius: 12, overflow: "hidden" }}>
-              <div style={{ padding: "14px 20px", borderBottom: "1px solid #e5e7eb", fontWeight: 700, color: "#1e3a5f", fontSize: 14 }}>
+            <div style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 12, overflow: "hidden" }}>
+              <div style={{ padding: "14px 20px", borderBottom: "1px solid rgba(255,255,255,0.06)", fontWeight: 700, color: "white", fontSize: 14 }}>
                 🧭 Turn-by-Turn Directions ({result.steps.length} steps)
               </div>
               <div style={{ maxHeight: 380, overflowY: "auto" }}>
@@ -536,23 +536,23 @@ export default function RouteOptimization() {
                     <div key={i} onClick={() => setCurrentStepIdx(i)} style={{
                       display: "flex", alignItems: "flex-start", gap: 14, padding: "12px 20px",
                       borderBottom: i < result.steps.length - 1 ? "1px solid #f3f4f6" : "none",
-                      background: isActive ? "#eff6ff" : i === 0 || i === result.steps.length - 1 ? "#f8fafc" : "white",
+                      background: isActive ? "rgba(37,99,235,0.15)" : "rgba(255,255,255,0.02)",
                       cursor: "pointer", transition: "background 0.1s",
                       borderLeft: isActive ? "4px solid #1a73e8" : "4px solid transparent",
                     }}>
-                      <div style={{ width: 32, height: 32, borderRadius: "50%", background: isActive ? "#1a73e8" : i === 0 ? "#e8f5e9" : i === result.steps.length - 1 ? "#e3f2fd" : "#f3f4f6", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16, flexShrink: 0, color: isActive ? "white" : "inherit" }}>
+                      <div style={{ width: 32, height: 32, borderRadius: "50%", background: isActive ? "#1a73e8" : i === 0 ? "rgba(52,168,83,0.2)" : i === result.steps.length - 1 ? "rgba(26,115,232,0.2)" : "rgba(255,255,255,0.08)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16, flexShrink: 0, color: isActive ? "white" : "inherit" }}>
                         {getStepIcon(step.maneuver)}
                       </div>
                       <div style={{ flex: 1, minWidth: 0 }}>
-                        <div style={{ fontSize: 14, color: "#111", fontWeight: step.name ? 500 : 400 }}>
+                        <div style={{ fontSize: 14, color: "white", fontWeight: step.name ? 500 : 400 }}>
                           {step.maneuver?.instruction || (step.name ? `Continue on ${step.name}` : "Continue straight")}
                         </div>
-                        {step.name && <div style={{ fontSize: 12, color: "#6b7280", marginTop: 2 }}>🛣️ {step.name}</div>}
+                        {step.name && <div style={{ fontSize: 12, color: "rgba(255,255,255,0.45)", marginTop: 2 }}>🛣️ {step.name}</div>}
                         {isActive && <div style={{ fontSize: 11, color: "#1a73e8", fontWeight: 700, marginTop: 3 }}>▶ Current step</div>}
                       </div>
-                      <div style={{ fontSize: 13, color: "#6b7280", whiteSpace: "nowrap", flexShrink: 0 }}>
+                      <div style={{ fontSize: 13, color: "rgba(255,255,255,0.45)", whiteSpace: "nowrap", flexShrink: 0 }}>
                         {fmtDist(step.distance)}
-                        {step.duration > 60 && <span style={{ color: "#9ca3af" }}> · {fmtDuration(step.duration)}</span>}
+                        {step.duration > 60 && <span style={{ color: "rgba(255,255,255,0.4)" }}> · {fmtDuration(step.duration)}</span>}
                       </div>
                     </div>
                   );
@@ -563,11 +563,11 @@ export default function RouteOptimization() {
         )}
 
         {!result && !loading && !error && (
-          <div style={{ textAlign: "center", padding: "60px 20px", color: "#9ca3af" }}>
+          <div style={{ textAlign: "center", padding: "60px 20px", color: "rgba(255,255,255,0.4)" }}>
             <div style={{ fontSize: 52, marginBottom: 12 }}>🗺️</div>
-            <div style={{ fontSize: 18, fontWeight: 700, color: "#6b7280", marginBottom: 8 }}>Enter origin & destination to get started</div>
+            <div style={{ fontSize: 18, fontWeight: 700, color: "rgba(255,255,255,0.45)", marginBottom: 8 }}>Enter origin & destination to get started</div>
             <div style={{ fontSize: 14 }}>Live routing · Real weather at both ends · Traffic prediction · GPS turn-by-turn navigation</div>
-            <div style={{ marginTop: 16, fontSize: 13, color: "#9ca3af" }}>
+            <div style={{ marginTop: 16, fontSize: 13, color: "rgba(255,255,255,0.4)" }}>
               Tip: Click the <strong>📍</strong> button to use your current location as the origin
             </div>
           </div>

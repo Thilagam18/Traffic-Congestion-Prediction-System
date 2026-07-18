@@ -26,7 +26,7 @@ function Toast({ msg, type, onClose }) {
     }}>
       <span style={{ fontSize: 18 }}>{isOk ? "✅" : "❌"}</span>
       <span style={{ flex: 1 }}>{msg}</span>
-      <button onClick={onClose} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 16, color: "#9ca3af" }}>✕</button>
+      <button onClick={onClose} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 16, color: "rgba(255,255,255,0.4)" }}>✕</button>
     </div>
   );
 }
@@ -34,7 +34,7 @@ function Toast({ msg, type, onClose }) {
 function Field({ label, children }) {
   return (
     <div style={{ marginBottom: 20 }}>
-      <label style={{ display: "block", fontSize: 12, fontWeight: 700, color: "#374151", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 6 }}>
+      <label style={{ display: "block", fontSize: 12, fontWeight: 700, color: "rgba(255,255,255,0.75)", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 6 }}>
         {label}
       </label>
       {children}
@@ -43,7 +43,7 @@ function Field({ label, children }) {
 }
 
 const INPUT = {
-  width: "100%", padding: "10px 14px", border: "1px solid #d1d5db",
+  width: "100%", padding: "10px 14px", border: "1px solid rgba(255,255,255,0.1)",
   borderRadius: 8, fontSize: 14, boxSizing: "border-box",
   outline: "none", transition: "border 0.2s",
 };
@@ -182,12 +182,12 @@ export default function UserProfile() {
       <Navbar />
       <Toast msg={toast.msg} type={toast.type} onClose={hideToast} />
 
-      <div style={{ padding: "28px 32px", backgroundColor: "#f8fafc", minHeight: "100vh" }}>
+      <div style={{ padding: "28px 32px", backgroundColor: "#080d1a", minHeight: "100vh" }}>
 
         {/* Header */}
         <div style={{ marginBottom: 28 }}>
-          <h1 style={{ margin: 0, color: "#0f172a" }}>My Profile</h1>
-          <p style={{ margin: "4px 0 0", color: "#64748b", fontSize: 14 }}>
+          <h1 style={{ margin: 0, color: "white" }}>My Profile</h1>
+          <p style={{ margin: "4px 0 0", color: "rgba(255,255,255,0.5)", fontSize: 14 }}>
             Manage your account information and security settings
           </p>
         </div>
@@ -198,7 +198,7 @@ export default function UserProfile() {
           <div style={{ width: 260, flexShrink: 0 }}>
 
             {/* Avatar */}
-            <div style={{ background: "white", border: "1px solid #e5e7eb", borderRadius: 16, padding: "28px 24px", textAlign: "center", marginBottom: 16 }}>
+            <div style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 16, padding: "28px 24px", textAlign: "center", marginBottom: 16 }}>
               <div style={{
                 width: 88, height: 88, borderRadius: "50%",
                 background: "linear-gradient(135deg, #2563eb, #7c3aed)",
@@ -209,26 +209,26 @@ export default function UserProfile() {
               }}>
                 {initials(profile.name)}
               </div>
-              <div style={{ fontSize: 17, fontWeight: 800, color: "#0f172a" }}>{profile.name || "—"}</div>
-              <div style={{ fontSize: 13, color: "#6b7280", marginTop: 4 }}>{profile.email || "—"}</div>
-              <div style={{ marginTop: 10, display: "inline-flex", alignItems: "center", gap: 5, padding: "4px 12px", background: "#dbeafe", borderRadius: 99 }}>
+              <div style={{ fontSize: 17, fontWeight: 800, color: "white" }}>{profile.name || "—"}</div>
+              <div style={{ fontSize: 13, color: "rgba(255,255,255,0.45)", marginTop: 4 }}>{profile.email || "—"}</div>
+              <div style={{ marginTop: 10, display: "inline-flex", alignItems: "center", gap: 5, padding: "4px 12px", background: "rgba(37,99,235,0.2)", borderRadius: 99 }}>
                 <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#2563eb", display: "inline-block" }} />
-                <span style={{ fontSize: 11, fontWeight: 700, color: "#1d4ed8" }}>Traffic Administrator</span>
+                <span style={{ fontSize: 11, fontWeight: 700, color: "#93c5fd" }}>Traffic Administrator</span>
               </div>
             </div>
 
             {/* Account stats */}
-            <div style={{ background: "white", border: "1px solid #e5e7eb", borderRadius: 12, padding: "18px 20px" }}>
-              <div style={{ fontSize: 13, fontWeight: 700, color: "#0f172a", marginBottom: 14 }}>Account Details</div>
+            <div style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 12, padding: "18px 20px" }}>
+              <div style={{ fontSize: 13, fontWeight: 700, color: "white", marginBottom: 14 }}>Account Details</div>
               {[
                 { icon: "🆔", label: "User ID",      value: userId ? `#${userId}` : "Not logged in" },
                 { icon: "📅", label: "Member since", value: memberSince },
                 { icon: "🔐", label: "Auth method",  value: "Password" },
                 { icon: "✅", label: "Status",       value: <span style={{ color: "#16a34a", fontWeight: 700 }}>Active</span> },
               ].map(({ icon, label, value }) => (
-                <div key={label} style={{ display: "flex", justifyContent: "space-between", padding: "8px 0", borderBottom: "1px solid #f9fafb", fontSize: 12 }}>
-                  <span style={{ color: "#9ca3af" }}>{icon} {label}</span>
-                  <span style={{ color: "#374151", fontWeight: 600, textAlign: "right" }}>{value}</span>
+                <div key={label} style={{ display: "flex", justifyContent: "space-between", padding: "8px 0", borderBottom: "1px solid rgba(255,255,255,0.04)", fontSize: 12 }}>
+                  <span style={{ color: "rgba(255,255,255,0.4)" }}>{icon} {label}</span>
+                  <span style={{ color: "rgba(255,255,255,0.75)", fontWeight: 600, textAlign: "right" }}>{value}</span>
                 </div>
               ))}
             </div>
@@ -238,10 +238,10 @@ export default function UserProfile() {
           <div style={{ flex: 1, minWidth: 300, display: "flex", flexDirection: "column", gap: 20 }}>
 
             {/* Profile info form */}
-            <div style={{ background: "white", border: "1px solid #e5e7eb", borderRadius: 16, overflow: "hidden" }}>
-              <div style={{ padding: "18px 24px", borderBottom: "1px solid #f3f4f6", background: "#f8fafc" }}>
-                <div style={{ fontSize: 15, fontWeight: 700, color: "#0f172a" }}>👤 Personal Information</div>
-                <div style={{ fontSize: 12, color: "#9ca3af", marginTop: 2 }}>
+            <div style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 16, overflow: "hidden" }}>
+              <div style={{ padding: "18px 24px", borderBottom: "1px solid rgba(255,255,255,0.04)", background: "rgba(255,255,255,0.04)" }}>
+                <div style={{ fontSize: 15, fontWeight: 700, color: "white" }}>👤 Personal Information</div>
+                <div style={{ fontSize: 12, color: "rgba(255,255,255,0.4)", marginTop: 2 }}>
                   {userId ? "Changes are saved to the database" : "⚠️ Log in to save changes to your account"}
                 </div>
               </div>
@@ -268,7 +268,7 @@ export default function UserProfile() {
                   />
                 </Field>
                 <Field label="Role">
-                  <div style={{ ...INPUT, background: "#f8fafc", color: "#6b7280", cursor: "not-allowed" }}>
+                  <div style={{ ...INPUT, background: "rgba(255,255,255,0.04)", color: "rgba(255,255,255,0.45)", cursor: "not-allowed" }}>
                     Traffic Administrator
                   </div>
                 </Field>
@@ -278,27 +278,27 @@ export default function UserProfile() {
                     disabled={profileLoading || !isDirty}
                     style={{
                       padding: "10px 24px", borderRadius: 8, border: "none", fontSize: 13, fontWeight: 700, cursor: profileLoading || !isDirty ? "not-allowed" : "pointer",
-                      background: profileLoading || !isDirty ? "#e5e7eb" : "#2563eb",
-                      color: profileLoading || !isDirty ? "#9ca3af" : "white",
+                      background: profileLoading || !isDirty ? "rgba(255,255,255,0.08)" : "#2563eb",
+                      color: profileLoading || !isDirty ? "rgba(255,255,255,0.3)" : "white",
                     }}>
                     {profileLoading ? "Saving…" : "Save Changes"}
                   </button>
                   {isDirty && (
                     <button type="button" onClick={() => { setEditName(profile.name); setEditEmail(profile.email); }}
-                      style={{ padding: "10px 16px", borderRadius: 8, border: "1px solid #e5e7eb", background: "white", fontSize: 13, color: "#6b7280", cursor: "pointer", fontWeight: 600 }}>
+                      style={{ padding: "10px 16px", borderRadius: 8, border: "1px solid rgba(255,255,255,0.08)", background: "rgba(255,255,255,0.05)", fontSize: 13, color: "rgba(255,255,255,0.45)", cursor: "pointer", fontWeight: 600 }}>
                       Discard
                     </button>
                   )}
-                  {isDirty && <span style={{ fontSize: 12, color: "#f59e0b" }}>● Unsaved changes</span>}
+                  {isDirty && <span style={{ fontSize: 12, color: "#fbbf24" }}>● Unsaved changes</span>}
                 </div>
               </form>
             </div>
 
             {/* Change password form */}
-            <div style={{ background: "white", border: "1px solid #e5e7eb", borderRadius: 16, overflow: "hidden" }}>
-              <div style={{ padding: "18px 24px", borderBottom: "1px solid #f3f4f6", background: "#f8fafc" }}>
-                <div style={{ fontSize: 15, fontWeight: 700, color: "#0f172a" }}>🔒 Change Password</div>
-                <div style={{ fontSize: 12, color: "#9ca3af", marginTop: 2 }}>Choose a strong password with at least 6 characters</div>
+            <div style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 16, overflow: "hidden" }}>
+              <div style={{ padding: "18px 24px", borderBottom: "1px solid rgba(255,255,255,0.04)", background: "rgba(255,255,255,0.04)" }}>
+                <div style={{ fontSize: 15, fontWeight: 700, color: "white" }}>🔒 Change Password</div>
+                <div style={{ fontSize: 12, color: "rgba(255,255,255,0.4)", marginTop: 2 }}>Choose a strong password with at least 6 characters</div>
               </div>
               <form onSubmit={handleChangePassword} style={{ padding: "24px" }}>
                 <Field label="Current Password">
@@ -313,7 +313,7 @@ export default function UserProfile() {
                       onBlur={e => e.target.style.borderColor = "#d1d5db"}
                     />
                     <button type="button" onClick={() => setShowPwd(s => !s)}
-                      style={{ position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer", color: "#9ca3af", fontSize: 16 }}>
+                      style={{ position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer", color: "rgba(255,255,255,0.4)", fontSize: 16 }}>
                       {showPwd ? "🙈" : "👁️"}
                     </button>
                   </div>
@@ -362,8 +362,8 @@ export default function UserProfile() {
                   style={{
                     padding: "10px 24px", borderRadius: 8, border: "none", fontSize: 13, fontWeight: 700,
                     cursor: pwdLoading || !curPwd || !newPwd || !confPwd ? "not-allowed" : "pointer",
-                    background: pwdLoading || !curPwd || !newPwd || !confPwd ? "#e5e7eb" : "#0f172a",
-                    color: pwdLoading || !curPwd || !newPwd || !confPwd ? "#9ca3af" : "white",
+                    background: pwdLoading || !curPwd || !newPwd || !confPwd ? "rgba(255,255,255,0.08)" : "#1e40af",
+                    color: pwdLoading || !curPwd || !newPwd || !confPwd ? "rgba(255,255,255,0.3)" : "white",
                   }}>
                   {pwdLoading ? "Updating…" : "Update Password"}
                 </button>
@@ -371,14 +371,14 @@ export default function UserProfile() {
             </div>
 
             {/* Danger zone */}
-            <div style={{ background: "white", border: "1px solid #fecaca", borderRadius: 16, padding: "18px 24px" }}>
+            <div style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(220,38,38,0.3)", borderRadius: 16, padding: "18px 24px" }}>
               <div style={{ fontSize: 14, fontWeight: 700, color: "#dc2626", marginBottom: 6 }}>⚠️ Session</div>
-              <div style={{ fontSize: 13, color: "#6b7280", marginBottom: 14 }}>
+              <div style={{ fontSize: 13, color: "rgba(255,255,255,0.45)", marginBottom: 14 }}>
                 Logging out will clear your session. You'll need to sign in again to access the system.
               </div>
               <button
                 onClick={() => { localStorage.removeItem("user"); window.location.href = "/"; }}
-                style={{ padding: "9px 20px", background: "#fef2f2", border: "1px solid #fecaca", borderRadius: 8, color: "#dc2626", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>
+                style={{ padding: "9px 20px", background: "rgba(220,38,38,0.1)", border: "1px solid rgba(220,38,38,0.3)", borderRadius: 8, color: "#dc2626", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>
                 🚪 Log Out
               </button>
             </div>

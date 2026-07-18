@@ -103,6 +103,13 @@ app.post("/api/forgot-password", async (req, res) => {
     return res.status(400).json({ success: false, message: "Email is required" });
   }
 
+  // Demo accounts: return a simulated token without touching DB
+  const demoMatch = DEMO_ACCOUNTS.find((a) => a.email.toLowerCase() === email.toLowerCase());
+  if (demoMatch) {
+    const token = "demo-" + crypto.randomBytes(24).toString("hex");
+    return res.json({ success: true, token, message: "Reset token generated." });
+  }
+
   try {
     const result = await pool.query("SELECT id FROM users WHERE email = $1", [email]);
     if (result.rows.length === 0) {
@@ -166,9 +173,14 @@ app.post("/api/reset-password", async (req, res) => {
 
 app.get("/api/profile/:id", async (req, res) => {
   const { id } = req.params;
+  // Serve demo accounts without a DB round-trip
+  const demo = DEMO_ACCOUNTS.find((a) => a.id === parseInt(id, 10));
+  if (demo) {
+    return res.json({ success: true, user: { id: demo.id, name: demo.name, email: demo.email, role: demo.role, created_at: new Date().toISOString() } });
+  }
   try {
     const result = await pool.query(
-      "SELECT id, name, email, created_at FROM users WHERE id = $1",
+      "SELECT id, name, email, role, created_at FROM users WHERE id = $1",
       [id]
     );
     if (result.rows.length === 0) {

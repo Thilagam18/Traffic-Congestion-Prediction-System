@@ -112,7 +112,7 @@ function ForecastChart({ points }) {
           <g key={v}>
             <line x1={PAD.left} x2={PAD.left + cW} y1={y} y2={y}
               stroke={v === 0 ? "#cbd5e1" : "#e2e8f0"} strokeWidth={v === 0 ? 1.5 : 1} strokeDasharray={v > 0 ? "4,3" : ""} />
-            <text x={PAD.left - 6} y={y + 4} textAnchor="end" fontSize={10} fill="#94a3b8">{v}%</text>
+            <text x={PAD.left - 6} y={y + 4} textAnchor="end" fontSize={10} fill="rgba(255,255,255,0.4)">{v}%</text>
           </g>
         );
       })}
@@ -136,13 +136,13 @@ function ForecastChart({ points }) {
         return (
           <g key={i} onMouseEnter={() => setHover(i)} onMouseLeave={() => setHover(null)} style={{ cursor: "pointer" }}>
             <circle cx={cx} cy={cy} r={isH ? 7 : 5} fill={cl.bar} stroke="white" strokeWidth={2} />
-            <text x={cx} y={H - 10} textAnchor="middle" fontSize={10} fill="#64748b" fontWeight={isH ? 700 : 400}>{p.label}</text>
+            <text x={cx} y={H - 10} textAnchor="middle" fontSize={10} fill="rgba(255,255,255,0.5)" fontWeight={isH ? 700 : 400}>{p.label}</text>
             {isH && (
               <g>
                 <rect x={cx - 44} y={cy - 58} width={88} height={52} rx={6} fill="#1e293b" />
-                <text x={cx} y={cy - 40} textAnchor="middle" fontSize={10} fill="#94a3b8">{p.label}</text>
+                <text x={cx} y={cy - 40} textAnchor="middle" fontSize={10} fill="rgba(255,255,255,0.4)">{p.label}</text>
                 <text x={cx} y={cy - 24} textAnchor="middle" fontSize={12} fill="white" fontWeight={800}>{p.cong}% <tspan fill={cl.bar}>{cl.label}</tspan></text>
-                <text x={cx} y={cy - 10} textAnchor="middle" fontSize={10} fill="#94a3b8">{p.conf}% confidence</text>
+                <text x={cx} y={cy - 10} textAnchor="middle" fontSize={10} fill="rgba(255,255,255,0.4)">{p.conf}% confidence</text>
               </g>
             )}
           </g>
@@ -156,7 +156,7 @@ function ConfBar({ value }) {
   const color = value >= 88 ? "#16a34a" : value >= 75 ? "#d97706" : "#dc2626";
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-      <div style={{ width: 80, height: 5, background: "#e5e7eb", borderRadius: 99 }}>
+      <div style={{ width: 80, height: 5, background: "rgba(255,255,255,0.1)", borderRadius: 99 }}>
         <div style={{ width: `${value}%`, height: "100%", background: color, borderRadius: 99 }} />
       </div>
       <span style={{ fontSize: 11, color, fontWeight: 700 }}>{value}%</span>
@@ -212,26 +212,26 @@ export default function TrafficPrediction() {
   return (
     <>
       <Navbar />
-      <div style={{ padding: "24px 32px", backgroundColor: "#f8fafc", minHeight: "100vh" }}>
+      <div style={{ padding: "24px 32px", backgroundColor: "#080d1a", minHeight: "100vh" }}>
 
         {/* ── Header ── */}
         <div style={{ marginBottom: 24 }}>
-          <h1 style={{ margin: 0, color: "#0f172a" }}>Congestion Prediction</h1>
-          <p style={{ margin: "4px 0 0", color: "#64748b", fontSize: 14 }}>
+          <h1 style={{ margin: 0, color: "white" }}>Congestion Prediction</h1>
+          <p style={{ margin: "4px 0 0", color: "rgba(255,255,255,0.5)", fontSize: 14 }}>
             Time-aware forecasting model · predicts 1–6 hours ahead · confidence-scored per hour
           </p>
         </div>
 
         {/* ── Controls ── */}
-        <div style={{ background: "white", border: "1px solid #e5e7eb", borderRadius: 12, padding: "20px 24px", marginBottom: 20 }}>
-          <div style={{ fontWeight: 700, color: "#0f172a", fontSize: 14, marginBottom: 14 }}>🎯 Prediction Parameters</div>
+        <div style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 12, padding: "20px 24px", marginBottom: 20 }}>
+          <div style={{ fontWeight: 700, color: "white", fontSize: 14, marginBottom: 14 }}>🎯 Prediction Parameters</div>
           <div style={{ display: "flex", gap: 16, flexWrap: "wrap", alignItems: "flex-end" }}>
 
             {/* Road */}
             <div style={{ flex: 2, minWidth: 220 }}>
-              <label style={{ fontSize: 12, fontWeight: 600, color: "#374151", display: "block", marginBottom: 6 }}>Road</label>
+              <label style={{ fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.75)", display: "block", marginBottom: 6 }}>Road</label>
               <select value={selectedRoad.name} onChange={e => setSelectedRoad(ROADS.find(r => r.name === e.target.value))}
-                style={{ width: "100%", padding: "9px 12px", border: "1px solid #d1d5db", borderRadius: 8, fontSize: 13, background: "white" }}>
+                style={{ width: "100%", padding: "9px 12px", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, fontSize: 13, background: "rgba(255,255,255,0.06)", color: "white" }}>
                 {ROADS.map(r => (
                   <option key={r.name} value={r.name}>{r.name} ({r.tag})</option>
                 ))}
@@ -240,9 +240,9 @@ export default function TrafficPrediction() {
 
             {/* Day */}
             <div style={{ flex: 1, minWidth: 140 }}>
-              <label style={{ fontSize: 12, fontWeight: 600, color: "#374151", display: "block", marginBottom: 6 }}>Day</label>
+              <label style={{ fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.75)", display: "block", marginBottom: 6 }}>Day</label>
               <select value={refDay} onChange={e => setRefDay(Number(e.target.value))}
-                style={{ width: "100%", padding: "9px 12px", border: "1px solid #d1d5db", borderRadius: 8, fontSize: 13, background: "white" }}>
+                style={{ width: "100%", padding: "9px 12px", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, fontSize: 13, background: "rgba(255,255,255,0.06)", color: "white" }}>
                 {DAYS.map(d => (
                   <option key={d} value={d}>{["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"][d]}{d === now.getDay() ? " (Today)" : ""}</option>
                 ))}
@@ -251,9 +251,9 @@ export default function TrafficPrediction() {
 
             {/* Start hour */}
             <div style={{ flex: 1, minWidth: 140 }}>
-              <label style={{ fontSize: 12, fontWeight: 600, color: "#374151", display: "block", marginBottom: 6 }}>From hour</label>
+              <label style={{ fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.75)", display: "block", marginBottom: 6 }}>From hour</label>
               <select value={refHour} onChange={e => setRefHour(Number(e.target.value))}
-                style={{ width: "100%", padding: "9px 12px", border: "1px solid #d1d5db", borderRadius: 8, fontSize: 13, background: "white" }}>
+                style={{ width: "100%", padding: "9px 12px", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, fontSize: 13, background: "rgba(255,255,255,0.06)", color: "white" }}>
                 {Array.from({ length: 24 }, (_, h) => (
                   <option key={h} value={h}>{fmtHour(h)}{h === now.getHours() && refDay === now.getDay() ? " (now)" : ""}</option>
                 ))}
@@ -262,9 +262,9 @@ export default function TrafficPrediction() {
 
             {/* Horizon */}
             <div style={{ flex: 1, minWidth: 140 }}>
-              <label style={{ fontSize: 12, fontWeight: 600, color: "#374151", display: "block", marginBottom: 6 }}>Forecast horizon</label>
+              <label style={{ fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.75)", display: "block", marginBottom: 6 }}>Forecast horizon</label>
               <select value={horizon} onChange={e => setHorizon(Number(e.target.value))}
-                style={{ width: "100%", padding: "9px 12px", border: "1px solid #d1d5db", borderRadius: 8, fontSize: 13, background: "white" }}>
+                style={{ width: "100%", padding: "9px 12px", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, fontSize: 13, background: "rgba(255,255,255,0.06)", color: "white" }}>
                 {[1,2,3,4,5,6].map(h => <option key={h} value={h}>{h} hour{h > 1 ? "s" : ""} ahead</option>)}
               </select>
             </div>
@@ -282,15 +282,15 @@ export default function TrafficPrediction() {
             { icon: "📊", label: "Current Congestion", value: `${current.cong}%`, color: currentLabel.color, sub: currentLabel.label },
             { icon: "🚗", label: "Current Volume",     value: `${current.vehicles.toLocaleString()} veh/hr`, color: "#0891b2", sub: "sensor estimate" },
             { icon: "⚡", label: "Current Speed",      value: `${current.speed} km/h`, color: "#7c3aed", sub: "avg flow" },
-            { icon: "📡", label: "Road Type",          value: selectedRoad.tag, color: "#1e3a5f", sub: selectedRoad.name.split(" ").slice(0, 2).join(" ") },
+            { icon: "📡", label: "Road Type",          value: selectedRoad.tag, color: "white", sub: selectedRoad.name.split(" ").slice(0, 2).join(" ") },
             ...(peak ? [{ icon: "🔺", label: "Forecast Peak",   value: `${peak.cong}% @ ${peak.label}`, color: "#dc2626", sub: fmtHour(peak.h) }] : []),
             ...(trough && trough.label !== "Now" ? [{ icon: "🟢", label: "Best Window",    value: `${trough.cong}% @ ${trough.label}`, color: "#16a34a", sub: fmtHour(trough.h) }] : []),
           ].map(({ icon, label, value, color, sub }) => (
-            <div key={label} style={{ flex: 1, minWidth: 140, background: "white", border: "1px solid #e5e7eb", borderRadius: 12, padding: "16px 18px" }}>
+            <div key={label} style={{ flex: 1, minWidth: 140, background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 12, padding: "16px 18px" }}>
               <div style={{ fontSize: 20, marginBottom: 4 }}>{icon}</div>
               <div style={{ fontSize: 20, fontWeight: 800, color }}>{value}</div>
-              <div style={{ fontSize: 12, fontWeight: 600, color: "#374151", marginTop: 2 }}>{label}</div>
-              <div style={{ fontSize: 11, color: "#9ca3af" }}>{sub}</div>
+              <div style={{ fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.75)", marginTop: 2 }}>{label}</div>
+              <div style={{ fontSize: 11, color: "rgba(255,255,255,0.4)" }}>{sub}</div>
             </div>
           ))}
         </div>
@@ -298,20 +298,20 @@ export default function TrafficPrediction() {
         {forecast && (
           <>
             {/* ── Forecast chart ── */}
-            <div style={{ background: "white", border: "1px solid #e5e7eb", borderRadius: 12, padding: "20px 24px", marginBottom: 20, overflowX: "auto" }}>
+            <div style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 12, padding: "20px 24px", marginBottom: 20, overflowX: "auto" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16, flexWrap: "wrap", gap: 10 }}>
                 <div>
-                  <div style={{ fontSize: 15, fontWeight: 700, color: "#0f172a" }}>
+                  <div style={{ fontSize: 15, fontWeight: 700, color: "white" }}>
                     📈 {horizon}-Hour Congestion Forecast — {forecast.road.name}
                   </div>
-                  <div style={{ fontSize: 12, color: "#9ca3af", marginTop: 3 }}>
+                  <div style={{ fontSize: 12, color: "rgba(255,255,255,0.4)", marginTop: 3 }}>
                     {fmtDow(refDay)} {fmtHour(refHour)} → {fmtHour((refHour + horizon) % 24)} · hover points for details
                   </div>
                 </div>
                 <div style={{ display: "flex", gap: 12 }}>
                   {[["#dcfce7","Clear"],["#fef9c3","Moderate"],["#ffedd5","High"],["#fee2e2","Severe"]].map(([bg,l]) => (
-                    <div key={l} style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 11, color: "#6b7280" }}>
-                      <div style={{ width: 12, height: 12, background: bg, border: "1px solid #e5e7eb", borderRadius: 2 }} />{l}
+                    <div key={l} style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 11, color: "rgba(255,255,255,0.45)" }}>
+                      <div style={{ width: 12, height: 12, background: bg, border: "1px solid rgba(255,255,255,0.08)", borderRadius: 2 }} />{l}
                     </div>
                   ))}
                 </div>
@@ -323,15 +323,15 @@ export default function TrafficPrediction() {
             <div style={{ display: "flex", gap: 20, marginBottom: 20, flexWrap: "wrap" }}>
 
               {/* Hourly breakdown */}
-              <div style={{ flex: 3, minWidth: 300, background: "white", border: "1px solid #e5e7eb", borderRadius: 12, overflow: "hidden" }}>
-                <div style={{ padding: "16px 20px", borderBottom: "1px solid #f3f4f6", fontWeight: 700, color: "#0f172a", fontSize: 14 }}>
+              <div style={{ flex: 3, minWidth: 300, background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 12, overflow: "hidden" }}>
+                <div style={{ padding: "16px 20px", borderBottom: "1px solid rgba(255,255,255,0.04)", fontWeight: 700, color: "white", fontSize: 14 }}>
                   🕐 Hour-by-Hour Breakdown
                 </div>
                 <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
                   <thead>
-                    <tr style={{ background: "#f8fafc" }}>
+                    <tr style={{ background: "rgba(255,255,255,0.04)" }}>
                       {["Time","Congestion","Vehicles/hr","Avg Speed","Status","Confidence"].map(h => (
-                        <th key={h} style={{ padding: "9px 14px", textAlign: "left", color: "#6b7280", fontWeight: 600, fontSize: 11, textTransform: "uppercase", letterSpacing: "0.05em", borderBottom: "1px solid #e5e7eb", whiteSpace: "nowrap" }}>{h}</th>
+                        <th key={h} style={{ padding: "9px 14px", textAlign: "left", color: "rgba(255,255,255,0.45)", fontWeight: 600, fontSize: 11, textTransform: "uppercase", letterSpacing: "0.05em", borderBottom: "1px solid #e5e7eb", whiteSpace: "nowrap" }}>{h}</th>
                       ))}
                     </tr>
                   </thead>
@@ -339,20 +339,20 @@ export default function TrafficPrediction() {
                     {forecast.points.map((p, i) => {
                       const cl = congLabel(p.cong);
                       return (
-                        <tr key={i} style={{ borderBottom: i < forecast.points.length - 1 ? "1px solid #f3f4f6" : "none", background: i === 0 ? "#eff6ff" : "white" }}>
-                          <td style={{ padding: "11px 14px", fontWeight: 700, color: "#0f172a" }}>
-                            {p.label === "Now" ? <span style={{ color: "#2563eb" }}>▶ Now</span> : p.label} <span style={{ fontSize: 11, color: "#9ca3af", fontWeight: 400 }}>{fmtHour(p.h)}</span>
+                        <tr key={i} style={{ borderBottom: i < forecast.points.length - 1 ? "1px solid #f3f4f6" : "none", background: i === 0 ? "rgba(37,99,235,0.2)" : "transparent" }}>
+                          <td style={{ padding: "11px 14px", fontWeight: 700, color: "white" }}>
+                            {p.label === "Now" ? <span style={{ color: "#2563eb" }}>▶ Now</span> : p.label} <span style={{ fontSize: 11, color: "rgba(255,255,255,0.4)", fontWeight: 400 }}>{fmtHour(p.h)}</span>
                           </td>
                           <td style={{ padding: "11px 14px" }}>
                             <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
-                              <div style={{ width: 60, height: 6, background: "#f3f4f6", borderRadius: 99 }}>
+                              <div style={{ width: 60, height: 6, background: "rgba(255,255,255,0.06)", borderRadius: 99 }}>
                                 <div style={{ width: `${p.cong}%`, height: "100%", background: cl.bar, borderRadius: 99 }} />
                               </div>
                               <span style={{ fontWeight: 700, color: cl.color }}>{p.cong}%</span>
                             </div>
                           </td>
-                          <td style={{ padding: "11px 14px", color: "#374151" }}>{p.vehicles.toLocaleString()}</td>
-                          <td style={{ padding: "11px 14px", color: "#374151" }}>{p.speed} km/h</td>
+                          <td style={{ padding: "11px 14px", color: "rgba(255,255,255,0.75)" }}>{p.vehicles.toLocaleString()}</td>
+                          <td style={{ padding: "11px 14px", color: "rgba(255,255,255,0.75)" }}>{p.speed} km/h</td>
                           <td style={{ padding: "11px 14px" }}>
                             <span style={{ padding: "2px 9px", borderRadius: 99, fontSize: 11, fontWeight: 700, background: cl.bg, color: cl.color }}>{cl.label}</span>
                           </td>
@@ -370,8 +370,8 @@ export default function TrafficPrediction() {
               <div style={{ flex: 2, minWidth: 260, display: "flex", flexDirection: "column", gap: 16 }}>
 
                 {/* Best windows */}
-                <div style={{ background: "white", border: "1px solid #e5e7eb", borderRadius: 12, padding: "20px 22px" }}>
-                  <div style={{ fontWeight: 700, color: "#0f172a", fontSize: 14, marginBottom: 14 }}>✈️ Smart Departure Advice</div>
+                <div style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 12, padding: "20px 22px" }}>
+                  <div style={{ fontWeight: 700, color: "white", fontSize: 14, marginBottom: 14 }}>✈️ Smart Departure Advice</div>
                   {forecast.best.map((b, i) => {
                     const cl = congLabel(b.cong);
                     return (
@@ -379,12 +379,12 @@ export default function TrafficPrediction() {
                         <div style={{ fontSize: 13, fontWeight: 700, color: cl.color, marginBottom: 4 }}>
                           {i === 0 ? "🥇 Best departure" : "🥈 2nd best"} · {fmtHour(b.h)}
                         </div>
-                        <div style={{ fontSize: 12, color: "#374151" }}>
+                        <div style={{ fontSize: 12, color: "rgba(255,255,255,0.75)" }}>
                           Expected congestion: <strong style={{ color: cl.color }}>{b.cong}%</strong> ({cl.label})
                         </div>
                         {b.offsetH === 0
-                          ? <div style={{ fontSize: 12, color: "#6b7280", marginTop: 3 }}>Leave now for best conditions</div>
-                          : <div style={{ fontSize: 12, color: "#6b7280", marginTop: 3 }}>Depart in {b.offsetH} hour{b.offsetH > 1 ? "s" : ""}</div>
+                          ? <div style={{ fontSize: 12, color: "rgba(255,255,255,0.45)", marginTop: 3 }}>Leave now for best conditions</div>
+                          : <div style={{ fontSize: 12, color: "rgba(255,255,255,0.45)", marginTop: 3 }}>Depart in {b.offsetH} hour{b.offsetH > 1 ? "s" : ""}</div>
                         }
                       </div>
                     );
@@ -392,8 +392,8 @@ export default function TrafficPrediction() {
                 </div>
 
                 {/* Model info */}
-                <div style={{ background: "white", border: "1px solid #e5e7eb", borderRadius: 12, padding: "20px 22px" }}>
-                  <div style={{ fontWeight: 700, color: "#0f172a", fontSize: 14, marginBottom: 12 }}>🧠 Model Information</div>
+                <div style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 12, padding: "20px 22px" }}>
+                  <div style={{ fontWeight: 700, color: "white", fontSize: 14, marginBottom: 12 }}>🧠 Model Information</div>
                   {[
                     ["Method",        "Time-series profile model"],
                     ["Road factor",   `${Math.round(selectedRoad.baseLoad * 100)}% base load`],
@@ -403,11 +403,11 @@ export default function TrafficPrediction() {
                     ["Avg confidence",`${Math.round(forecast.points.reduce((s, p) => s + p.conf, 0) / forecast.points.length)}%`],
                   ].map(([k, v]) => (
                     <div key={k} style={{ display: "flex", justifyContent: "space-between", marginBottom: 8, fontSize: 12 }}>
-                      <span style={{ color: "#9ca3af" }}>{k}</span>
-                      <span style={{ color: "#374151", fontWeight: 600, textAlign: "right", maxWidth: 180 }}>{v}</span>
+                      <span style={{ color: "rgba(255,255,255,0.4)" }}>{k}</span>
+                      <span style={{ color: "rgba(255,255,255,0.75)", fontWeight: 600, textAlign: "right", maxWidth: 180 }}>{v}</span>
                     </div>
                   ))}
-                  <div style={{ marginTop: 10, padding: "10px 12px", background: "#f8fafc", borderRadius: 8, fontSize: 11, color: "#9ca3af", lineHeight: 1.6 }}>
+                  <div style={{ marginTop: 10, padding: "10px 12px", background: "rgba(255,255,255,0.04)", borderRadius: 8, fontSize: 11, color: "rgba(255,255,255,0.4)", lineHeight: 1.6 }}>
                     Confidence decreases with forecast horizon. Predictions may deviate during incidents, weather events, or public holidays.
                   </div>
                 </div>
@@ -415,11 +415,11 @@ export default function TrafficPrediction() {
             </div>
 
             {/* ── Compare all roads at this hour ── */}
-            <div style={{ background: "white", border: "1px solid #e5e7eb", borderRadius: 12, padding: "20px 24px" }}>
-              <div style={{ fontSize: 15, fontWeight: 700, color: "#0f172a", marginBottom: 4 }}>
+            <div style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 12, padding: "20px 24px" }}>
+              <div style={{ fontSize: 15, fontWeight: 700, color: "white", marginBottom: 4 }}>
                 🛣️ All-Road Snapshot — {fmtDow(refDay)} {fmtHour(refHour)}
               </div>
-              <div style={{ fontSize: 12, color: "#9ca3af", marginBottom: 16 }}>Predicted congestion across every road at your selected start time</div>
+              <div style={{ fontSize: 12, color: "rgba(255,255,255,0.4)", marginBottom: 16 }}>Predicted congestion across every road at your selected start time</div>
               <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                 {[...ROADS]
                   .map(r => ({ ...r, pred: predictHour(r, refHour, refDay, 0) }))
@@ -430,20 +430,20 @@ export default function TrafficPrediction() {
                     return (
                       <div key={r.name}
                         onClick={() => setSelectedRoad(ROADS.find(rd => rd.name === r.name))}
-                        style={{ display: "flex", alignItems: "center", gap: 14, padding: "10px 14px", borderRadius: 8, border: `1px solid ${isSelected ? "#2563eb" : "#f3f4f6"}`, background: isSelected ? "#eff6ff" : "white", cursor: "pointer" }}>
+                        style={{ display: "flex", alignItems: "center", gap: 14, padding: "10px 14px", borderRadius: 8, border: `1px solid ${isSelected ? "#2563eb" : "#f3f4f6"}`, background: isSelected ? "rgba(37,99,235,0.15)" : "transparent", cursor: "pointer" }}>
                         <div style={{ width: 22, fontSize: 11, fontWeight: 700, color: i < 3 ? cl.color : "#9ca3af", textAlign: "center" }}>{i + 1}</div>
                         <div style={{ flex: 1 }}>
                           <div style={{ fontSize: 13, fontWeight: isSelected ? 700 : 500, color: isSelected ? "#1d4ed8" : "#111" }}>
                             {r.name} {isSelected && <span style={{ fontSize: 10, color: "#6366f1", background: "#ede9fe", padding: "1px 7px", borderRadius: 99, marginLeft: 6 }}>selected</span>}
                           </div>
                           <div style={{ marginTop: 4, display: "flex", alignItems: "center", gap: 8 }}>
-                            <div style={{ width: 120, height: 5, background: "#f3f4f6", borderRadius: 99 }}>
+                            <div style={{ width: 120, height: 5, background: "rgba(255,255,255,0.06)", borderRadius: 99 }}>
                               <div style={{ width: `${r.pred.cong}%`, height: "100%", background: cl.bar, borderRadius: 99 }} />
                             </div>
                             <span style={{ fontSize: 11, fontWeight: 700, color: cl.color }}>{r.pred.cong}%</span>
                           </div>
                         </div>
-                        <div style={{ textAlign: "right", fontSize: 11, color: "#9ca3af" }}>
+                        <div style={{ textAlign: "right", fontSize: 11, color: "rgba(255,255,255,0.4)" }}>
                           <div>{r.pred.speed} km/h</div>
                           <div>{r.pred.vehicles.toLocaleString()} veh</div>
                         </div>

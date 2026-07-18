@@ -108,7 +108,7 @@ function CongBar({ value }) {
   const color = value >= 75 ? "#ef4444" : value >= 50 ? "#f97316" : value >= 25 ? "#f59e0b" : "#22c55e";
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-      <div style={{ width: 80, height: 6, background: "#e5e7eb", borderRadius: 99 }}>
+      <div style={{ width: 80, height: 6, background: "rgba(255,255,255,0.1)", borderRadius: 99 }}>
         <div style={{ width: `${value}%`, height: "100%", background: color, borderRadius: 99 }} />
       </div>
       <span style={{ fontSize: 12, fontWeight: 700, color }}>{value}%</span>
@@ -118,11 +118,11 @@ function CongBar({ value }) {
 
 function RoadCard({ road, stats }) {
   return (
-    <div style={{ background: "white", border: "1px solid #e5e7eb", borderRadius: 12, padding: "18px 20px" }}>
+    <div style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 12, padding: "18px 20px" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 14 }}>
         <div>
-          <div style={{ fontSize: 15, fontWeight: 700, color: "#0f172a" }}>{road.name}</div>
-          <div style={{ fontSize: 12, color: "#9ca3af", marginTop: 2 }}>{road.tag}</div>
+          <div style={{ fontSize: 15, fontWeight: 700, color: "white" }}>{road.name}</div>
+          <div style={{ fontSize: 12, color: "rgba(255,255,255,0.4)", marginTop: 2 }}>{road.tag}</div>
         </div>
         <StatusBadge status={stats.status} sColor={stats.sColor} sBg={stats.sBg} />
       </div>
@@ -136,8 +136,8 @@ function RoadCard({ road, stats }) {
           { label: "Incidents Today", value: stats.incidents },
         ].map(({ label, value }) => (
           <div key={label}>
-            <div style={{ fontSize: 11, color: "#9ca3af", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em" }}>{label}</div>
-            <div style={{ fontSize: 13, color: "#374151", fontWeight: 600, marginTop: 3 }}>{value}</div>
+            <div style={{ fontSize: 11, color: "rgba(255,255,255,0.4)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em" }}>{label}</div>
+            <div style={{ fontSize: 13, color: "rgba(255,255,255,0.75)", fontWeight: 600, marginTop: 3 }}>{value}</div>
           </div>
         ))}
       </div>
@@ -151,9 +151,9 @@ function ReportTable({ roads }) {
     <div style={{ overflowX: "auto" }}>
       <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
         <thead>
-          <tr style={{ background: "#f8fafc" }}>
+          <tr style={{ background: "rgba(255,255,255,0.04)" }}>
             {["#","Road Name","Type","Congestion","Vehicles/hr","Avg Speed","Peak Cong.","Status","Incidents"].map(h => (
-              <th key={h} style={{ padding: "9px 14px", textAlign: "left", color: "#6b7280", fontWeight: 600, fontSize: 11, textTransform: "uppercase", letterSpacing: "0.05em", borderBottom: "1px solid #e5e7eb", whiteSpace: "nowrap" }}>{h}</th>
+              <th key={h} style={{ padding: "9px 14px", textAlign: "left", color: "rgba(255,255,255,0.45)", fontWeight: 600, fontSize: 11, textTransform: "uppercase", letterSpacing: "0.05em", borderBottom: "1px solid rgba(255,255,255,0.06)", whiteSpace: "nowrap" }}>{h}</th>
             ))}
           </tr>
         </thead>
@@ -162,15 +162,15 @@ function ReportTable({ roads }) {
             const s = getRoadStats(road);
             return (
               <tr key={road.name} style={{ borderBottom: i < roads.length - 1 ? "1px solid #f3f4f6" : "none" }}
-                onMouseEnter={e => e.currentTarget.style.background = "#f8fafc"}
-                onMouseLeave={e => e.currentTarget.style.background = "white"}>
-                <td style={{ padding: "11px 14px", color: "#9ca3af" }}>{i + 1}</td>
-                <td style={{ padding: "11px 14px", fontWeight: 600, color: "#0f172a" }}>{road.name}</td>
-                <td style={{ padding: "11px 14px", color: "#6b7280" }}>{road.tag}</td>
+                onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.06)"}
+                onMouseLeave={e => e.currentTarget.style.background = "rgba(255,255,255,0.03)"}>
+                <td style={{ padding: "11px 14px", color: "rgba(255,255,255,0.4)" }}>{i + 1}</td>
+                <td style={{ padding: "11px 14px", fontWeight: 600, color: "white" }}>{road.name}</td>
+                <td style={{ padding: "11px 14px", color: "rgba(255,255,255,0.45)" }}>{road.tag}</td>
                 <td style={{ padding: "11px 14px" }}><CongBar value={s.cong} /></td>
-                <td style={{ padding: "11px 14px", color: "#374151" }}>{s.vehicles.toLocaleString()}</td>
-                <td style={{ padding: "11px 14px", color: "#374151" }}>{s.speed} km/h</td>
-                <td style={{ padding: "11px 14px", color: "#374151" }}>{s.peakCong}%</td>
+                <td style={{ padding: "11px 14px", color: "rgba(255,255,255,0.75)" }}>{s.vehicles.toLocaleString()}</td>
+                <td style={{ padding: "11px 14px", color: "rgba(255,255,255,0.75)" }}>{s.speed} km/h</td>
+                <td style={{ padding: "11px 14px", color: "rgba(255,255,255,0.75)" }}>{s.peakCong}%</td>
                 <td style={{ padding: "11px 14px" }}><StatusBadge status={s.status} sColor={s.sColor} sBg={s.sBg} /></td>
                 <td style={{ padding: "11px 14px", color: s.incidents > 2 ? "#dc2626" : "#374151", fontWeight: s.incidents > 2 ? 700 : 400 }}>{s.incidents}</td>
               </tr>
@@ -199,9 +199,9 @@ function SummaryStats({ roads }) {
         { label: "Severe Roads",    value: severe, color: severe > 0 ? "#dc2626" : "#16a34a" },
         { label: "Clear Roads",     value: clear, color: "#16a34a" },
       ].map(({ label, value, color }) => (
-        <div key={label} style={{ flex: 1, minWidth: 110, background: "white", border: "1px solid #e5e7eb", borderRadius: 10, padding: "12px 14px" }}>
+        <div key={label} style={{ flex: 1, minWidth: 110, background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 10, padding: "12px 14px" }}>
           <div style={{ fontSize: 18, fontWeight: 800, color }}>{value}</div>
-          <div style={{ fontSize: 11, color: "#6b7280", fontWeight: 600, marginTop: 2 }}>{label}</div>
+          <div style={{ fontSize: 11, color: "rgba(255,255,255,0.45)", fontWeight: 600, marginTop: 2 }}>{label}</div>
         </div>
       ))}
     </div>
@@ -258,19 +258,19 @@ export default function ReportGeneration() {
   return (
     <>
       <Navbar />
-      <div style={{ padding: "24px 32px", backgroundColor: "#f8fafc", minHeight: "100vh" }}>
+      <div style={{ padding: "24px 32px", backgroundColor: "#080d1a", minHeight: "100vh" }}>
 
         {/* Header */}
         <div style={{ marginBottom: 24 }}>
-          <h1 style={{ margin: 0, color: "#0f172a" }}>Traffic Reports</h1>
-          <p style={{ margin: "4px 0 0", color: "#64748b", fontSize: 14 }}>
+          <h1 style={{ margin: 0, color: "white" }}>Traffic Reports</h1>
+          <p style={{ margin: "4px 0 0", color: "rgba(255,255,255,0.5)", fontSize: 14 }}>
             Ask for any road, a group of roads, or the full network — get instant live data
           </p>
         </div>
 
         {/* Query box */}
-        <div style={{ background: "white", border: "1px solid #e5e7eb", borderRadius: 14, padding: "22px 26px", marginBottom: 20, boxShadow: "0 2px 8px rgba(0,0,0,0.04)" }}>
-          <div style={{ fontSize: 14, fontWeight: 700, color: "#0f172a", marginBottom: 12 }}>🔍 What report do you need?</div>
+        <div style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 14, padding: "22px 26px", marginBottom: 20, boxShadow: "0 2px 8px rgba(0,0,0,0.04)" }}>
+          <div style={{ fontSize: 14, fontWeight: 700, color: "white", marginBottom: 12 }}>🔍 What report do you need?</div>
           <div style={{ display: "flex", gap: 10 }}>
             <input
               type="text"
@@ -292,11 +292,11 @@ export default function ReportGeneration() {
 
           {/* Suggestions */}
           <div style={{ marginTop: 14 }}>
-            <div style={{ fontSize: 11, color: "#9ca3af", fontWeight: 600, marginBottom: 8, textTransform: "uppercase", letterSpacing: "0.05em" }}>Quick examples</div>
+            <div style={{ fontSize: 11, color: "rgba(255,255,255,0.4)", fontWeight: 600, marginBottom: 8, textTransform: "uppercase", letterSpacing: "0.05em" }}>Quick examples</div>
             <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
               {SUGGESTIONS.map(s => (
                 <button key={s} onClick={() => { setQuery(s); handleGenerate(s); }}
-                  style={{ padding: "5px 12px", background: "#f1f5f9", border: "1px solid #e2e8f0", borderRadius: 99, fontSize: 12, color: "#475569", cursor: "pointer", fontWeight: 500 }}
+                  style={{ padding: "5px 12px", background: "rgba(255,255,255,0.06)", border: "1px solid #e2e8f0", borderRadius: 99, fontSize: 12, color: "#475569", cursor: "pointer", fontWeight: 500 }}
                   onMouseEnter={e => { e.target.style.background = "#dbeafe"; e.target.style.color = "#1d4ed8"; }}
                   onMouseLeave={e => { e.target.style.background = "#f1f5f9"; e.target.style.color = "#475569"; }}>
                   {s}
@@ -311,10 +311,10 @@ export default function ReportGeneration() {
           <>
             {/* Unknown / no match */}
             {(result.type === "unknown" || (roads.length === 0 && result.type !== "none")) && (
-              <div style={{ background: "white", border: "1px solid #fecaca", borderRadius: 12, padding: "24px", textAlign: "center" }}>
+              <div style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(220,38,38,0.3)", borderRadius: 12, padding: "24px", textAlign: "center" }}>
                 <div style={{ fontSize: 36, marginBottom: 10 }}>🤔</div>
                 <div style={{ fontSize: 15, fontWeight: 700, color: "#dc2626", marginBottom: 6 }}>No matching roads found</div>
-                <div style={{ fontSize: 13, color: "#6b7280" }}>
+                <div style={{ fontSize: 13, color: "rgba(255,255,255,0.45)" }}>
                   Try mentioning a road name like <em>"Downtown Main Street"</em>, a type like <em>"expressway"</em>, or say <em>"show all routes"</em>.
                 </div>
               </div>
@@ -325,14 +325,14 @@ export default function ReportGeneration() {
                 {/* Report header */}
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 10, marginBottom: 16 }}>
                   <div>
-                    <div style={{ fontSize: 16, fontWeight: 800, color: "#0f172a" }}>{resultHeading()}</div>
-                    <div style={{ fontSize: 12, color: "#9ca3af", marginTop: 2 }}>
+                    <div style={{ fontSize: 16, fontWeight: 800, color: "white" }}>{resultHeading()}</div>
+                    <div style={{ fontSize: 12, color: "rgba(255,255,255,0.4)", marginTop: 2 }}>
                       Query: <em>"{submitted}"</em> · Generated {now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })} · Data live
                     </div>
                   </div>
                   <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
                     {/* View toggle */}
-                    <div style={{ display: "flex", background: "white", border: "1px solid #e5e7eb", borderRadius: 8, padding: 3 }}>
+                    <div style={{ display: "flex", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 8, padding: 3 }}>
                       {[["table","📋 Table"],["cards","🃏 Cards"]].map(([v, l]) => (
                         <button key={v} onClick={() => setViewMode(v)} style={{
                           padding: "5px 14px", borderRadius: 6, border: "none", fontSize: 12, fontWeight: 600,
@@ -343,7 +343,7 @@ export default function ReportGeneration() {
                     </div>
                     <button
                       onClick={() => window.print()}
-                      style={{ padding: "7px 16px", background: "#0f172a", color: "white", border: "none", borderRadius: 8, fontSize: 12, fontWeight: 700, cursor: "pointer" }}>
+                      style={{ padding: "7px 16px", background: "rgba(255,255,255,0.08)", color: "white", border: "none", borderRadius: 8, fontSize: 12, fontWeight: 700, cursor: "pointer" }}>
                       🖨️ Print
                     </button>
                   </div>
@@ -353,10 +353,10 @@ export default function ReportGeneration() {
                 <SummaryStats roads={roads} />
 
                 {/* Report content */}
-                <div style={{ background: "white", border: "1px solid #e5e7eb", borderRadius: 12, overflow: "hidden" }}>
+                <div style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 12, overflow: "hidden" }}>
                   {viewMode === "table" ? (
                     <>
-                      <div style={{ padding: "14px 20px", borderBottom: "1px solid #f3f4f6", fontWeight: 700, color: "#0f172a", fontSize: 14 }}>
+                      <div style={{ padding: "14px 20px", borderBottom: "1px solid rgba(255,255,255,0.04)", fontWeight: 700, color: "white", fontSize: 14 }}>
                         📋 Detailed Traffic Report
                       </div>
                       <ReportTable roads={roads} />
@@ -385,8 +385,8 @@ export default function ReportGeneration() {
                   return (
                     <div style={{ marginTop: 16, display: "flex", gap: 16, flexWrap: "wrap" }}>
                       {/* Hourly profile mini chart */}
-                      <div style={{ flex: 2, minWidth: 280, background: "white", border: "1px solid #e5e7eb", borderRadius: 12, padding: "20px 24px" }}>
-                        <div style={{ fontSize: 14, fontWeight: 700, color: "#0f172a", marginBottom: 14 }}>
+                      <div style={{ flex: 2, minWidth: 280, background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 12, padding: "20px 24px" }}>
+                        <div style={{ fontSize: 14, fontWeight: 700, color: "white", marginBottom: 14 }}>
                           📈 24-Hour Congestion Profile
                         </div>
                         <div style={{ display: "flex", alignItems: "flex-end", gap: 3, height: 80 }}>
@@ -399,18 +399,18 @@ export default function ReportGeneration() {
                             );
                           })}
                         </div>
-                        <div style={{ display: "flex", justifyContent: "space-between", marginTop: 6, fontSize: 10, color: "#9ca3af" }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", marginTop: 6, fontSize: 10, color: "rgba(255,255,255,0.4)" }}>
                           {[0,6,12,18,23].map(h => <span key={h}>{fmtH(h)}</span>)}
                         </div>
                         <div style={{ display: "flex", gap: 16, marginTop: 12 }}>
-                          <div style={{ fontSize: 12, color: "#374151" }}>🔺 Peak: <strong style={{ color: "#dc2626" }}>{peakH.cong}% at {fmtH(peakH.h)}</strong></div>
-                          <div style={{ fontSize: 12, color: "#374151" }}>🟢 Best: <strong style={{ color: "#16a34a" }}>{offH.cong}% at {fmtH(offH.h)}</strong></div>
+                          <div style={{ fontSize: 12, color: "rgba(255,255,255,0.75)" }}>🔺 Peak: <strong style={{ color: "#dc2626" }}>{peakH.cong}% at {fmtH(peakH.h)}</strong></div>
+                          <div style={{ fontSize: 12, color: "rgba(255,255,255,0.75)" }}>🟢 Best: <strong style={{ color: "#16a34a" }}>{offH.cong}% at {fmtH(offH.h)}</strong></div>
                         </div>
                       </div>
 
                       {/* Road insights */}
-                      <div style={{ flex: 1, minWidth: 220, background: "white", border: "1px solid #e5e7eb", borderRadius: 12, padding: "20px 24px" }}>
-                        <div style={{ fontSize: 14, fontWeight: 700, color: "#0f172a", marginBottom: 14 }}>💡 Road Insights</div>
+                      <div style={{ flex: 1, minWidth: 220, background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 12, padding: "20px 24px" }}>
+                        <div style={{ fontSize: 14, fontWeight: 700, color: "white", marginBottom: 14 }}>💡 Road Insights</div>
                         {[
                           { icon: "🛣️", k: "Road type",         v: road.tag },
                           { icon: "📊", k: "Current status",    v: <span style={{ color: s.sColor, fontWeight: 700 }}>{s.status}</span> },
@@ -422,8 +422,8 @@ export default function ReportGeneration() {
                           { icon: "✅", k: "Best travel",       v: `${offH.cong}% at ${fmtH(offH.h)}` },
                         ].map(({ icon, k, v }) => (
                           <div key={k} style={{ display: "flex", justifyContent: "space-between", padding: "7px 0", borderBottom: "1px solid #f9fafb", fontSize: 13 }}>
-                            <span style={{ color: "#6b7280" }}>{icon} {k}</span>
-                            <span style={{ fontWeight: 600, color: "#374151" }}>{v}</span>
+                            <span style={{ color: "rgba(255,255,255,0.45)" }}>{icon} {k}</span>
+                            <span style={{ fontWeight: 600, color: "rgba(255,255,255,0.75)" }}>{v}</span>
                           </div>
                         ))}
                       </div>
@@ -438,10 +438,10 @@ export default function ReportGeneration() {
 
         {/* Empty state */}
         {!result && (
-          <div style={{ background: "white", border: "1px solid #e5e7eb", borderRadius: 14, padding: "48px 32px", textAlign: "center" }}>
+          <div style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 14, padding: "48px 32px", textAlign: "center" }}>
             <div style={{ fontSize: 48, marginBottom: 16 }}>📋</div>
-            <div style={{ fontSize: 18, fontWeight: 700, color: "#0f172a", marginBottom: 8 }}>Start with a query</div>
-            <div style={{ fontSize: 14, color: "#6b7280", maxWidth: 480, margin: "0 auto" }}>
+            <div style={{ fontSize: 18, fontWeight: 700, color: "white", marginBottom: 8 }}>Start with a query</div>
+            <div style={{ fontSize: 14, color: "rgba(255,255,255,0.45)", maxWidth: 480, margin: "0 auto" }}>
               Type the name of any road to get its detailed traffic report, or ask for all routes to see the full network snapshot. Use the quick examples above to get started.
             </div>
           </div>
