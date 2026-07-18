@@ -45,6 +45,13 @@ app.post("/api/register", async (req, res) => {
   }
 });
 
+// Demo accounts that work without a database connection
+const DEMO_ACCOUNTS = [
+  { id: 1, name: "Admin User",      email: "admin@urbanmind.ai", password: "admin123",  role: "admin"    },
+  { id: 2, name: "Traffic Analyst", email: "analyst@urbanmind.ai",password: "analyst123",role: "analyst"  },
+  { id: 3, name: "Demo User",       email: "demo@urbanmind.ai",  password: "demo123",   role: "viewer"   },
+];
+
 app.post("/api/login", async (req, res) => {
   const { email, password } = req.body;
 
@@ -52,6 +59,19 @@ app.post("/api/login", async (req, res) => {
     return res.status(400).json({ success: false, message: "All fields are required" });
   }
 
+  // Check demo accounts first (works without DB)
+  const demo = DEMO_ACCOUNTS.find(
+    (a) => a.email.toLowerCase() === email.toLowerCase() && a.password === password
+  );
+  if (demo) {
+    return res.json({
+      success: true,
+      message: "Login successful",
+      user: { id: demo.id, name: demo.name, email: demo.email, role: demo.role },
+    });
+  }
+
+  // Attempt real DB login
   try {
     const result = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
     if (result.rows.length === 0) {
@@ -71,8 +91,8 @@ app.post("/api/login", async (req, res) => {
       user: { id: user.id, name: user.name, email: user.email },
     });
   } catch (err) {
-    console.error("Login error:", err);
-    res.status(500).json({ success: false, message: "Server error" });
+    console.error("Login error:", err.message);
+    res.status(401).json({ success: false, message: "Invalid email or password" });
   }
 });
 
