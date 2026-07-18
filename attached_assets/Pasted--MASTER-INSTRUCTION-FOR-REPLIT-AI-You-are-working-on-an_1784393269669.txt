@@ -1,0 +1,218 @@
+# MASTER INSTRUCTION FOR REPLIT AI
+
+You are working on an existing project called **Traffic Congestion Prediction and Route Optimization System**.
+
+## CRITICAL REQUIREMENTS
+
+Do NOT rebuild the project from scratch.
+
+Do NOT replace or overwrite existing working code.
+
+Do NOT delete any existing files.
+
+Do NOT rename existing APIs unless absolutely necessary.
+
+Do NOT remove existing UI pages.
+
+Do NOT remove authentication.
+
+Do NOT remove the dashboard.
+
+Do NOT replace the React frontend.
+
+Do NOT replace the Spring Boot backend.
+
+Do NOT replace the MySQL database.
+
+Before making any change, first analyze the existing codebase and understand its architecture.
+
+Preserve all current functionality and extend it only by adding new modules, reusable components, services, APIs, and database tables where required.
+
+If any existing feature is already implemented, improve it instead of recreating it.
+
+Every modification must compile successfully and must not break any existing functionality.
+
+Never introduce placeholder code or unfinished functions.
+
+If a feature requires multiple files, implement the complete feature.
+
+Maintain clean architecture, modular design, proper folder structure, reusable components, and production-quality code.
+
+Implement one module completely before starting the next so the project remains functional at every stage.
+
+The final application should look like a professional Smart City product rather than a basic college project.
+
+## PROJECT VISION
+
+Transform the existing application into:
+
+**UrbanMind AI – Explainable Smart Traffic Intelligence & Route Optimization Platform**
+
+The application should combine Artificial Intelligence, Machine Learning, Explainable AI, Smart City analytics, and intelligent navigation.
+
+## NEW FEATURES TO ADD
+
+1. Explainable AI Traffic Reason Analyzer
+
+* Explain why congestion occurs instead of only showing congestion levels.
+* Display primary and secondary reasons.
+* Show estimated delay.
+* Show expected clearance time.
+* Show prediction confidence.
+* Generate an AI-written traffic summary.
+
+2. Future Traffic Prediction
+
+* Predict congestion for 15, 30, and 60 minutes ahead.
+* Show prediction graphs.
+* Explain prediction factors.
+
+3. Weather-aware Prediction
+
+* Include weather as a prediction factor.
+* Rain
+* Fog
+* Flood
+* Visibility
+* Temperature
+
+4. Route Comparison
+   For every suggested route display:
+
+* Distance
+* ETA
+* Congestion
+* Fuel estimate
+* CO₂ emission
+* Road safety score
+* AI recommendation
+
+5. Road Safety Index
+   Generate a safety score for each road using:
+
+* Accident history
+* Weather
+* Road condition
+* Traffic density
+* Construction
+* Visibility
+
+6. Carbon Emission Module
+   Display:
+
+* Fuel consumption
+* CO₂ emission
+* Eco-friendly route
+* Fuel savings
+* Monthly carbon savings
+
+7. Crowd Incident Reporting
+   Allow users to report:
+
+* Accident
+* Flood
+* Road block
+* Pothole
+* Construction
+* Signal failure
+* Vehicle breakdown
+  Reports require administrator verification.
+
+8. Emergency Vehicle Mode
+   Special routing for:
+
+* Ambulance
+* Police
+* Fire services
+  Display fastest route and ETA.
+
+9. Smart Parking
+   Display:
+
+* Nearby parking
+* Availability
+* Estimated future availability
+
+10. AI Copilot
+    A floating assistant that answers:
+
+* Why is traffic high?
+* Best route?
+* When will congestion reduce?
+* Which road should I avoid?
+  Generate responses using current traffic and prediction data.
+
+11. Smart City Analytics
+    Professional dashboard with:
+
+* Congestion heatmaps
+* Peak-hour trends
+* Accident hotspots
+* Traffic trends
+* Vehicle distribution
+* Carbon analytics
+* Incident statistics
+
+12. Notifications
+    Real-time alerts for:
+
+* Accidents
+* Floods
+* Road closures
+* Weather
+* Emergencies
+
+13. Reports
+    Generate downloadable reports with charts and summaries.
+
+## USER INTERFACE
+
+Modern startup-quality design.
+
+Dark mode.
+
+Glassmorphism.
+
+Responsive layout.
+
+Tailwind CSS.
+
+Smooth animations.
+
+Interactive charts.
+
+Professional typography.
+
+No Bootstrap.
+
+## PERFORMANCE
+
+Optimize API calls.
+
+Use reusable React components.
+
+Lazy loading where appropriate.
+
+Graceful error handling.
+
+Loading indicators.
+
+Proper validation.
+
+## CODE QUALITY
+
+Follow SOLID principles.
+
+Avoid duplicate code.
+
+Write readable, maintainable code.
+
+Comment complex logic.
+
+Use meaningful file and variable names.
+
+Ensure every feature is fully integrated with the existing application.
+
+Before modifying any file, determine whether it already exists and extend it rather than replacing it.
+
+The project must remain buildable and functional after every completed module.
