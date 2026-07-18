@@ -236,6 +236,67 @@ app.put("/api/change-password/:id", async (req, res) => {
   }
 });
 
+// ── Traffic data routes ──────────────────────────────────────────────────────
+
+// In-memory store (persists for the lifetime of the process)
+let trafficData = [
+  { id: 1, road: "Main Road",       vehicles: 120, avgSpeed: 45, status: "Moderate", congestionLevel: 62 },
+  { id: 2, road: "Highway Road",    vehicles: 200, avgSpeed: 80, status: "Heavy",    congestionLevel: 88 },
+  { id: 3, road: "City Road",       vehicles: 150, avgSpeed: 35, status: "Moderate", congestionLevel: 71 },
+  { id: 4, road: "Ring Road",       vehicles: 180, avgSpeed: 55, status: "Heavy",    congestionLevel: 82 },
+  { id: 5, road: "Express Way",     vehicles: 95,  avgSpeed: 90, status: "Light",    congestionLevel: 38 },
+  { id: 6, road: "North Connector", vehicles: 135, avgSpeed: 42, status: "Moderate", congestionLevel: 67 },
+];
+let nextTrafficId = 7;
+
+app.get("/api/traffic", (req, res) => {
+  res.json({ success: true, data: trafficData, total: trafficData.length });
+});
+
+app.post("/api/traffic", (req, res) => {
+  const { road, vehicles, avgSpeed, status, congestionLevel } = req.body;
+  if (!road) {
+    return res.status(400).json({ success: false, message: "Road name is required" });
+  }
+  const record = {
+    id: nextTrafficId++,
+    road,
+    vehicles: vehicles ?? 0,
+    avgSpeed: avgSpeed ?? 0,
+    status: status ?? "Light",
+    congestionLevel: congestionLevel ?? 0,
+  };
+  trafficData.push(record);
+  res.status(201).json({ success: true, data: record });
+});
+
+app.delete("/api/traffic/:id", (req, res) => {
+  const id = parseInt(req.params.id, 10);
+  const idx = trafficData.findIndex((r) => r.id === id);
+  if (idx === -1) {
+    return res.status(404).json({ success: false, message: "Record not found" });
+  }
+  const removed = trafficData.splice(idx, 1)[0];
+  res.json({ success: true, data: removed });
+});
+
+// ── Admin user list ──────────────────────────────────────────────────────────
+
+app.get("/api/users", async (req, res) => {
+  // Return demo accounts; supplement with DB users if available
+  const demoList = DEMO_ACCOUNTS.map(({ id, name, email, role }) => ({ id, name, email, role, source: "demo" }));
+  try {
+    const result = await pool.query("SELECT id, name, email, created_at FROM users ORDER BY id");
+    const dbList = result.rows.map((u) => ({ ...u, role: "user", source: "db" }));
+    return res.json({ success: true, users: [...demoList, ...dbList] });
+  } catch {
+    // DB not available — return demo accounts only
+    return res.json({ success: true, users: demoList });
+  }
+});
+
+// ── Health ───────────────────────────────────────────────────────────────────
+
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok" });
 });

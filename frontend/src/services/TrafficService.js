@@ -1,7 +1,6 @@
 import axios from "axios";
 
-const API_URL =
-  "http://localhost:8080/api/traffic";
+const API_URL = "/api/traffic";
 
 const TrafficService = {
   getAllTrafficData: () => {
@@ -13,9 +12,7 @@ const TrafficService = {
   },
 
   deleteTrafficData: (id) => {
-    return axios.delete(
-      `${API_URL}/${id}`
-    );
+    return axios.delete(`${API_URL}/${id}`);
   },
 };
 
