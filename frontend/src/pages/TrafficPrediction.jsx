@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
+import { useSearchParams } from "react-router-dom";
 
 // ── Road catalogue ─────────────────────────────────────────────────────────────
 const ROADS = [
@@ -174,6 +175,8 @@ export default function TrafficPrediction() {
   const [horizon, setHorizon] = useState(6);
   const [running, setRunning] = useState(false);
   const [forecast, setForecast] = useState(null);
+  const [searchParams] = useSearchParams();
+  const [locInfo, setLocInfo] = useState(null);
 
   const DAYS = [0,1,2,3,4,5,6];
 
@@ -206,6 +209,34 @@ export default function TrafficPrediction() {
   // Auto-run on road change
   useEffect(() => { runPrediction(); }, [selectedRoad, refHour, refDay, horizon]);
 
+  // Pre-select road from URL param (?road=Road+Name)
+  useEffect(() => {
+    const name = searchParams.get("road");
+    if (name) {
+      const found = ROADS.find(r => r.name === name);
+      if (found) setSelectedRoad(found);
+    }
+  }, []); // eslint-disable-line
+
+  // Geolocation banner (read from sessionStorage cache populated by Dashboard)
+  useEffect(() => {
+    const cached = sessionStorage.getItem("_tpLoc");
+    if (cached) { try { setLocInfo(JSON.parse(cached)); } catch {} return; }
+    if (!navigator.geolocation) return;
+    navigator.geolocation.getCurrentPosition(async pos => {
+      const { latitude: lat, longitude: lon } = pos.coords;
+      try {
+        const geoRes = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`);
+        const geo = await geoRes.json();
+        const city = geo.address?.city || geo.address?.town || geo.address?.village || geo.address?.county || "Your area";
+        const country = geo.address?.country_code?.toUpperCase() || "";
+        const info = { city, country, lat, lon };
+        setLocInfo(info);
+        sessionStorage.setItem("_tpLoc", JSON.stringify(info));
+      } catch {}
+    }, () => {}, { timeout: 9000 });
+  }, []); // eslint-disable-line
+
   const peak = forecast ? forecast.points.reduce((a, b) => b.cong > a.cong ? b : a) : null;
   const trough = forecast ? forecast.points.reduce((a, b) => b.cong < a.cong ? b : a) : null;
 
@@ -215,12 +246,26 @@ export default function TrafficPrediction() {
       <div style={{ padding: "24px 32px", backgroundColor: "#080d1a", minHeight: "100vh" }}>
 
         {/* ── Header ── */}
-        <div style={{ marginBottom: 24 }}>
+        <div style={{ marginBottom: locInfo ? 14 : 24 }}>
           <h1 style={{ margin: 0, color: "white" }}>Congestion Prediction</h1>
           <p style={{ margin: "4px 0 0", color: "rgba(255,255,255,0.5)", fontSize: 14 }}>
             Time-aware forecasting model · predicts 1–6 hours ahead · confidence-scored per hour
           </p>
         </div>
+
+        {/* ── Location banner ── */}
+        {locInfo && (
+          <div style={{ background: "rgba(139,92,246,0.08)", border: "1px solid rgba(139,92,246,0.2)", borderRadius: 10, padding: "10px 18px", marginBottom: 20, display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
+            <span style={{ fontSize: 16 }}>📍</span>
+            <div style={{ fontSize: 12.5, color: "rgba(255,255,255,0.75)" }}>
+              Showing forecasts for roads near <strong style={{ color: "white" }}>{locInfo.city}{locInfo.country ? `, ${locInfo.country}` : ""}</strong>
+              {locInfo.temp !== undefined && (
+                <span style={{ marginLeft: 10, color: "rgba(255,255,255,0.45)" }}>· {locInfo.temp}°C currently</span>
+              )}
+            </div>
+            <div style={{ marginLeft: "auto", fontSize: 11, color: "rgba(139,92,246,0.7)" }}>Select a road below to forecast</div>
+          </div>
+        )}
 
         {/* ── Controls ── */}
         <div style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 12, padding: "20px 24px", marginBottom: 20 }}>

@@ -2,6 +2,13 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import Navbar from "../components/Navbar";
 import { useNavigate } from "react-router-dom";
 
+// ── Weather icon map (WMO codes) ──────────────────────────────────────────────
+const WMO_ICONS = {
+  0:"☀️",1:"🌤️",2:"⛅",3:"☁️",45:"🌫️",48:"🌫️",
+  51:"🌦️",53:"🌦️",55:"🌦️",61:"🌧️",63:"🌧️",65:"⛈️",
+  71:"🌨️",73:"🌨️",75:"❄️",80:"🌧️",81:"🌧️",82:"⛈️",95:"⛈️",99:"⛈️",
+};
+
 // ── Road data ─────────────────────────────────────────────────────────────────
 const ALL_ROADS = [
   "Downtown Main Street", "North Ring Road", "East Highway I-42",
@@ -256,6 +263,7 @@ export default function Dashboard() {
   const [now, setNow] = useState(new Date());
   const [showIncPanel, setShowIncPanel] = useState(false);
   const toastTimers = useRef({});
+  const [locInfo, setLocInfo] = useState(null);
 
   const spawnIncident = useCallback((roads) => {
     const inc = makeIncident(roads);
@@ -318,6 +326,32 @@ export default function Dashboard() {
     }, 1000);
     return () => clearInterval(t);
   }, [spawnIncident]);
+
+  // Geolocation + weather (cached in sessionStorage)
+  useEffect(() => {
+    const cached = sessionStorage.getItem("_tpLoc");
+    if (cached) { try { setLocInfo(JSON.parse(cached)); } catch {} return; }
+    if (!navigator.geolocation) return;
+    navigator.geolocation.getCurrentPosition(async pos => {
+      const { latitude: lat, longitude: lon } = pos.coords;
+      try {
+        const [geoRes, wxRes] = await Promise.all([
+          fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`),
+          fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code,wind_speed_10m&timezone=auto`),
+        ]);
+        const geo = await geoRes.json();
+        const wx  = await wxRes.json();
+        const city    = geo.address?.city || geo.address?.town || geo.address?.village || geo.address?.county || "Your area";
+        const country = geo.address?.country_code?.toUpperCase() || "";
+        const temp    = Math.round(wx.current?.temperature_2m ?? 0);
+        const code    = wx.current?.weather_code ?? 0;
+        const wind    = Math.round(wx.current?.wind_speed_10m ?? 0);
+        const info = { city, country, temp, code, wind, lat, lon };
+        setLocInfo(info);
+        sessionStorage.setItem("_tpLoc", JSON.stringify(info));
+      } catch {}
+    }, () => {}, { timeout: 9000 });
+  }, []);
 
   // Compute stats
   const avgCong   = Math.round(roads.reduce((s, r) => s + r.congestion, 0) / roads.length);
@@ -438,6 +472,36 @@ export default function Dashboard() {
           </div>
         )}
 
+        {/* ── Location / Weather Banner ── */}
+        {locInfo && (
+          <div style={{ background: "white", border: "1px solid #e5e7eb", borderRadius: 12, padding: "14px 20px", marginBottom: 18, display: "flex", alignItems: "center", gap: 20, flexWrap: "wrap" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+              <span style={{ fontSize: 20 }}>📍</span>
+              <div>
+                <div style={{ fontSize: 13, fontWeight: 700, color: "#0f172a" }}>
+                  {locInfo.city}{locInfo.country ? `, ${locInfo.country}` : ""}
+                </div>
+                <div style={{ fontSize: 11, color: "#6b7280" }}>Your detected location</div>
+              </div>
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, borderLeft: "1px solid #e5e7eb", paddingLeft: 20 }}>
+              <span style={{ fontSize: 26 }}>{WMO_ICONS[locInfo.code] || "🌡️"}</span>
+              <div>
+                <div style={{ fontSize: 16, fontWeight: 800, color: "#0f172a" }}>{locInfo.temp}°C</div>
+                <div style={{ fontSize: 11, color: "#6b7280" }}>💨 {locInfo.wind} km/h wind</div>
+              </div>
+            </div>
+            <div style={{ marginLeft: "auto", display: "flex", gap: 8, flexWrap: "wrap" }}>
+              <button onClick={() => navigate(`/route`)} style={{ padding: "7px 14px", background: "#eff6ff", border: "1px solid #bfdbfe", borderRadius: 8, color: "#1d4ed8", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>
+                🗺️ Plan Route
+              </button>
+              <button onClick={() => navigate("/prediction")} style={{ padding: "7px 14px", background: "#fdf4ff", border: "1px solid #e9d5ff", borderRadius: 8, color: "#7e22ce", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>
+                📈 Predict Traffic
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* ── KPI Row ── */}
         <div style={{ display: "flex", gap: 14, marginBottom: 20, flexWrap: "wrap" }}>
           {[
@@ -473,7 +537,7 @@ export default function Dashboard() {
                 {top5.map((r, i) => {
                   const roadIncs = incidents.filter(inc => inc.road === r.name);
                   return (
-                    <div key={r.name} style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                    <div key={r.name} onClick={() => navigate(`/prediction?road=${encodeURIComponent(r.name)}`)} title={`View prediction for ${r.name}`} style={{ display: "flex", alignItems: "center", gap: 12, cursor: "pointer", borderRadius: 8, padding: "4px 6px", margin: "-4px -6px", transition: "background 0.15s" }} onMouseEnter={e => e.currentTarget.style.background="#f8fafc"} onMouseLeave={e => e.currentTarget.style.background="transparent"}>
                       <div style={{ width: 22, height: 22, borderRadius: 99, background: i === 0 ? "#fef2f2" : i === 1 ? "#fff7ed" : "#f8fafc", color: i === 0 ? "#dc2626" : i === 1 ? "#ea580c" : "#94a3b8", fontSize: 11, fontWeight: 800, display: "flex", alignItems: "center", justifyContent: "center" }}>
                         {i + 1}
                       </div>
