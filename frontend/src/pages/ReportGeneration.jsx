@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Navbar from "../components/Navbar";
 
 // ── Road data (shared model) ───────────────────────────────────────────────────
 const ALL_ROADS = [
@@ -257,7 +256,7 @@ export default function ReportGeneration() {
 
   return (
     <>
-      <Navbar />
+      
       <div style={{ padding: "24px 32px", backgroundColor: "#080d1a", minHeight: "100vh" }}>
 
         {/* Header */}

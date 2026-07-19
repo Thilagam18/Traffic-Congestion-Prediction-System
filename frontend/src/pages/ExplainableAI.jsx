@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Navbar from "../components/Navbar";
 
 // ── Road catalogue ─────────────────────────────────────────────────────────────
 const ROADS = [
@@ -195,7 +194,7 @@ export default function ExplainableAI() {
 
   return (
     <>
-      <Navbar />
+      
       <style>{`
         @keyframes fadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
         @keyframes glow { 0%,100% { box-shadow:0 0 20px rgba(139,92,246,0.15); } 50% { box-shadow:0 0 40px rgba(139,92,246,0.3); } }

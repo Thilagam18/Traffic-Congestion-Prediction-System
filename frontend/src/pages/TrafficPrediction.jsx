@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Navbar from "../components/Navbar";
 import { useSearchParams } from "react-router-dom";
 
 // ── Road catalogue ─────────────────────────────────────────────────────────────
@@ -242,7 +241,7 @@ export default function TrafficPrediction() {
 
   return (
     <>
-      <Navbar />
+      
       <div style={{ padding: "24px 32px", backgroundColor: "#080d1a", minHeight: "100vh" }}>
 
         {/* ── Header ── */}

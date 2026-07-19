@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import Navbar from "../components/Navbar";
 
 function Glass({ children, style = {} }) {
   return (
@@ -125,7 +124,7 @@ export default function EmergencyVehicle() {
 
   return (
     <>
-      <Navbar />
+      
       <style>{`
         select option{background:#1a1f2e;color:white}
         @keyframes pulse-ring{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,0.4)}50%{box-shadow:0 0 0 12px rgba(239,68,68,0)}}

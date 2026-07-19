@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Navbar from "../components/Navbar";
 
 function Glass({ children, style = {} }) {
   return (
@@ -107,7 +106,7 @@ export default function IncidentReporting() {
 
   return (
     <>
-      <Navbar />
+      
       <style>{`select option,textarea{background:#1a1f2e;color:white} textarea::placeholder,input::placeholder{color:rgba(255,255,255,0.25)} @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}`}</style>
       <div style={S.page}>
         {/* Header */}

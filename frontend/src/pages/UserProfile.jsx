@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Navbar from "../components/Navbar";
 
 function initials(name) {
   if (!name) return "?";
@@ -179,7 +178,7 @@ export default function UserProfile() {
 
   return (
     <>
-      <Navbar />
+      
       <Toast msg={toast.msg} type={toast.type} onClose={hideToast} />
 
       <div style={{ padding: "28px 32px", backgroundColor: "#080d1a", minHeight: "100vh" }}>

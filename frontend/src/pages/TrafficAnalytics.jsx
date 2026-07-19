@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Navbar from "../components/Navbar";
 
 // ── Data ─────────────────────────────────────────────────────────────────────
 
@@ -341,7 +340,7 @@ export default function TrafficAnalytics() {
 
   return (
     <>
-      <Navbar />
+      
       <div style={{ padding: "24px 32px", backgroundColor: "#f8fafc", minHeight: "100vh" }}>
 
         {/* Header */}

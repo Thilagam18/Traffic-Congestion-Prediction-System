@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Navbar from "../components/Navbar";
 
 function Glass({ children, style = {} }) {
   return (
@@ -138,7 +137,7 @@ export default function RouteComparison() {
 
   return (
     <>
-      <Navbar />
+      
       <style>{`input::placeholder{color:rgba(255,255,255,0.25)} select option{background:#1a1f2e;color:white} @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}`}</style>
       <div style={S.page}>
         <div style={{ marginBottom:28 }}>

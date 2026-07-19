@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Navbar from "../components/Navbar";
 
 // ── Full 20-road network (all pre-loaded) ─────────────────────────────────────
 const ALL_ROADS = [
@@ -197,7 +196,7 @@ export default function TrafficManagement() {
 
   return (
     <>
-      <Navbar />
+      
       <div style={{ padding: "24px 32px", backgroundColor: "#f8fafc", minHeight: "100vh" }}>
 
         {/* Header */}

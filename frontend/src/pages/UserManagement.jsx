@@ -1,5 +1,4 @@
 import React, { useState, useMemo, useEffect } from "react";
-import Navbar from "../components/Navbar";
 
 const ROLE_META = {
   Admin:   { color: "#a78bfa", bg: "rgba(139,92,246,0.15)", border: "rgba(139,92,246,0.3)", icon: "🛡️" },
@@ -90,7 +89,7 @@ export default function UserManagement() {
       `}</style>
 
       <div style={{ background: "#0a0f1e", minHeight: "100vh", fontFamily: "system-ui, -apple-system, sans-serif" }}>
-        <Navbar />
+        
 
         <div style={{ maxWidth: 1200, margin: "0 auto", padding: "32px 24px", animation: "fadeIn 0.4s ease" }}>
 

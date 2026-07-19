@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-import Navbar from "../components/Navbar";
 
 // ── World roads across major cities ───────────────────────────────────────────
 const WORLD_ROADS = [
@@ -553,7 +552,7 @@ export default function RealTimeMonitoring() {
 
   return (
     <>
-      <Navbar />
+      
       <style>{`
         .th-btn { background:none;border:none;cursor:pointer;color:inherit;font-weight:700;font-size:11px;padding:0;display:flex;align-items:center;gap:3px;white-space:nowrap; }
         .road-row:hover { background:#f8fafc !important; cursor: pointer; }

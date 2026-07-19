@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-import Navbar from "../components/Navbar";
 
 delete L.Icon.Default.prototype._getIconUrl;
 
@@ -428,7 +427,7 @@ export default function RouteOptimization() {
 
   return (
     <>
-      <Navbar />
+      
       <style>{`
         @keyframes navRing {
           0%   { transform: scale(1);   opacity: 0.8; }

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Navbar from "../components/Navbar";
 
 const BASE_ROADS = [
   { road: "Main Road",       vehicles: 120, trend: +8,  peak: 195 },
@@ -78,7 +77,7 @@ export default function TrafficCharts() {
       `}</style>
 
       <div style={{ background: "#0a0f1e", minHeight: "100vh", fontFamily: "system-ui, -apple-system, sans-serif" }}>
-        <Navbar />
+        
 
         <div style={{ maxWidth: 1100, margin: "0 auto", padding: "32px 24px", animation: "fadeIn 0.4s ease" }}>
 

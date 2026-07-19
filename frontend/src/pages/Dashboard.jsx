@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import Navbar from "../components/Navbar";
 import { useNavigate } from "react-router-dom";
 
 // ── Weather icon map (WMO codes) ──────────────────────────────────────────────
@@ -378,7 +377,7 @@ export default function Dashboard() {
 
   return (
     <>
-      <Navbar />
+      
 
       {/* ── Toast stack ── */}
       <style>{`

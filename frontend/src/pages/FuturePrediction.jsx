@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Navbar from "../components/Navbar";
 
 const ROADS = [
   { name: "Market District Road",    baseLoad: 0.78, tag: "Commercial"  },
@@ -173,7 +172,7 @@ export default function FuturePrediction() {
 
   return (
     <>
-      <Navbar />
+      
       <style>{`select option { background:#1a1f2e; color:white; } @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}`}</style>
       <div style={S.page}>
         {/* Header */}
