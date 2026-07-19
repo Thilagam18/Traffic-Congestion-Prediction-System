@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 
-// ── Navigation groups ──────────────────────────────────────────────────────────
 const NAV_GROUPS = [
   {
     label: "Core",
@@ -14,41 +13,40 @@ const NAV_GROUPS = [
   {
     label: "AI & Prediction",
     links: [
-      { to: "/prediction", label: "Prediction",  icon: "📈" },
-      { to: "/explain",    label: "Explain AI",  icon: "🧠" },
-      { to: "/future",     label: "Future",      icon: "🔮" },
-      { to: "/ml-dashboard", label: "ML Model", icon: "🤖" },
+      { to: "/prediction",  label: "Prediction",  icon: "📈" },
+      { to: "/explain",     label: "Explain AI",  icon: "🧠" },
+      { to: "/future",      label: "Future",      icon: "🔮" },
+      { to: "/ml-dashboard",label: "ML Model",   icon: "🤖" },
     ],
   },
   {
     label: "Routes & Safety",
     links: [
-      { to: "/route",      label: "Route Opt.",  icon: "🗺️" },
-      { to: "/compare",    label: "Compare",     icon: "🔀" },
-      { to: "/safety",     label: "Safety Index",icon: "🛡️" },
-      { to: "/emergency",  label: "Emergency",   icon: "🚨" },
+      { to: "/route",     label: "Route Opt.",  icon: "🗺️" },
+      { to: "/compare",   label: "Compare",     icon: "🔀" },
+      { to: "/safety",    label: "Safety Index",icon: "🛡️" },
+      { to: "/emergency", label: "Emergency",   icon: "🚨" },
     ],
   },
   {
     label: "Smart City",
     links: [
-      { to: "/smart-city", label: "City Analytics", icon: "🏙️" },
-      { to: "/analytics",  label: "Analytics",      icon: "📊" },
-      { to: "/charts",     label: "Charts",         icon: "📉" },
-      { to: "/carbon",     label: "Carbon",         icon: "🌿" },
+      { to: "/smart-city",label: "City Analytics",icon: "🏙️" },
+      { to: "/analytics", label: "Analytics",    icon: "📊" },
+      { to: "/charts",    label: "Charts",       icon: "📉" },
+      { to: "/carbon",    label: "Carbon",       icon: "🌿" },
     ],
   },
   {
     label: "Services",
     links: [
-      { to: "/incidents",  label: "Incidents",  icon: "📢" },
-      { to: "/parking",    label: "Parking",    icon: "🅿️" },
-      { to: "/reports",    label: "Reports",    icon: "📋" },
+      { to: "/incidents", label: "Incidents",  icon: "📢" },
+      { to: "/parking",   label: "Parking",    icon: "🅿️" },
+      { to: "/reports",   label: "Reports",    icon: "📋" },
     ],
   },
 ];
 
-// Flat list for active detection
 const ALL_LINKS = NAV_GROUPS.flatMap(g => g.links);
 
 function getUser() {
@@ -60,25 +58,150 @@ function initials(name) {
   return name.split(" ").map(w => w[0]).join("").toUpperCase().slice(0, 2);
 }
 
-export default function Navbar() {
-  const location = useLocation();
-  const [userOpen, setUserOpen] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const dropRef = useRef(null);
-  const stored = getUser();
-  const roleLabel = stored.role === "admin" ? "Administrator" : stored.role === "analyst" ? "Traffic Analyst" : stored.role ? stored.role : "Traffic Administrator";
-  const USER = { name: stored.name || FALLBACK.name, email: stored.email || FALLBACK.email, role: roleLabel };
+// ── Notification Bell ─────────────────────────────────────────────────────────
+function NotificationBell() {
+  const [open, setOpen]         = useState(false);
+  const [notifs, setNotifs]     = useState([]);
+  const [unread, setUnread]     = useState(0);
+  const [loading, setLoading]   = useState(false);
+  const ref = useRef(null);
+
+  const load = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/notifications");
+      const data = await res.json();
+      if (data.success) { setNotifs(data.notifications); setUnread(data.unreadCount); }
+    } catch {} finally { setLoading(false); }
+  };
+
+  useEffect(() => { load(); const t = setInterval(load, 30000); return () => clearInterval(t); }, []);
 
   useEffect(() => {
-    function handleClick(e) {
-      if (dropRef.current && !dropRef.current.contains(e.target)) setUserOpen(false);
-    }
+    function handleClick(e) { if (ref.current && !ref.current.contains(e.target)) setOpen(false); }
     document.addEventListener("mousedown", handleClick);
     return () => document.removeEventListener("mousedown", handleClick);
   }, []);
 
-  // Find active group
-  const activeLink = ALL_LINKS.find(l => location.pathname === l.to);
+  const markRead = async (id) => {
+    await fetch(`/api/notifications/${id}/read`, { method: "PUT" });
+    setNotifs(prev => prev.map(n => n.id === id ? { ...n, read: true } : n));
+    setUnread(prev => Math.max(0, prev - 1));
+  };
+
+  const markAllRead = async () => {
+    await fetch("/api/notifications/read-all", { method: "PUT" });
+    setNotifs(prev => prev.map(n => ({ ...n, read: true })));
+    setUnread(0);
+  };
+
+  const severityColor = (s) => s === "High" || s === "Critical" ? "#ef4444" : s === "Medium" ? "#f59e0b" : "#60a5fa";
+  const timeAgo = (iso) => {
+    const diff = Date.now() - new Date(iso).getTime();
+    const m = Math.floor(diff / 60000);
+    if (m < 1) return "just now";
+    if (m < 60) return `${m}m ago`;
+    const h = Math.floor(m / 60);
+    if (h < 24) return `${h}h ago`;
+    return `${Math.floor(h / 24)}d ago`;
+  };
+
+  return (
+    <div ref={ref} style={{ position: "relative" }}>
+      <button
+        onClick={() => { setOpen(o => !o); if (!open) load(); }}
+        style={{
+          position: "relative", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)",
+          borderRadius: 8, width: 36, height: 36, cursor: "pointer",
+          display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16,
+        }}
+        title="Notifications"
+      >
+        🔔
+        {unread > 0 && (
+          <div style={{
+            position: "absolute", top: -4, right: -4,
+            background: "#ef4444", color: "white", borderRadius: "50%",
+            width: 18, height: 18, fontSize: 10, fontWeight: 800,
+            display: "flex", alignItems: "center", justifyContent: "center",
+            border: "2px solid #0a0f1e",
+          }}>
+            {unread > 9 ? "9+" : unread}
+          </div>
+        )}
+      </button>
+
+      {open && (
+        <div style={{
+          position: "absolute", right: 0, top: "calc(100% + 8px)",
+          background: "#0f172a", border: "1px solid rgba(255,255,255,0.1)",
+          borderRadius: 14, width: 360, maxHeight: 440, overflow: "hidden",
+          boxShadow: "0 20px 60px rgba(0,0,0,0.6)", zIndex: 3000,
+          animation: "dropIn 0.2s ease", display: "flex", flexDirection: "column",
+        }}>
+          <div style={{ padding: "14px 16px", borderBottom: "1px solid rgba(255,255,255,0.06)", display: "flex", justifyContent: "space-between", alignItems: "center", flexShrink: 0 }}>
+            <div style={{ fontSize: 14, fontWeight: 700, color: "white" }}>
+              🔔 Notifications {unread > 0 && <span style={{ fontSize: 11, background: "#ef4444", color: "white", borderRadius: 99, padding: "1px 7px", marginLeft: 6 }}>{unread}</span>}
+            </div>
+            {unread > 0 && (
+              <button onClick={markAllRead} style={{ fontSize: 11, color: "#8b5cf6", background: "none", border: "none", cursor: "pointer", fontWeight: 600 }}>
+                Mark all read
+              </button>
+            )}
+          </div>
+
+          <div style={{ overflowY: "auto", flex: 1 }}>
+            {loading && notifs.length === 0 && (
+              <div style={{ padding: "24px", textAlign: "center", color: "rgba(255,255,255,0.4)", fontSize: 13 }}>Loading…</div>
+            )}
+            {!loading && notifs.length === 0 && (
+              <div style={{ padding: "24px", textAlign: "center", color: "rgba(255,255,255,0.4)", fontSize: 13 }}>
+                <div style={{ fontSize: 28, marginBottom: 8 }}>✅</div>
+                No notifications
+              </div>
+            )}
+            {notifs.map(n => (
+              <div
+                key={n.id}
+                onClick={() => !n.read && markRead(n.id)}
+                style={{
+                  padding: "12px 16px", borderBottom: "1px solid rgba(255,255,255,0.04)",
+                  cursor: n.read ? "default" : "pointer",
+                  background: n.read ? "transparent" : "rgba(139,92,246,0.06)",
+                  transition: "background 0.15s",
+                }}
+              >
+                <div style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
+                  <div style={{ width: 8, height: 8, borderRadius: "50%", background: n.read ? "transparent" : severityColor(n.severity), flexShrink: 0, marginTop: 5 }} />
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ fontSize: 13, fontWeight: n.read ? 500 : 700, color: n.read ? "rgba(255,255,255,0.55)" : "white", marginBottom: 3 }}>{n.title}</div>
+                    <div style={{ fontSize: 12, color: "rgba(255,255,255,0.4)", lineHeight: 1.4 }}>{n.message}</div>
+                    <div style={{ fontSize: 11, color: "rgba(255,255,255,0.25)", marginTop: 4 }}>{timeAgo(n.createdAt)}</div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default function Navbar() {
+  const location = useLocation();
+  const [userOpen, setUserOpen]   = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const dropRef = useRef(null);
+  const stored  = getUser();
+  const roleLabel = stored.role === "admin" ? "Administrator" : stored.role === "analyst" ? "Traffic Analyst" : stored.role ? stored.role : "Traffic Administrator";
+  const USER = { name: stored.name || FALLBACK.name, email: stored.email || FALLBACK.email, role: roleLabel };
+
+  useEffect(() => {
+    function handleClick(e) { if (dropRef.current && !dropRef.current.contains(e.target)) setUserOpen(false); }
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, []);
 
   return (
     <>
@@ -119,82 +242,87 @@ export default function Navbar() {
           ))}
         </div>
 
-        {/* User menu */}
-        <div ref={dropRef} style={{ position:"relative", flexShrink:0 }}>
-          <button
-            onClick={() => setUserOpen(o => !o)}
-            style={{
-              display:"flex", alignItems:"center", gap:8,
-              background: userOpen ? "rgba(255,255,255,0.08)" : "transparent",
-              border:"1px solid rgba(255,255,255,0.12)",
-              borderRadius:8, padding:"5px 10px 5px 6px",
-              cursor:"pointer", color:"white",
-            }}
-          >
-            <div style={{
-              width:30, height:30, borderRadius:"50%",
-              background:"linear-gradient(135deg,#8b5cf6,#3b82f6)",
-              display:"flex", alignItems:"center", justifyContent:"center",
-              fontSize:11, fontWeight:800, color:"white", flexShrink:0,
-            }}>
-              {initials(USER.name)}
-            </div>
-            <div style={{ textAlign:"left", lineHeight:1.3 }}>
-              <div style={{ fontSize:11, fontWeight:700, color:"white" }}>{USER.name.split(" ")[0]}</div>
-              <div style={{ fontSize:9, color:"rgba(139,92,246,0.8)", textTransform:"capitalize" }}>{stored.role || "admin"}</div>
-            </div>
-            <svg width={12} height={12} viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth={2.5} strokeLinecap="round"
-              style={{ transform:userOpen?"rotate(180deg)":"rotate(0deg)", transition:"transform 0.2s", marginLeft:2 }}>
-              <polyline points="6 9 12 15 18 9" />
-            </svg>
-          </button>
+        {/* Right side: notification bell + user menu */}
+        <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
+          <NotificationBell />
 
-          {userOpen && (
-            <div style={{
-              position:"absolute", right:0, top:"calc(100% + 8px)",
-              background:"#0f172a", border:"1px solid rgba(255,255,255,0.1)",
-              borderRadius:12, minWidth:220, boxShadow:"0 16px 40px rgba(0,0,0,0.5)",
-              overflow:"hidden", zIndex:2000, animation:"dropIn 0.2s ease",
-            }}>
-              <div style={{ padding:"14px 16px", background:"rgba(139,92,246,0.1)", borderBottom:"1px solid rgba(255,255,255,0.06)" }}>
-                <div style={{ display:"flex", alignItems:"center", gap:10 }}>
-                  <div style={{ width:38, height:38, borderRadius:"50%", background:"linear-gradient(135deg,#8b5cf6,#3b82f6)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:13, fontWeight:800, color:"white" }}>
-                    {initials(USER.name)}
-                  </div>
-                  <div>
-                    <div style={{ fontSize:13, fontWeight:700, color:"white" }}>{USER.name}</div>
-                    <div style={{ fontSize:11, color:"rgba(255,255,255,0.4)" }}>{USER.email}</div>
-                  </div>
-                </div>
-                <div style={{ marginTop:8, padding:"3px 8px", background:"rgba(139,92,246,0.2)", borderRadius:99, display:"inline-block" }}>
-                  <span style={{ fontSize:10, fontWeight:600, color:"#c4b5fd" }}>🛡️ {USER.role}</span>
-                </div>
+          {/* User menu */}
+          <div ref={dropRef} style={{ position:"relative" }}>
+            <button
+              onClick={() => setUserOpen(o => !o)}
+              style={{
+                display:"flex", alignItems:"center", gap:8,
+                background: userOpen ? "rgba(255,255,255,0.08)" : "transparent",
+                border:"1px solid rgba(255,255,255,0.12)",
+                borderRadius:8, padding:"5px 10px 5px 6px",
+                cursor:"pointer", color:"white",
+              }}
+            >
+              <div style={{
+                width:30, height:30, borderRadius:"50%",
+                background:"linear-gradient(135deg,#8b5cf6,#3b82f6)",
+                display:"flex", alignItems:"center", justifyContent:"center",
+                fontSize:11, fontWeight:800, color:"white", flexShrink:0,
+              }}>
+                {initials(USER.name)}
               </div>
+              <div style={{ textAlign:"left", lineHeight:1.3 }}>
+                <div style={{ fontSize:11, fontWeight:700, color:"white" }}>{USER.name.split(" ")[0]}</div>
+                <div style={{ fontSize:9, color:"rgba(139,92,246,0.8)", textTransform:"capitalize" }}>{stored.role || "admin"}</div>
+              </div>
+              <svg width={12} height={12} viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth={2.5} strokeLinecap="round"
+                style={{ transform:userOpen?"rotate(180deg)":"rotate(0deg)", transition:"transform 0.2s", marginLeft:2 }}>
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </button>
 
-              {[
-                { icon:"👤", label:"My Profile",     to:"/profile" },
-                { icon:"📋", label:"Reports",         to:"/reports" },
-                { icon:"👥", label:"User Management", to:"/users" },
-              ].map(({ icon, label, to }) => (
-                <Link key={to} to={to} onClick={() => setUserOpen(false)} className="nav-dropdown-item" style={{
+            {userOpen && (
+              <div style={{
+                position:"absolute", right:0, top:"calc(100% + 8px)",
+                background:"#0f172a", border:"1px solid rgba(255,255,255,0.1)",
+                borderRadius:12, minWidth:220, boxShadow:"0 16px 40px rgba(0,0,0,0.5)",
+                overflow:"hidden", zIndex:2000, animation:"dropIn 0.2s ease",
+              }}>
+                <div style={{ padding:"14px 16px", background:"rgba(139,92,246,0.1)", borderBottom:"1px solid rgba(255,255,255,0.06)" }}>
+                  <div style={{ display:"flex", alignItems:"center", gap:10 }}>
+                    <div style={{ width:38, height:38, borderRadius:"50%", background:"linear-gradient(135deg,#8b5cf6,#3b82f6)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:13, fontWeight:800, color:"white" }}>
+                      {initials(USER.name)}
+                    </div>
+                    <div>
+                      <div style={{ fontSize:13, fontWeight:700, color:"white" }}>{USER.name}</div>
+                      <div style={{ fontSize:11, color:"rgba(255,255,255,0.4)" }}>{USER.email}</div>
+                    </div>
+                  </div>
+                  <div style={{ marginTop:8, padding:"3px 8px", background:"rgba(139,92,246,0.2)", borderRadius:99, display:"inline-block" }}>
+                    <span style={{ fontSize:10, fontWeight:600, color:"#c4b5fd" }}>🛡️ {USER.role}</span>
+                  </div>
+                </div>
+
+                {[
+                  { icon:"👤", label:"My Profile",     to:"/profile" },
+                  { icon:"📋", label:"Reports",         to:"/reports" },
+                  { icon:"👥", label:"User Management", to:"/users" },
+                ].map(({ icon, label, to }) => (
+                  <Link key={to} to={to} onClick={() => setUserOpen(false)} className="nav-dropdown-item" style={{
+                    display:"flex", alignItems:"center", gap:10,
+                    padding:"11px 16px", textDecoration:"none",
+                    color:"rgba(255,255,255,0.6)", fontSize:13, fontWeight:500,
+                    borderBottom:"1px solid rgba(255,255,255,0.04)",
+                  }}>
+                    <span style={{ fontSize:15 }}>{icon}</span> {label}
+                  </Link>
+                ))}
+
+                <Link to="/" onClick={() => { localStorage.removeItem("user"); setUserOpen(false); }} className="nav-dropdown-item" style={{
                   display:"flex", alignItems:"center", gap:10,
                   padding:"11px 16px", textDecoration:"none",
-                  color:"rgba(255,255,255,0.6)", fontSize:13, fontWeight:500,
-                  borderBottom:"1px solid rgba(255,255,255,0.04)",
+                  color:"#f87171", fontSize:13, fontWeight:600,
                 }}>
-                  <span style={{ fontSize:15 }}>{icon}</span> {label}
+                  <span style={{ fontSize:15 }}>🚪</span> Sign Out
                 </Link>
-              ))}
-
-              <Link to="/" onClick={() => { localStorage.removeItem("user"); setUserOpen(false); }} className="nav-dropdown-item" style={{
-                display:"flex", alignItems:"center", gap:10,
-                padding:"11px 16px", textDecoration:"none",
-                color:"#f87171", fontSize:13, fontWeight:600,
-              }}>
-                <span style={{ fontSize:15 }}>🚪</span> Sign Out
-              </Link>
-            </div>
-          )}
+              </div>
+            )}
+          </div>
         </div>
       </nav>
     </>
@@ -209,9 +337,7 @@ function NavGroup({ group, location }) {
   const activeLink = group.links.find(l => location.pathname === l.to);
 
   useEffect(() => {
-    function handleClick(e) {
-      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
-    }
+    function handleClick(e) { if (ref.current && !ref.current.contains(e.target)) setOpen(false); }
     document.addEventListener("mousedown", handleClick);
     return () => document.removeEventListener("mousedown", handleClick);
   }, []);

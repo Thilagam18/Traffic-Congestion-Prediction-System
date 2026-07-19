@@ -248,6 +248,97 @@ app.put("/api/change-password/:id", async (req, res) => {
   }
 });
 
+// ── Dashboard stats ──────────────────────────────────────────────────────────
+
+app.get("/api/stats", (req, res) => {
+  const roads = trafficData;
+  const avgCong = roads.length ? Math.round(roads.reduce((s, r) => s + r.congestionLevel, 0) / roads.length) : 0;
+  const totalVeh = roads.reduce((s, r) => s + r.vehicles, 0);
+  const avgSpeed = roads.length ? Math.round(roads.reduce((s, r) => s + r.avgSpeed, 0) / roads.length) : 0;
+  const severeRoads = roads.filter(r => r.congestionLevel >= 75).length;
+  res.json({
+    success: true,
+    stats: { totalRoads: roads.length, avgCongestion: avgCong, totalVehicles: totalVeh, avgSpeed, severeRoads }
+  });
+});
+
+// ── Notifications (in-memory) ─────────────────────────────────────────────────
+let notifications = [
+  { id: 1, type: "alert", severity: "High", title: "High Congestion Detected", message: "Market District Road is at 88% congestion.", road: "Market District Road", read: false, createdAt: new Date(Date.now() - 5 * 60000).toISOString() },
+  { id: 2, type: "info",  severity: "Low",  title: "Route Optimized",          message: "Alternative route via South Bypass is recommended.", road: "South Bypass Expressway", read: false, createdAt: new Date(Date.now() - 12 * 60000).toISOString() },
+  { id: 3, type: "alert", severity: "Medium", title: "Incident Reported",      message: "Road debris reported on East Highway I-42.", road: "East Highway I-42", read: true,  createdAt: new Date(Date.now() - 30 * 60000).toISOString() },
+  { id: 4, type: "info",  severity: "Low",  title: "System Update",             message: "Traffic sensors refreshed. All 20 roads are active.", road: null, read: true, createdAt: new Date(Date.now() - 60 * 60000).toISOString() },
+];
+let nextNotifId = 5;
+
+app.get("/api/notifications", (req, res) => {
+  res.json({ success: true, notifications, unreadCount: notifications.filter(n => !n.read).length });
+});
+
+app.put("/api/notifications/:id/read", (req, res) => {
+  const id = parseInt(req.params.id, 10);
+  const n = notifications.find(n => n.id === id);
+  if (n) n.read = true;
+  res.json({ success: true });
+});
+
+app.put("/api/notifications/read-all", (req, res) => {
+  notifications.forEach(n => n.read = true);
+  res.json({ success: true });
+});
+
+app.post("/api/notifications", (req, res) => {
+  const { type, severity, title, message, road } = req.body;
+  const n = { id: nextNotifId++, type, severity, title, message, road: road || null, read: false, createdAt: new Date().toISOString() };
+  notifications = [n, ...notifications].slice(0, 50);
+  res.status(201).json({ success: true, notification: n });
+});
+
+// ── Route history (in-memory, per session) ────────────────────────────────────
+let routeHistory = [];
+let nextRouteId = 1;
+
+app.get("/api/route-history", (req, res) => {
+  res.json({ success: true, routes: routeHistory.slice(0, 20) });
+});
+
+app.post("/api/route-history", (req, res) => {
+  const { source, destination, distanceKm, durationMin, trafficLevel } = req.body;
+  const entry = { id: nextRouteId++, source, destination, distanceKm, durationMin, trafficLevel, createdAt: new Date().toISOString() };
+  routeHistory = [entry, ...routeHistory].slice(0, 20);
+  res.status(201).json({ success: true, route: entry });
+});
+
+app.delete("/api/route-history/:id", (req, res) => {
+  const id = parseInt(req.params.id, 10);
+  routeHistory = routeHistory.filter(r => r.id !== id);
+  res.json({ success: true });
+});
+
+// ── Favorite routes (in-memory) ───────────────────────────────────────────────
+let favoriteRoutes = [];
+let nextFavId = 1;
+
+app.get("/api/favorites", (req, res) => {
+  res.json({ success: true, favorites: favoriteRoutes });
+});
+
+app.post("/api/favorites", (req, res) => {
+  const { source, destination, label } = req.body;
+  if (favoriteRoutes.find(f => f.source === source && f.destination === destination)) {
+    return res.status(409).json({ success: false, message: "Already in favorites." });
+  }
+  const f = { id: nextFavId++, source, destination, label: label || `${source} → ${destination}`, createdAt: new Date().toISOString() };
+  favoriteRoutes.push(f);
+  res.status(201).json({ success: true, favorite: f });
+});
+
+app.delete("/api/favorites/:id", (req, res) => {
+  const id = parseInt(req.params.id, 10);
+  favoriteRoutes = favoriteRoutes.filter(f => f.id !== id);
+  res.json({ success: true });
+});
+
 // ── Traffic data routes ──────────────────────────────────────────────────────
 
 // In-memory store (persists for the lifetime of the process)

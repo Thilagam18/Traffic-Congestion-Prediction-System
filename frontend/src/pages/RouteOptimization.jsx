@@ -5,6 +5,28 @@ import Navbar from "../components/Navbar";
 
 delete L.Icon.Default.prototype._getIconUrl;
 
+// ── Fuel & Carbon helpers ─────────────────────────────────────────────────────
+const VEHICLE_TYPES = [
+  { label: "Petrol Car",    emoji: "🚗", litresPer100: 8.5,  co2PerLitre: 2.31 },
+  { label: "Diesel Car",    emoji: "🚙", litresPer100: 6.5,  co2PerLitre: 2.68 },
+  { label: "Hybrid",        emoji: "⚡", litresPer100: 4.5,  co2PerLitre: 2.31 },
+  { label: "Electric (EV)", emoji: "🔋", litresPer100: 0,    co2PerLitre: 0, kwhPer100: 16, co2PerKwh: 0.233 },
+  { label: "Motorcycle",    emoji: "🏍️",litresPer100: 4.8,  co2PerLitre: 2.31 },
+  { label: "Van/SUV",       emoji: "🚐", litresPer100: 11.5, co2PerLitre: 2.68 },
+];
+
+function calcFuelCO2(distKm, vehicleIdx) {
+  const v = VEHICLE_TYPES[vehicleIdx];
+  if (v.kwhPer100) {
+    const kwh = (distKm / 100) * v.kwhPer100;
+    const co2 = kwh * v.co2PerKwh;
+    return { fuelLabel: `${kwh.toFixed(1)} kWh`, co2Kg: co2.toFixed(2), unit: "kWh" };
+  }
+  const litres = (distKm / 100) * v.litresPer100;
+  const co2 = litres * v.co2PerLitre;
+  return { fuelLabel: `${litres.toFixed(1)} L`, co2Kg: co2.toFixed(2), unit: "L" };
+}
+
 // ── Markers ───────────────────────────────────────────────────────────────────
 function makePin(color) {
   return L.divIcon({
@@ -244,6 +266,11 @@ export default function RouteOptimization() {
   const [error, setError]             = useState("");
   const [result, setResult]           = useState(null);
   const [mapStyle, setMapStyle]       = useState("road");
+  const [vehicleIdx, setVehicleIdx]   = useState(0);
+  const [favorites, setFavorites]     = useState([]);
+  const [recentRoutes, setRecentRoutes] = useState([]);
+  const [favMsg, setFavMsg]           = useState("");
+  const [showSidebar, setShowSidebar] = useState(false);
 
   // Navigation state
   const [navigating, setNavigating]     = useState(false);
@@ -252,6 +279,54 @@ export default function RouteOptimization() {
   const [geoError, setGeoError]         = useState("");
   const [locating, setLocating]         = useState(false);
   const watchIdRef = useRef(null);
+
+  // Load favorites and recent on mount
+  useEffect(() => {
+    fetch("/api/favorites").then(r => r.json()).then(d => { if (d.success) setFavorites(d.favorites); }).catch(() => {});
+    fetch("/api/route-history").then(r => r.json()).then(d => { if (d.success) setRecentRoutes(d.routes); }).catch(() => {});
+  }, []);
+
+  const saveFavorite = async () => {
+    if (!result) return;
+    try {
+      const res = await fetch("/api/favorites", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ source: source.trim(), destination: destination.trim() }),
+      });
+      const data = await res.json();
+      if (data.success) { setFavorites(prev => [...prev, data.favorite]); setFavMsg("⭐ Saved to favorites!"); }
+      else setFavMsg(data.message || "Already saved.");
+      setTimeout(() => setFavMsg(""), 2500);
+    } catch {}
+  };
+
+  const removeFavorite = async (id) => {
+    await fetch(`/api/favorites/${id}`, { method: "DELETE" });
+    setFavorites(prev => prev.filter(f => f.id !== id));
+  };
+
+  const saveToHistory = async (src, dst, distKm, durationMin, trafficLevel) => {
+    try {
+      const res = await fetch("/api/route-history", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ source: src, destination: dst, distanceKm: distKm, durationMin, trafficLevel }),
+      });
+      const data = await res.json();
+      if (data.success) setRecentRoutes(prev => [data.route, ...prev].slice(0, 20));
+    } catch {}
+  };
+
+  const clearHistory = async () => {
+    // Delete all history entries
+    for (const r of recentRoutes) {
+      await fetch(`/api/route-history/${r.id}`, { method: "DELETE" }).catch(() => {});
+    }
+    setRecentRoutes([]);
+  };
+
+  const fillRoute = (src, dst) => { setSource(src); setDestination(dst); setShowSidebar(false); };
 
   const handleFind = async () => {
     if (!source.trim() || !destination.trim()) { setError("Please enter both source and destination."); return; }
@@ -267,8 +342,11 @@ export default function RouteOptimization() {
       const distKm = routeData.distance / 1000;
       const traffic = predictTraffic(srcWeather.current.weather_code, dstWeather.current.weather_code, distKm);
       const steps = routeData.legs[0].steps;
-      setResult({ src, dst, routeData, coords, distKm, srcWeather, dstWeather, traffic, adjustedSeconds: routeData.duration * traffic.factor, steps });
+      const newResult = { src, dst, routeData, coords, distKm, srcWeather, dstWeather, traffic, adjustedSeconds: routeData.duration * traffic.factor, steps };
+      setResult(newResult);
       setCurrentStepIdx(0);
+      // Save to history
+      saveToHistory(source.trim(), destination.trim(), distKm.toFixed(1), Math.round(newResult.adjustedSeconds / 60), traffic.level);
     } catch (err) {
       setError(err.message || "An error occurred. Please try again.");
     } finally {
@@ -345,6 +423,8 @@ export default function RouteOptimization() {
   useEffect(() => () => { if (watchIdRef.current != null) navigator.geolocation.clearWatch(watchIdRef.current); }, []);
 
   const activeStep = result?.steps[currentStepIdx];
+  const fuel = result ? calcFuelCO2(result.distKm, vehicleIdx) : null;
+  const isFavorited = favorites.some(f => f.source === source.trim() && f.destination === destination.trim());
 
   return (
     <>
@@ -355,45 +435,122 @@ export default function RouteOptimization() {
           100% { transform: scale(2.5); opacity: 0; }
         }
       `}</style>
-      <div style={{ padding: "24px 32px", backgroundColor: "#080d1a", minHeight: "100vh" }}>
-        <h1 style={{ margin: "0 0 4px", color: "white" }}>Route Optimization</h1>
-        <p style={{ margin: "0 0 24px", color: "rgba(255,255,255,0.5)", fontSize: 14 }}>
-          Real-time routing · Live weather & traffic prediction · GPS turn-by-turn navigation
-        </p>
-
-        {/* Search bar */}
-        <div style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 12, padding: "20px 24px", marginBottom: 20, display: "flex", gap: 12, alignItems: "flex-end", flexWrap: "wrap" }}>
-          <div style={{ flex: 1, minWidth: 200 }}>
-            <label style={{ display: "block", fontSize: 12, fontWeight: 700, color: "rgba(255,255,255,0.75)", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.04em" }}>📍 Origin</label>
-            <div style={{ display: "flex", gap: 6 }}>
-              <input
-                type="text" placeholder="e.g. New York, USA or use 📍 button"
-                value={source} onChange={e => setSource(e.target.value)}
-                onKeyDown={e => e.key === "Enter" && handleFind()}
-                style={{ flex: 1, padding: "10px 14px", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, fontSize: 14, boxSizing: "border-box", background: "rgba(255,255,255,0.06)", color: "white" }}
-              />
-              <button
-                onClick={useMyLocation} disabled={locating} title="Use my current location"
-                style={{ padding: "10px 14px", background: locating ? "rgba(255,255,255,0.04)" : "rgba(37,99,235,0.15)", border: "1px solid rgba(37,99,235,0.3)", borderRadius: 8, cursor: locating ? "wait" : "pointer", fontSize: 16, flexShrink: 0 }}
-              >
-                {locating ? "⟳" : "📍"}
-              </button>
+      <div style={{ display: "flex", backgroundColor: "#080d1a", minHeight: "100vh" }}>
+        {/* ── Sidebar: Favorites + History ── */}
+        {showSidebar && (
+          <div style={{ width: 290, flexShrink: 0, background: "#0f172a", borderRight: "1px solid rgba(255,255,255,0.07)", overflowY: "auto", padding: "20px 16px" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
+              <div style={{ fontSize: 14, fontWeight: 700, color: "white" }}>⭐ Saved Routes</div>
+              <button onClick={() => setShowSidebar(false)} style={{ background: "none", border: "none", color: "rgba(255,255,255,0.4)", cursor: "pointer", fontSize: 18, lineHeight: 1 }}>✕</button>
+            </div>
+            <div style={{ marginBottom: 24 }}>
+              <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.4)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 10 }}>Favorites</div>
+              {favorites.length === 0 && <div style={{ fontSize: 12, color: "rgba(255,255,255,0.25)", textAlign: "center", padding: "16px 0" }}>No saved routes yet. Find a route and tap ☆ Save.</div>}
+              {favorites.map(f => (
+                <div key={f.id} onClick={() => fillRoute(f.source, f.destination)}
+                  style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 12px", borderRadius: 8, cursor: "pointer", marginBottom: 4, background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.05)" }}
+                  onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.07)"}
+                  onMouseLeave={e => e.currentTarget.style.background = "rgba(255,255,255,0.03)"}>
+                  <span>⭐</span>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ fontSize: 12, fontWeight: 600, color: "white", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{f.source}</div>
+                    <div style={{ fontSize: 11, color: "rgba(255,255,255,0.35)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>→ {f.destination}</div>
+                  </div>
+                  <button onClick={e => { e.stopPropagation(); removeFavorite(f.id); }} style={{ background: "none", border: "none", color: "rgba(255,255,255,0.3)", cursor: "pointer", fontSize: 13 }}>✕</button>
+                </div>
+              ))}
+            </div>
+            <div>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
+                <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.4)", textTransform: "uppercase", letterSpacing: "0.06em" }}>Recent Searches</div>
+                {recentRoutes.length > 0 && <button onClick={clearHistory} style={{ fontSize: 11, color: "#f87171", background: "none", border: "none", cursor: "pointer" }}>Clear all</button>}
+              </div>
+              {recentRoutes.length === 0 && <div style={{ fontSize: 12, color: "rgba(255,255,255,0.25)", textAlign: "center", padding: "16px 0" }}>No recent searches yet</div>}
+              {recentRoutes.slice(0, 10).map(r => (
+                <div key={r.id} onClick={() => fillRoute(r.source, r.destination)}
+                  style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 12px", borderRadius: 8, cursor: "pointer", marginBottom: 4 }}
+                  onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.06)"}
+                  onMouseLeave={e => e.currentTarget.style.background = "transparent"}>
+                  <span style={{ fontSize: 14 }}>🕐</span>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ fontSize: 12, fontWeight: 500, color: "rgba(255,255,255,0.75)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{r.source}</div>
+                    <div style={{ fontSize: 11, color: "rgba(255,255,255,0.35)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>→ {r.destination}</div>
+                    {r.distanceKm && <div style={{ fontSize: 10, color: "rgba(255,255,255,0.22)", marginTop: 2 }}>{r.distanceKm} km · {r.trafficLevel}</div>}
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
-          <div style={{ flex: 1, minWidth: 200 }}>
-            <label style={{ display: "block", fontSize: 12, fontWeight: 700, color: "rgba(255,255,255,0.75)", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.04em" }}>🏁 Destination</label>
-            <input
-              type="text" placeholder="e.g. Boston, USA"
-              value={destination} onChange={e => setDestination(e.target.value)}
-              onKeyDown={e => e.key === "Enter" && handleFind()}
-              style={{ width: "100%", padding: "10px 14px", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, fontSize: 14, boxSizing: "border-box", background: "rgba(255,255,255,0.06)", color: "white" }}
-            />
+        )}
+
+        <div style={{ flex: 1, padding: "24px 32px", overflow: "auto", minWidth: 0 }}>
+        {/* Header */}
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 12, marginBottom: 20 }}>
+          <div>
+            <h1 style={{ margin: "0 0 4px", color: "white" }}>Route Optimization</h1>
+            <p style={{ margin: 0, color: "rgba(255,255,255,0.5)", fontSize: 14 }}>
+              Real-time routing · Live weather &amp; traffic prediction · GPS turn-by-turn navigation
+            </p>
           </div>
-          <button
-            onClick={handleFind} disabled={loading}
-            style={{ padding: "10px 28px", backgroundColor: loading ? "#93c5fd" : "#1a73e8", color: "white", border: "none", borderRadius: 8, fontSize: 14, fontWeight: 700, cursor: loading ? "not-allowed" : "pointer", whiteSpace: "nowrap", boxShadow: loading ? "none" : "0 2px 6px rgba(26,115,232,0.4)" }}>
-            {loading ? "⏳ Analyzing…" : "🔍 Find Best Route"}
+          <button onClick={() => setShowSidebar(v => !v)}
+            style={{ display: "flex", alignItems: "center", gap: 8, padding: "8px 16px", background: showSidebar ? "rgba(139,92,246,0.2)" : "rgba(255,255,255,0.06)", border: `1px solid ${showSidebar ? "rgba(139,92,246,0.4)" : "rgba(255,255,255,0.1)"}`, borderRadius: 8, color: "white", cursor: "pointer", fontSize: 13, fontWeight: 600 }}>
+            {showSidebar ? "✕ Close Sidebar" : "⭐ Favorites & History"}
+            {(favorites.length > 0 || recentRoutes.length > 0) && !showSidebar && (
+              <span style={{ background: "#8b5cf6", color: "white", borderRadius: 99, fontSize: 10, fontWeight: 800, padding: "1px 7px" }}>
+                {favorites.length + recentRoutes.length}
+              </span>
+            )}
           </button>
+        </div>
+
+        {/* Search bar */}
+        <div style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 12, padding: "20px 24px", marginBottom: 16 }}>
+          <div style={{ display: "flex", gap: 12, alignItems: "flex-end", flexWrap: "wrap", marginBottom: result ? 12 : 0 }}>
+            <div style={{ flex: 1, minWidth: 200 }}>
+              <label style={{ display: "block", fontSize: 12, fontWeight: 700, color: "rgba(255,255,255,0.75)", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.04em" }}>📍 Origin</label>
+              <div style={{ display: "flex", gap: 6 }}>
+                <input
+                  type="text" placeholder="e.g. New York, USA or use 📍 button"
+                  value={source} onChange={e => setSource(e.target.value)}
+                  onKeyDown={e => e.key === "Enter" && handleFind()}
+                  style={{ flex: 1, padding: "10px 14px", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, fontSize: 14, boxSizing: "border-box", background: "rgba(255,255,255,0.06)", color: "white", outline: "none", fontFamily: "inherit" }}
+                />
+                <button onClick={useMyLocation} disabled={locating} title="Use my current location"
+                  style={{ padding: "10px 14px", background: locating ? "rgba(255,255,255,0.04)" : "rgba(37,99,235,0.15)", border: "1px solid rgba(37,99,235,0.3)", borderRadius: 8, cursor: locating ? "wait" : "pointer", fontSize: 16, flexShrink: 0 }}>
+                  {locating ? "⟳" : "📍"}
+                </button>
+              </div>
+            </div>
+            <div style={{ flex: 1, minWidth: 200 }}>
+              <label style={{ display: "block", fontSize: 12, fontWeight: 700, color: "rgba(255,255,255,0.75)", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.04em" }}>🏁 Destination</label>
+              <input
+                type="text" placeholder="e.g. Boston, USA"
+                value={destination} onChange={e => setDestination(e.target.value)}
+                onKeyDown={e => e.key === "Enter" && handleFind()}
+                style={{ width: "100%", padding: "10px 14px", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, fontSize: 14, boxSizing: "border-box", background: "rgba(255,255,255,0.06)", color: "white", outline: "none", fontFamily: "inherit" }}
+              />
+            </div>
+            <div style={{ minWidth: 160 }}>
+              <label style={{ display: "block", fontSize: 12, fontWeight: 700, color: "rgba(255,255,255,0.75)", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.04em" }}>🚗 Vehicle</label>
+              <select value={vehicleIdx} onChange={e => setVehicleIdx(parseInt(e.target.value))}
+                style={{ width: "100%", padding: "10px 10px", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, background: "rgba(255,255,255,0.06)", color: "white", fontSize: 13, fontFamily: "inherit", outline: "none" }}>
+                {VEHICLE_TYPES.map((v, i) => <option key={i} value={i} style={{ background: "#0f172a" }}>{v.emoji} {v.label}</option>)}
+              </select>
+            </div>
+            <button onClick={handleFind} disabled={loading}
+              style={{ padding: "10px 28px", backgroundColor: loading ? "#93c5fd" : "#1a73e8", color: "white", border: "none", borderRadius: 8, fontSize: 14, fontWeight: 700, cursor: loading ? "not-allowed" : "pointer", whiteSpace: "nowrap", boxShadow: loading ? "none" : "0 2px 6px rgba(26,115,232,0.4)" }}>
+              {loading ? "⏳ Analyzing…" : "🔍 Find Best Route"}
+            </button>
+          </div>
+          {result && (
+            <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
+              <button onClick={saveFavorite} disabled={isFavorited}
+                style={{ fontSize: 12, padding: "5px 14px", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, background: isFavorited ? "rgba(139,92,246,0.15)" : "rgba(255,255,255,0.04)", color: isFavorited ? "#c4b5fd" : "rgba(255,255,255,0.5)", cursor: isFavorited ? "default" : "pointer", fontWeight: 600 }}>
+                {isFavorited ? "⭐ Saved to Favorites" : "☆ Save This Route"}
+              </button>
+              {favMsg && <span style={{ fontSize: 12, color: "#4ade80", fontWeight: 600 }}>{favMsg}</span>}
+            </div>
+          )}
         </div>
 
         {(error || geoError) && (
@@ -449,6 +606,22 @@ export default function RouteOptimization() {
                   <div>🔀 Maneuvers: <strong>{result.steps.length - 1}</strong></div>
                 </div>
               </div>
+              {/* Fuel & Carbon card */}
+              {fuel && (
+                <div style={{ flex: 1, minWidth: 200, background: "rgba(34,197,94,0.08)", border: "1px solid rgba(34,197,94,0.2)", borderRadius: 10, padding: "16px 20px" }}>
+                  <div style={{ fontSize: 11, color: "rgba(34,197,94,0.8)", marginBottom: 8, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                    🌿 {VEHICLE_TYPES[vehicleIdx].emoji} Fuel & Carbon
+                  </div>
+                  <div style={{ fontSize: 13, color: "rgba(255,255,255,0.75)", lineHeight: 2.2 }}>
+                    <div>⛽ Fuel needed: <strong>{fuel.fuelLabel}</strong></div>
+                    <div>🌱 CO₂ emitted: <strong style={{ color: parseFloat(fuel.co2Kg) > 5 ? "#f87171" : "#4ade80" }}>{fuel.co2Kg} kg</strong></div>
+                    <div>🚘 Vehicle: <strong>{VEHICLE_TYPES[vehicleIdx].label}</strong></div>
+                  </div>
+                  <div style={{ marginTop: 10, padding: "6px 10px", background: "rgba(34,197,94,0.1)", borderRadius: 6, fontSize: 11, color: "rgba(34,197,94,0.8)" }}>
+                    {parseFloat(fuel.co2Kg) < 2 ? "🌟 Very eco-friendly route!" : parseFloat(fuel.co2Kg) < 5 ? "✅ Moderate carbon footprint" : "⚠️ Consider an EV or carpool"}
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Navigation controls */}
@@ -572,7 +745,8 @@ export default function RouteOptimization() {
             </div>
           </div>
         )}
-      </div>
+        </div>{/* /inner content div */}
+      </div>{/* /outer flex div */}
     </>
   );
 }

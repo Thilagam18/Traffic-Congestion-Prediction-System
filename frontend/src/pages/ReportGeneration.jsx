@@ -330,21 +330,36 @@ export default function ReportGeneration() {
                       Query: <em>"{submitted}"</em> · Generated {now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })} · Data live
                     </div>
                   </div>
-                  <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                  <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
                     {/* View toggle */}
                     <div style={{ display: "flex", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 8, padding: 3 }}>
                       {[["table","📋 Table"],["cards","🃏 Cards"]].map(([v, l]) => (
                         <button key={v} onClick={() => setViewMode(v)} style={{
                           padding: "5px 14px", borderRadius: 6, border: "none", fontSize: 12, fontWeight: 600,
-                          background: viewMode === v ? "#1e3a5f" : "transparent",
-                          color: viewMode === v ? "white" : "#6b7280", cursor: "pointer",
+                          background: viewMode === v ? "rgba(37,99,235,0.3)" : "transparent",
+                          color: viewMode === v ? "white" : "rgba(255,255,255,0.5)", cursor: "pointer",
                         }}>{l}</button>
                       ))}
                     </div>
                     <button
+                      onClick={() => {
+                        const roadsForExport = roads.map(r => {
+                          const s = getRoadStats(r);
+                          return [r.name, r.tag, `${s.cong}%`, s.vehicles, `${s.speed} km/h`, `${s.peakCong}%`, s.status, s.incidents].join(",");
+                        });
+                        const csv = ["Road Name,Type,Congestion,Vehicles/hr,Avg Speed,Peak Cong,Status,Incidents", ...roadsForExport].join("\n");
+                        const blob = new Blob([csv], { type: "text/csv" });
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement("a"); a.href = url; a.download = "traffic-report.csv"; a.click();
+                        URL.revokeObjectURL(url);
+                      }}
+                      style={{ padding: "7px 16px", background: "rgba(34,197,94,0.15)", color: "#4ade80", border: "1px solid rgba(34,197,94,0.3)", borderRadius: 8, fontSize: 12, fontWeight: 700, cursor: "pointer" }}>
+                      ⬇️ CSV
+                    </button>
+                    <button
                       onClick={() => window.print()}
-                      style={{ padding: "7px 16px", background: "rgba(255,255,255,0.08)", color: "white", border: "none", borderRadius: 8, fontSize: 12, fontWeight: 700, cursor: "pointer" }}>
-                      🖨️ Print
+                      style={{ padding: "7px 16px", background: "rgba(255,255,255,0.08)", color: "white", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, fontSize: 12, fontWeight: 700, cursor: "pointer" }}>
+                      🖨️ Print / PDF
                     </button>
                   </div>
                 </div>
