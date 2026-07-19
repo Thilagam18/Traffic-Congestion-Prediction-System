@@ -1,21 +1,14 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import Navbar from "../components/Navbar";
-
-const ALL_USERS = [
-  { id: 1, name: "Admin User",       email: "admin@urbanmind.ai",   role: "Admin",   status: "Active",    lastLogin: "2 min ago",    joined: "Jan 2024" },
-  { id: 2, name: "Traffic Analyst",  email: "analyst@urbanmind.ai", role: "Analyst", status: "Active",    lastLogin: "1 hr ago",     joined: "Mar 2024" },
-  { id: 3, name: "Demo Viewer",      email: "demo@urbanmind.ai",    role: "Viewer",  status: "Active",    lastLogin: "3 hrs ago",    joined: "Apr 2024" },
-  { id: 4, name: "Traffic Officer",  email: "officer@citynet.gov",  role: "Analyst", status: "Active",    lastLogin: "Yesterday",    joined: "Feb 2024" },
-  { id: 5, name: "City Manager",     email: "manager@citynet.gov",  role: "Admin",   status: "Inactive",  lastLogin: "5 days ago",   joined: "Jan 2024" },
-  { id: 6, name: "Jane Doe",         email: "jane@example.com",     role: "Viewer",  status: "Active",    lastLogin: "2 days ago",   joined: "May 2024" },
-  { id: 7, name: "Carlos Rivera",    email: "carlos@smartcity.io",  role: "Analyst", status: "Suspended", lastLogin: "2 weeks ago",  joined: "Jun 2024" },
-  { id: 8, name: "Aisha Malik",      email: "aisha@urbanmind.ai",   role: "Admin",   status: "Active",    lastLogin: "Just now",     joined: "Jul 2024" },
-];
 
 const ROLE_META = {
   Admin:   { color: "#a78bfa", bg: "rgba(139,92,246,0.15)", border: "rgba(139,92,246,0.3)", icon: "🛡️" },
   Analyst: { color: "#60a5fa", bg: "rgba(59,130,246,0.15)", border: "rgba(59,130,246,0.3)", icon: "📊" },
   Viewer:  { color: "#34d399", bg: "rgba(16,185,129,0.15)", border: "rgba(16,185,129,0.3)", icon: "👁️" },
+  user:    { color: "#34d399", bg: "rgba(16,185,129,0.15)", border: "rgba(16,185,129,0.3)", icon: "👤" },
+  admin:   { color: "#a78bfa", bg: "rgba(139,92,246,0.15)", border: "rgba(139,92,246,0.3)", icon: "🛡️" },
+  analyst: { color: "#60a5fa", bg: "rgba(59,130,246,0.15)", border: "rgba(59,130,246,0.3)", icon: "📊" },
+  viewer:  { color: "#34d399", bg: "rgba(16,185,129,0.15)", border: "rgba(16,185,129,0.3)", icon: "👁️" },
 };
 
 const STATUS_META = {
@@ -24,30 +17,50 @@ const STATUS_META = {
   Suspended: { color: "#f87171", dot: "#ef4444" },
 };
 
+function normalizeUser(u) {
+  const role = u.role ? (u.role.charAt(0).toUpperCase() + u.role.slice(1).toLowerCase()) : "User";
+  const joined = u.created_at
+    ? new Date(u.created_at).toLocaleDateString("en-US", { month: "short", year: "numeric" })
+    : u.joined || "—";
+  return { ...u, role, status: u.status || "Active", lastLogin: u.lastLogin || "—", joined };
+}
+
 export default function UserManagement() {
-  const [search, setSearch] = useState("");
-  const [roleFilter, setRoleFilter] = useState("All");
+  const [allUsers, setAllUsers]   = useState([]);
+  const [loading, setLoading]     = useState(true);
+  const [search, setSearch]       = useState("");
+  const [roleFilter, setRoleFilter]     = useState("All");
   const [statusFilter, setStatusFilter] = useState("All");
-  const [selectedIds, setSelectedIds] = useState(new Set());
+  const [selectedIds, setSelectedIds]   = useState(new Set());
 
   const currentUser = (() => { try { return JSON.parse(localStorage.getItem("user") || "{}"); } catch { return {}; } })();
   const isAdmin = currentUser.role === "admin" || currentUser.role === "Admin";
 
+  useEffect(() => {
+    fetch("/api/users")
+      .then(r => r.json())
+      .then(data => {
+        if (data.success) setAllUsers(data.users.map(normalizeUser));
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
+
   const filtered = useMemo(() => {
-    return ALL_USERS.filter(u => {
+    return allUsers.filter(u => {
       const matchSearch = !search || u.name.toLowerCase().includes(search.toLowerCase()) || u.email.toLowerCase().includes(search.toLowerCase());
       const matchRole   = roleFilter === "All" || u.role === roleFilter;
       const matchStatus = statusFilter === "All" || u.status === statusFilter;
       return matchSearch && matchRole && matchStatus;
     });
-  }, [search, roleFilter, statusFilter]);
+  }, [allUsers, search, roleFilter, statusFilter]);
 
   const stats = useMemo(() => ({
-    total:    ALL_USERS.length,
-    active:   ALL_USERS.filter(u => u.status === "Active").length,
-    admins:   ALL_USERS.filter(u => u.role === "Admin").length,
-    analysts: ALL_USERS.filter(u => u.role === "Analyst").length,
-  }), []);
+    total:    allUsers.length,
+    active:   allUsers.filter(u => u.status === "Active").length,
+    admins:   allUsers.filter(u => u.role === "Admin").length,
+    analysts: allUsers.filter(u => u.role === "Analyst").length,
+  }), [allUsers]);
 
   const toggleSelect = (id) => {
     setSelectedIds(prev => {
@@ -170,7 +183,7 @@ export default function UserManagement() {
             </div>
 
             <div style={{ marginLeft: "auto", fontSize: 12, color: "rgba(255,255,255,0.3)" }}>
-              {filtered.length} of {ALL_USERS.length} users
+              {filtered.length} of {allUsers.length} users
             </div>
           </div>
 

@@ -167,7 +167,7 @@ export default function Register() {
           <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 56 }}>
             <div style={{ width: 44, height: 44, borderRadius: 14, background: "linear-gradient(135deg,#8b5cf6,#3b82f6)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22, boxShadow: "0 4px 20px rgba(139,92,246,0.4)" }}>✨</div>
             <div>
-              <div style={{ fontSize: 20, fontWeight: 900, color: "white", letterSpacing: "-0.5px" }}>UrbanMind <span style={{ color: "#8b5cf6" }}>AI</span></div>
+              <div style={{ fontSize: 20, fontWeight: 900, color: "white", letterSpacing: "-0.5px" }}>Traffic <span style={{ color: "#8b5cf6" }}>Prediction</span></div>
               <div style={{ fontSize: 11, color: "rgba(255,255,255,0.35)", marginTop: 1 }}>Smart Traffic Intelligence</div>
             </div>
           </div>
@@ -225,7 +225,7 @@ export default function Register() {
               <>
                 <div style={{ marginBottom: 28 }}>
                   <div style={{ fontSize: 22, fontWeight: 800, color: "white", marginBottom: 6 }}>Create your account</div>
-                  <div style={{ fontSize: 13, color: "rgba(255,255,255,0.4)" }}>Get started with UrbanMind AI — free forever</div>
+                  <div style={{ fontSize: 13, color: "rgba(255,255,255,0.4)" }}>Get started with Traffic Prediction — free forever</div>
                 </div>
 
                 {error && (

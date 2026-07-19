@@ -190,7 +190,7 @@ export default function Login() {
           <div style={{ display:"flex", alignItems:"center", gap:12, marginBottom:56 }}>
             <div style={{ width:44, height:44, borderRadius:14, background:"linear-gradient(135deg,#8b5cf6,#3b82f6)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:22, boxShadow:"0 4px 20px rgba(139,92,246,0.4)" }}>✨</div>
             <div>
-              <div style={{ fontSize:20, fontWeight:900, color:"white", letterSpacing:"-0.5px" }}>UrbanMind <span style={{ color:"#8b5cf6" }}>AI</span></div>
+              <div style={{ fontSize:20, fontWeight:900, color:"white", letterSpacing:"-0.5px" }}>Traffic <span style={{ color:"#8b5cf6" }}>Prediction</span></div>
               <div style={{ fontSize:11, color:"rgba(255,255,255,0.35)", marginTop:1 }}>Smart Traffic Intelligence</div>
             </div>
           </div>
@@ -251,7 +251,7 @@ export default function Login() {
             {/* Form header */}
             <div style={{ marginBottom: 32 }}>
               <div style={{ fontSize: 24, fontWeight: 800, color: "white", marginBottom: 6 }}>Welcome back</div>
-              <div style={{ fontSize: 14, color: "rgba(255,255,255,0.4)" }}>Sign in to your UrbanMind AI account</div>
+              <div style={{ fontSize: 14, color: "rgba(255,255,255,0.4)" }}>Sign in to your Traffic Prediction account</div>
             </div>
 
             {/* Error banner */}
@@ -282,7 +282,7 @@ export default function Login() {
                 <input
                   type="email"
                   className={`login-input${error ? " error" : ""}`}
-                  placeholder="you@urbanmind.ai"
+                  placeholder="you@example.com"
                   value={email}
                   onChange={e => { setEmail(e.target.value); setError(""); }}
                   autoComplete="email"

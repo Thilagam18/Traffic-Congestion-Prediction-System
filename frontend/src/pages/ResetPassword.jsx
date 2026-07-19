@@ -168,7 +168,7 @@ export default function ResetPassword() {
           {/* Logo */}
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 28 }}>
             <div style={{ width: 36, height: 36, borderRadius: 10, background: "linear-gradient(135deg,#8b5cf6,#3b82f6)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, boxShadow: "0 4px 16px rgba(139,92,246,0.4)" }}>✨</div>
-            <div style={{ fontSize: 16, fontWeight: 900, color: "white" }}>UrbanMind <span style={{ color: "#8b5cf6" }}>AI</span></div>
+            <div style={{ fontSize: 16, fontWeight: 900, color: "white" }}>Traffic <span style={{ color: "#8b5cf6" }}>Prediction</span></div>
           </div>
 
           {done ? (

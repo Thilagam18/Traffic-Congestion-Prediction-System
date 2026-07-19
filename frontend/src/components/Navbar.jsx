@@ -231,7 +231,7 @@ export default function Navbar() {
         <Link to="/dashboard" style={{ textDecoration:"none", display:"flex", alignItems:"center", gap:8, flexShrink:0 }}>
           <div style={{ width:28, height:28, borderRadius:8, background:"linear-gradient(135deg,#8b5cf6,#3b82f6)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:14 }}>✨</div>
           <div style={{ fontSize:14, fontWeight:800, color:"white", letterSpacing:"-0.3px", whiteSpace:"nowrap" }}>
-            UrbanMind <span style={{ color:"#8b5cf6" }}>AI</span>
+            Traffic <span style={{ color:"#8b5cf6" }}>Prediction</span>
           </div>
         </Link>
 

@@ -79,7 +79,7 @@ function getResponse(message) {
   }
 
   if (msg.includes("hello")||msg.includes("hi")||msg.includes("hey")) {
-    return `👋 **Hello! I'm UrbanMind AI Copilot**\n\nI can help you with:\n• 🚦 Real-time traffic analysis\n• 🗺️ Route recommendations\n• ⏳ Congestion forecasts\n• ⛔ Roads to avoid\n• 🌦️ Weather impact on traffic\n\nNetwork status: **${ctx.avg}% average congestion** (${ctx.isMR?"🔴 Rush hour":ctx.isER?"🔴 Evening rush":ctx.isWE?"🟡 Weekend":"🟢 Off-peak"})\n\nWhat would you like to know?`;
+    return `👋 **Hello! I'm Traffic Prediction Copilot**\n\nI can help you with:\n• 🚦 Real-time traffic analysis\n• 🗺️ Route recommendations\n• ⏳ Congestion forecasts\n• ⛔ Roads to avoid\n• 🌦️ Weather impact on traffic\n\nNetwork status: **${ctx.avg}% average congestion** (${ctx.isMR?"🔴 Rush hour":ctx.isER?"🔴 Evening rush":ctx.isWE?"🟡 Weekend":"🟢 Off-peak"})\n\nWhat would you like to know?`;
   }
 
   if (msg.includes("park")) {
@@ -122,7 +122,7 @@ function renderMessage(text) {
 export default function AICopilot() {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { role:"ai", text:"👋 Hi! I'm UrbanMind AI Copilot. Ask me about traffic, routes, congestion, or road safety.", time:new Date().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"}) }
+    { role:"ai", text:"👋 Hi! I'm Traffic Prediction Copilot. Ask me about traffic, routes, congestion, or road safety.", time:new Date().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"}) }
   ]);
   const [input, setInput] = useState("");
   const [typing, setTyping] = useState(false);
@@ -186,7 +186,7 @@ export default function AICopilot() {
           <div style={{ padding:"16px 20px", borderBottom:"1px solid rgba(255,255,255,0.07)", display:"flex", alignItems:"center", gap:10, background:"rgba(139,92,246,0.1)" }}>
             <div style={{ width:36, height:36, borderRadius:10, background:"linear-gradient(135deg,#8b5cf6,#3b82f6)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:18 }}>✨</div>
             <div style={{ flex:1 }}>
-              <div style={{ fontSize:14, fontWeight:800, color:"white" }}>UrbanMind AI Copilot</div>
+              <div style={{ fontSize:14, fontWeight:800, color:"white" }}>Traffic Prediction Copilot</div>
               <div style={{ fontSize:11, color:"rgba(139,92,246,0.8)", display:"flex", alignItems:"center", gap:4 }}>
                 <div style={{ width:6, height:6, borderRadius:"50%", background:"#22c55e", animation:"blink 2s infinite" }} />
                 Live traffic analysis
