@@ -6,6 +6,11 @@ echo "=== Post-merge setup ==="
 echo "--- Installing root server dependencies ---"
 npm install --legacy-peer-deps 2>/dev/null || npm install || true
 
+echo "--- Installing server dependencies ---"
+cd server
+npm install
+cd ..
+
 echo "--- Installing frontend dependencies ---"
 cd frontend
 npm install --legacy-peer-deps
