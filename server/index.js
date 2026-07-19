@@ -216,9 +216,17 @@ app.put("/api/profile/:id", async (req, res) => {
     }
     res.json({ success: true, message: "Profile updated successfully", user: result.rows[0] });
   } catch (err) {
-    console.error("Update profile error:", err);
-    res.status(500).json({ success: false, message: "Server error" });
-  }
+  console.error("========== REGISTER ERROR ==========");
+  console.error(err);
+  console.error(err.message);
+  console.error(err.stack);
+
+  res.status(500).json({
+    success: false,
+    error: err.message,
+    stack: err.stack
+  });
+}
 });
 
 app.put("/api/change-password/:id", async (req, res) => {
