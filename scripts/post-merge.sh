@@ -61,4 +61,25 @@ else
 fi
 
 cd ..
+echo "--- Applying database schema ---"
+psql "$DATABASE_URL" <<'SQL'
+CREATE TABLE IF NOT EXISTS users (
+  id         SERIAL PRIMARY KEY,
+  name       VARCHAR(100) NOT NULL,
+  email      VARCHAR(100) UNIQUE NOT NULL,
+  password   VARCHAR(255) NOT NULL,
+  role       VARCHAR(50)  NOT NULL DEFAULT 'user',
+  created_at TIMESTAMP    NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS password_reset_tokens (
+  id         SERIAL PRIMARY KEY,
+  user_id    INTEGER      NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  token      VARCHAR(255) UNIQUE NOT NULL,
+  expires_at TIMESTAMP    NOT NULL,
+  used       BOOLEAN      NOT NULL DEFAULT FALSE,
+  created_at TIMESTAMP    NOT NULL DEFAULT NOW()
+);
+SQL
+
 echo "=== Post-merge setup complete ==="
